@@ -2,7 +2,7 @@
 Adds commands and syntax from a certain other voxel game (such as `/kill @e[type=mobs_mc:zombie, distance = 2..]`) to Minetest. For compatible command blocks, use my [Better Command Blocks](https://content.minetest.net/packages/ThePython/better_command_blocks/) mod. I'm basically copying them from a certain other voxel game (whose name will not be mentioned), hereafter referred to as ACOVG. I may eventually make a wiki to explain the differences.
 
 ### PLEASE help with bug reports and PR's
-This is kind of a huge project. ACOVG's commands are complicated. If you would like, you can also help translate it on Weblate.
+This is kind of a huge project. ACOVG's commands are complicated.
 
 ## Current command list:
 * `/bc`\*: Allows players to run any command added by this mod even if its name matches the name of an existing command (for example, `/bc give @a default:dirt` or even `/bc bc /bc /bc bc give @a default:dirt`)
