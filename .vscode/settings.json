@@ -1,0 +1,33 @@
+{
+    "Lua.workspace.library": [
+        "C:\\portable\\apps\\minetest\\builtin",
+        "C:/Users/Nolan/AppData/Roaming/Code/User/globalStorage/sumneko.lua/addonManager/addons/minetest/module/library"
+    ],
+    "Lua.diagnostics.disable": [
+        "undefined-field",
+        "cast-local-type"
+    ],
+    "Lua.diagnostics.globals": [
+        "mcl_formspec",
+        "mcl_item_id",
+        "armor",
+        "bucket",
+        "mcl_buckets",
+        "mcl_armor",
+        "mcl_enchanting",
+        "default",
+        "mcl_sounds",
+        "mcl_util",
+        "mcl_potions",
+        "mcl_vars",
+        "playerphysics",
+        "mcl_playerinfo",
+        "mcl_bamboo",
+        "mcl_core",
+        "dump",
+        "better_commands",
+        "ItemStack",
+        "core",
+        "better_command_blocks"
+    ],
+}
