@@ -19,7 +19,7 @@ end
 minetest.register_on_mods_loaded(function()
     for name, def in pairs(better_commands.commands) do
         if minetest.registered_chatcommands[name] then
-            if better_commands.override then
+            if better_commands.settings.override then
                 minetest.log("action", "[Better Commands] Overriding "..name)
                 better_commands.old_commands[name] = minetest.registered_chatcommands[name]
                 minetest.unregister_chatcommand(name, def)

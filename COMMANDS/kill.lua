@@ -17,7 +17,7 @@ better_commands.register_command("kill", {
         local last
         for _, target in ipairs(targets) do
             if target.is_player then
-                if better_commands.kill_creative_players or not (target:is_player() and minetest.is_creative_enabled(target:get_player_name())) then
+                if better_commands.settings.kill_creative_players or not (target:is_player() and minetest.is_creative_enabled(target:get_player_name())) then
                     last = better_commands.get_entity_name(target)
                     better_commands.deal_damage(
                         ---@diagnostic disable-next-line: param-type-mismatch

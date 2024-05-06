@@ -533,7 +533,7 @@ function better_commands.parse_time_string(time, absolute)
 
     if not absolute then
         result = (minetest.get_timeofday() + (amount/24000)) % 1
-    elseif better_commands.mc_time then
+    elseif better_commands.settings.acovg_time then
         result = ((amount + 6000)/24000) % 1
     else
         result = (amount/24000) % 1

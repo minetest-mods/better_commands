@@ -1,0 +1,100 @@
+# TODO
+A place for me to write out my future plans. Also, I can just copy/paste into a random generator and decide what to do next.
+
+- [ ] Add scoreboard playerlist and nametags (?)
+- [ ] Figure out feet/eyes since most entities don't have that
+- [ ] Make output match ACOVG's (error messages, number results, etc.)
+- [ ] Add more scoreboard criteria (settings to disable)
+  - [ ] `xp`/`level` (MCLA/VL only)
+  - [ ] `food` (MCLA/VL/stamina)
+  - [ ] `air`
+  - [ ] `armor` (MCLA/VL/3D Armor)
+  - [x] `trigger`
+  - [ ] `picked_up.<itemstring>`
+  - [ ] `mined.<itemstring>`
+  - [ ] `crafted.<itemstring>`
+  - [ ] `total_world_time`
+  - [ ] `leave_game`
+  - [ ] Advancements/awards?
+- [ ] Add missing `execute` subcommands
+  - [ ] `in`
+  - [ ] `summon`
+  - [ ] `if/unless`
+    - [ ] `biome`
+    - [ ] `block`/`node`
+    - [ ] `blocks`/`nodes`
+    - [ ] `data`
+    - [ ] `dimension`
+    - [ ] `entity`
+    - [ ] `loaded`
+    - [ ] `score`
+  - [ ] `store`
+    - [ ] `block`/`node`
+    - [ ] `bossbar`
+    - [ ] `entity`
+    - [ ] `score`
+- [ ] Add more selector arguments
+  - [ ] `dx`/`dy`/`dz`
+  - [ ] `x_rotation`/`rx`/`rxm`/`y_rotation`/`ry`/`rym`
+  - [ ] `scores`
+  - [ ] `tag`
+  - [ ] `team`
+  - [ ] `level`/`l`/`lm` (MCLA/VL only)
+  - [ ] `gamemode`/`l`/`lm` (more of an "is creative?" command)
+  - [ ] `advancements` (with MCLA/VL/awards), change syntax
+  - [ ] `haspermission` (privs)
+- [ ] Add more commands
+  - [x] `trigger`
+  - [ ] `alwaysday`/`daylock`
+  - [ ] `ban`/`ban-ip`/`banlist`
+  - [ ] `bossbar`? (probably significantly modified, maybe MCLA/VL only)
+  - [ ] `advancement`
+  - [ ] `fill` (Extra argument for LBM vs `set_node(s)`)
+  - [ ] `changesetting`?
+  - [ ] `clear`
+  - [ ] `spawnpoint`
+  - [ ] `clearspawnpoint`
+  - [ ] `clone`
+  - [ ] `damage`
+  - [ ] `data`
+  - [ ] `deop` (removes all but basic privs)
+  - [ ] `op` (grants certain privs, including `server`)
+  - [ ] `effect` (MCLA/VL only)
+  - [ ] `enchant` (MCLA/VL only, also override forceenchant?)
+  - [ ] `experience`/`xp` (MCLA/VL only)
+  - [ ] `fog`
+  - [ ] `forceload`
+  - [ ] `gamemode` (in MTG, grants/revokes `creative`)
+  - [ ] `gamerule`? (maybe equivalent to `changesetting`?)
+  - [ ] `item`?
+  - [ ] `kick`
+  - [ ] `list`
+  - [ ] `locate` (copy from or depend on Wuzzy's `findbiome`, maybe also support MCLA/VL end shrines)
+  - [ ] `loot`
+  - [ ] `music` (depending on various mods)
+  - [ ] `pardon`
+  - [ ] `pardon-ip`
+  - [ ] `particle`
+  - [ ] `place`
+  - [ ] `random` (although seeds seem to be somewhat inconsistent in MT)
+  - [ ] `recipe` (MCLA/VL only)
+  - [ ] `remove`
+  - [ ] `replaceitem`
+  - [ ] `return`
+  - [ ] `ride`?
+  - [ ] `seed`
+  - [ ] `setidletimeout`?
+  - [ ] `spreadplayers`?
+  - [ ] `stop`
+  - [ ] `structure`?
+  - [x] `summon`
+  - [ ] `tag`
+  - [ ] `teammsg`/`tm`
+  - [ ] `testfor`
+  - [ ] `testforblock`
+  - [ ] `testforblocks`
+  - [ ] `tickingarea`?
+  - [ ] `toggledownfall` (depending on mods)
+  - [ ] `weather` (depending on mods)
+  - [ ] `whitelist`
+  - [ ] `worldborder`? (maybe not visible, probably no collision)

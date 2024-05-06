@@ -4,20 +4,10 @@ local S = minetest.get_translator(minetest.get_current_modname())
 better_commands.criteria_patterns = {
     "^killed_by%..*$", -- killed_by.<entity name>
     "^teamkill%..*$", -- teamkill.<team name>
-    "^killedByTeam%..*$", -- killedByTeam. <team name>
+    "^killedByTeam%..*$", -- killedByTeam.<team name>
+    "^picked_up%.[_%w]*:?[_%w]+$" -- picked_up.<itemstring>
     --"^distanceTo%.%-?%d*%.?%d+,%-?%d*%.?%d+,%-?%d*%.?%d+$" -- distanceTo.<x>,<y>,<z>
 }
-
-function better_commands.validate_criterion(criterion)
-    if better_commands.valid_criteria[criterion] then
-        return true
-    end
-    for _, pattern in ipairs(better_commands.criteria_patterns) do
-        if criterion:match(pattern) then
-            return true
-        end
-    end
-end
 
 better_commands.valid_criteria = {
     dummy = true,
@@ -31,6 +21,21 @@ better_commands.valid_criteria = {
     --air = true,
     --armor = (better_commands.mcl or minetest.get_modpath("3d_armor") and true)
 }
+
+---Validates a criterion
+---@param criterion string
+---@return boolean
+function better_commands.validate_criterion(criterion)
+    if better_commands.valid_criteria[criterion] then
+        return true
+    end
+    for _, pattern in ipairs(better_commands.criteria_patterns) do
+        if criterion:match(pattern) then
+            return true
+        end
+    end
+    return false
+end
 
 ---Gets matching names in a scoreboard
 ---@param selector splitParam

@@ -42,7 +42,7 @@ end
 local timer = 0
 minetest.register_globalstep(function(dtime)
     timer = timer + dtime
-    if timer > better_commands.save_interval then
+    if timer > better_commands.settings.save_interval then
         timer = 0
         storage:set_string("scoreboard", minetest.serialize(better_commands.scoreboard))
         storage:set_string("teams", minetest.serialize(better_commands.teams))

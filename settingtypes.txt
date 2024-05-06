@@ -2,7 +2,7 @@
 better_commands_override (Override existing commands?) bool false
 
 # Use ACOVG times for the /time command? If enabled, day starts at 0, not 7000.
-better_commands_mc_time (Use ACOVG time?) bool false
+better_commands_acovg_time (Use ACOVG time?) bool false
 
 # Can the /kill command kill players in creative mode?
 better_commands_kill_creative_players (Kill creative players?) bool false

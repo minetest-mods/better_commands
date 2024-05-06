@@ -29,7 +29,7 @@ better_commands.register_command("time", {
             return true, S("Time set"), 1
         elseif action == "query" then
             if time == "daytime" then
-                if better_commands.mc_time then
+                if better_commands.settings.acovg_time then
                     return true, S("Current time: @1", math.floor(minetest.get_timeofday()*24000+18000) % 24000), 1
                 else
                     return true, S("Current time: @1", math.floor(minetest.get_timeofday()*24000)), 1
