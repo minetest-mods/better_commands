@@ -8,3 +8,7 @@ Initial release. Missing *lots* of commands, several `execute` subcommands, lots
 * Added TODO.md
 * Redid settings slightly (so it's easy to add more)
 * Removed debug logging when using the `/kill` command
+
+## v2.0
+* Added `picked_up.<itemstring>` scoreboard criterion (supports groups!)
+* 

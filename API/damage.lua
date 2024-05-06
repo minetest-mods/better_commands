@@ -86,7 +86,7 @@ end)
 -- Make sure players always die when /killed, also track hp
 minetest.register_on_player_hpchange(function(player, hp_change, reason)
     if reason.better_commands == "kill" then
-        return -player:get_properties().hp_max, true
+        return hp_change, true
     end
     local player_name = player:get_player_name()
     for _, def in pairs(better_commands.scoreboard.objectives) do

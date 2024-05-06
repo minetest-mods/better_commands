@@ -59,3 +59,22 @@ end)
 minetest.register_on_joinplayer(function(player)
     better_commands.sidebars[player:get_player_name()] = {}
 end)
+
+minetest.register_on_item_pickup(function(itemstack, player)
+    for _, objective in pairs(better_commands.scoreboard.objectives) do
+        local score = objective.scores[player:get_player_name()]
+        if score then -- don't bother with other players' scores
+            if objective.criterion:sub(1, 10) == "picked_up." then
+                local criterion_item = objective.criterion:sub(11, -1)
+                local handled = better_commands.handle_alias(criterion_item)
+                if handled and handled == itemstack:get_name() then
+                    score.score = score.score + 1
+                elseif criterion_item:sub(1, 6) == "group:" then
+                    if minetest.get_item_group(itemstack:get_name(), criterion_item:sub(7, -1)) ~= 0 then
+                        score.score = score.score + 1
+                    end
+                end
+            end
+        end
+    end
+end)

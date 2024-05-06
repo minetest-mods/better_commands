@@ -10,7 +10,7 @@ A place for me to write out my future plans. Also, I can just copy/paste into a 
   - [ ] `air`
   - [ ] `armor` (MCLA/VL/3D Armor)
   - [x] `trigger`
-  - [ ] `picked_up.<itemstring>`
+  - [x] `picked_up.<itemstring>`
   - [ ] `mined.<itemstring>`
   - [ ] `crafted.<itemstring>`
   - [ ] `total_world_time`

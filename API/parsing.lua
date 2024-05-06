@@ -596,12 +596,13 @@ end
 
 ---Handles item aliases
 ---@param itemstring string
----@return string? itemstring corrected itemstring if valid, otherwise false
+---@return string|false itemstring corrected itemstring if valid, otherwise false
 function better_commands.handle_alias(itemstring)
     local stack = ItemStack(itemstring)
     if (stack:is_known() and stack:get_name() ~= "unknown" and stack:get_name() ~= "") then
         return stack:get_name()
     end
+    return false
 end
 
 ---I wish #table would work for non-arrays...

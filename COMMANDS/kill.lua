@@ -22,7 +22,7 @@ better_commands.register_command("kill", {
                     better_commands.deal_damage(
                         ---@diagnostic disable-next-line: param-type-mismatch
                         target,
-                        math.max(target:get_hp(), 1000000000000), -- 1 trillion damage to make sure they die :D
+                        -math.max(target:get_hp(), 1000000000000), -- 1 trillion damage to make sure they die :D
                         {
                             type = "set_hp",
                             bypasses_totem = true,
