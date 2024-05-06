@@ -34,86 +34,10 @@ function better_commands.deal_damage(target, damage, reason, damage_immortal)
 	end
 end
 
-minetest.register_on_dieplayer(function(player, reason)
-    local player_name = player:get_player_name()
-    for _, def in pairs(better_commands.scoreboard.objectives) do
-        if def.criterion == "deathCount" then
-            if def.scores[player_name] then
-                def.scores[player_name].score = def.scores[player_name].score + 1
-            end
-        end
-    end
-    local killer
-    if reason._mcl_reason then
-        killer = reason._mcl_reason.source
-    else
-        killer = reason.object
-    end
-    if killer and killer:is_player() then
-        local player_name = player:get_player_name()
-        local killer_name = killer:get_player_name()
-        local player_team = better_commands.teams.players[player_name]
-        local killer_team = better_commands.teams.players[killer_name]
-        for _, def in pairs(better_commands.scoreboard.objectives) do
-            if def.criterion == "playerKillCount" or (player_team and def.criterion == "teamkill."..player_team) then
-                if def.scores[killer_name] then
-                    def.scores[killer_name].score = def.scores[killer_name].score + 1
-                end
-            elseif killer_team and def.criterion == "killedByTeam."..killer_team then
-                if def.scores[player_name] then
-                    def.scores[player_name].score = def.scores[player_name].score + 1
-                end
-            elseif def.criterion == "killed_by.player" then
-                if def.scores[player_name] then
-                    def.scores[player_name].score = def.scores[player_name].score + 1
-                end
-            end
-        end
-    elseif killer then
-        local killer_type = killer:get_luaentity().name
-        for _, def in pairs(better_commands.scoreboard.objectives) do
-            local killed_by = def.criterion:match("^killed_by%.(.*)$")
-            if killed_by and (killer_type == killed_by or
-            (better_commands.entity_aliases[killer_type] and better_commands.entity_aliases[killer_type][killed_by])) then
-                if def.scores[player_name] then
-                    def.scores[player_name].score = def.scores[player_name].score + 1
-                end
-            end
-        end
-    end
-end)
-
--- Make sure players always die when /killed, also track hp
+-- Make sure players always die when /killed
 minetest.register_on_player_hpchange(function(player, hp_change, reason)
     if reason.better_commands == "kill" then
         return hp_change, true
-    end
-    local player_name = player:get_player_name()
-    for _, def in pairs(better_commands.scoreboard.objectives) do
-        if def.criterion == "health" then
-            if def.scores[player_name] then
-                minetest.after(0, function() def.scores[player_name].score = player:get_hp() end)
-            end
-        end
-    end
-    if hp_change < 0 then
-        local attacker
-        if reason._mcl_reason then
-            attacker = reason._mcl_reason.source
-        else
-            attacker = reason.object
-        end
-        if attacker and attacker:is_player() then
-            local player_name = player:get_player_name()
-            local attacker_name = attacker:get_player_name()
-            local player_team = better_commands.teams.players[player_name]
-            local attacker_team = better_commands.teams.players[attacker_name]
-            if player_team == attacker_team then
-                if better_commands.teams.teams[player_team].pvp == false then
-                    return 0, true
-                end
-            end
-        end
     end
     return hp_change
 end, true)

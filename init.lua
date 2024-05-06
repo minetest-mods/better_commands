@@ -3,8 +3,8 @@ better_commands = {commands = {}, old_commands = {}, players = {}}
 better_commands.mcl = minetest.get_modpath("mcl_core")
 
 local modpath = minetest.get_modpath("better_commands")
-dofile(modpath.."/entity_aliases.lua")
 dofile(modpath.."/settings.lua")
+dofile(modpath.."/entity_aliases.lua")
 dofile(modpath.."/API/api.lua")
 dofile(modpath.."/COMMANDS/commands.lua")
 

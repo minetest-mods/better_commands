@@ -10,5 +10,9 @@ Initial release. Missing *lots* of commands, several `execute` subcommands, lots
 * Removed debug logging when using the `/kill` command
 
 ## v2.0
-* Added `picked_up.<itemstring>` scoreboard criterion (supports groups!)
-* 
+* Added node/item scoreboard criteria (support itemstrings, `group:groupname` and `\*`)
+  * `picked_up.<itemstring>`
+  * `mined.<itemstring>`
+  * `dug.<itemstring>` (same as `mined`)
+  * `placed.<itemstring>`
+  * `crafted.<itemstring>`

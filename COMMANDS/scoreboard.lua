@@ -40,7 +40,7 @@ better_commands.register_command("scoreboard", {
                 if not better_commands.validate_criterion(criterion) then
                     return false, S("Invalid criterion @1", criterion), 0
                 end
-                local display_name = (split_param[5] and split_param[5][3]) or objective_name
+                local display_name = (split_param[5] and param:sub(split_param[5][1], -1)) or objective_name
                 better_commands.scoreboard.objectives[objective_name] = {
                     name = objective_name,
                     criterion = criterion,

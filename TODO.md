@@ -11,8 +11,9 @@ A place for me to write out my future plans. Also, I can just copy/paste into a 
   - [ ] `armor` (MCLA/VL/3D Armor)
   - [x] `trigger`
   - [x] `picked_up.<itemstring>`
-  - [ ] `mined.<itemstring>`
-  - [ ] `crafted.<itemstring>`
+  - [x] `mined.<itemstring>` (AKA `dug`)
+  - [x] `placed.<itemstring>`
+  - [x] `crafted.<itemstring>`
   - [ ] `total_world_time`
   - [ ] `leave_game`
   - [ ] Advancements/awards?

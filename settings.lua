@@ -20,6 +20,13 @@ local settings = {
     {"acovg_time", false, "bool"},
     {"save_interval", 3, "number"},
     {"kill_creative_players", false, "bool"},
+
+    {"scoreboard_picked_up", true, "bool"},
+    {"scoreboard_mined", true, "bool"},
+    {"scoreboard_placed", true, "bool"},
+    {"scoreboard_crafted", true, "bool"},
+    {"scoreboard_health", true, "bool"},
+    {"scoreboard_death", true, "bool"},
 }
 
 for _, setting in ipairs(settings) do
