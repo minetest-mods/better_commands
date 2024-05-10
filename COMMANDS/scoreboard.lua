@@ -124,21 +124,36 @@ better_commands.register_command("scoreboard", {
                 if objective and not better_commands.scoreboard.objectives[objective] then
                     return false, S("Unknown scoreboard objective '@1'", objective), 0
                 end
+                local display, sortable
                 if location == "list" then
-                    if not playerlist then return false, S("`list` requires the Playerlist mod"), 0 end
-                    better_commands.scoreboard.displays["list"] = objective
+                    return false, S("`list` support has not been added yet."), 0
                 elseif location == "below_name" then
-                    better_commands.scoreboard.displays["below_name"] = objective
+                    return false, S("`below_name` support has not been added yet."), 0
                 elseif location == "sidebar" then
-                    better_commands.scoreboard.displays["sidebar"] = objective
+                    better_commands.scoreboard.displays.sidebar = {objective = objective}
+                    display = better_commands.scoreboard.displays.sidebar
+                    sortable = true
                 else
                     local color = location:match("^sidebar%.(.+)")
                     if not color then
                         return false, S("Must be 'list', 'below_name', 'sidebar', or 'sidebar.<color>"), 0
                     elseif better_commands.team_colors[color] then
-                        better_commands.scoreboard.displays.colors[color] = objective
+                        display = better_commands.scoreboard.displays.colors[color]
+                        better_commands.scoreboard.displays.colors[color] = {objective = objective}
                     else
                         return false, S("Invalid color: @1", color), 0
+                    end
+                end
+                local sort = split_param[5] and split_param[5][3]
+                if sort then
+                    if sortable then
+                        if sort == "ascending" then
+                            display.ascending = true
+                        elseif sort ~= "descending" then
+                            return false, S("Expected ascending|descending, got @1", sort), 0
+                        end
+                    else
+                        return false, S("Display slot @1 does not support sorting.", location), 0
                     end
                 end
                 return true, S("Set display slot @1 to show objective @2", location, objective), 1

@@ -13,7 +13,8 @@ local command_files = {
     "ability",
     "playsound",
     "setblock",
-    "summon"
+    "summon",
+    "gamemode",
 }
 
 for _, file in ipairs(command_files) do

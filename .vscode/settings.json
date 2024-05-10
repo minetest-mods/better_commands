@@ -1,6 +1,5 @@
 {
     "Lua.workspace.library": [
-        "C:\\portable\\apps\\minetest\\builtin",
         "C:/Users/Nolan/AppData/Roaming/Code/User/globalStorage/sumneko.lua/addonManager/addons/minetest/module/library"
     ],
     "Lua.diagnostics.disable": [
@@ -25,9 +24,11 @@
         "mcl_bamboo",
         "mcl_core",
         "dump",
-        "better_commands",
         "ItemStack",
         "core",
-        "better_command_blocks"
+        "better_commands",
+        "better_command_blocks",
+        "mcl_gamemode",
+        "mcl_experience"
     ],
 }

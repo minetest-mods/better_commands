@@ -152,7 +152,20 @@ better_commands.supported_keys = {
     x = true,
     y = true,
     z = true,
+    gamemode = false,
+    m = false,
 }
+
+if better_commands.mcl then
+    local mcl_only = {
+        level = true,
+        l = true,
+        lm = true,
+    }
+    for key, value in pairs(mcl_only) do
+        better_commands.supported_keys[key] = value
+    end
+end
 
 ---Parses a selector and returns a list of entities
 ---@param selector_data splitParam
@@ -173,7 +186,10 @@ function better_commands.parse_selector(selector_data, context, require_one)
             return {player}
         end
     end
+
+    ---@type table<integer, {any: string}>
     local arg_table = {}
+
     if selector_data[4] then
         -- basically matching "(thing)=(thing)[,%]]"
         for key, value in selector_data[4]:gmatch("([%w_]+)%s*=%s*([^,%]]+)%s*[,%]]") do
@@ -229,7 +245,9 @@ function better_commands.parse_selector(selector_data, context, require_one)
         local checked = {}
         for _, arg in ipairs(arg_table) do
             local key, value = unpack(arg)
-            if key == "x" or key == "y" or key == "z" then
+            if better_commands.supported_keys[key] == nil then
+                return nil, S("Invalid key: @1", key)
+            elseif key == "x" or key == "y" or key == "z" then
                 if checked[key] then
                     return nil, S("Duplicate key: @1", key)
                 end
@@ -243,6 +261,21 @@ function better_commands.parse_selector(selector_data, context, require_one)
                     return nil, S("Invalid value for @1", key)
                 end
                 checked[key] = true
+            elseif key == "sort" then
+                sort = value
+            elseif key == "limit" or key == "c" then
+                if checked.limit then
+                    return nil, S("Only 1 of keys c and limit can exist")
+                end
+                checked.limit = true
+                value = tonumber(value)
+                if not value then
+                    return nil, S("@1 must be a non-zero integer", key)
+                end
+                limit = math.floor(value)
+                if limit == 0 then
+                    return nil, S("@1 must be a non-zero integer", key)
+                end
             end
         end
 
@@ -252,9 +285,7 @@ function better_commands.parse_selector(selector_data, context, require_one)
                 local matches = true
                 for _, arg in pairs(arg_table) do
                     local key, value = unpack(arg)
-                    if better_commands.supported_keys[key] == nil then
-                        return nil, S("Invalid key: @1", key)
-                    elseif better_commands.supported_keys[key] == true then
+                    if better_commands.supported_keys[key] == true then
                         if checked[key] then
                             return nil, S("Duplicate key: @1", key)
                         end
@@ -306,23 +337,60 @@ function better_commands.parse_selector(selector_data, context, require_one)
                             end
                         end
                     elseif key == "r" then
-                        matches = vector.distance(obj:get_pos(), pos) < value
-                    elseif key == "rm" then
-                        matches = vector.distance(obj:get_pos(), pos) > value
-                    elseif key == "sort" then
-                        sort = value
-                    elseif key == "limit" or key == "c" then
-                        if checked.limit then
-                            return nil, S("Only 1 of keys c and limit can exist")
-                        end
-                        checked.limit = true
                         value = tonumber(value)
-                        if not value then
-                            return nil, S("@1 must be a non-zero integer", key)
+                        if not value then return nil, S("@1 must be a number", key) end
+                        matches = vector.distance(obj:get_pos(), pos) <= value
+                    elseif key == "rm" then
+                        value = tonumber(value)
+                        if not value then return nil, S("@1 must be a number", key) end
+                        matches = vector.distance(obj:get_pos(), pos) >= value
+                    elseif key == "level" then
+                        if not (obj.is_player and obj:is_player()) then
+                            matches = false
+                        else
+                            mcl_experience.update(obj)
+                            local level = mcl_experience.get_level(obj)
+                            if not better_commands.parse_range(level, value) then
+                                matches = false
+                            end
                         end
-                        limit = math.floor(value)
-                        if limit == 0 then
-                            return nil, S("@1 must be a non-zero integer", key)
+                    elseif key == "l" then
+                        value = tonumber(value)
+                        if not value then return nil, S("@1 must be a number", key) end
+                        if not (obj.is_player and obj:is_player()) then
+                            matches = false
+                        else
+                            mcl_experience.update(obj)
+                            local level = mcl_experience.get_level(obj)
+                            matches = level <= value
+                        end
+                    elseif key == "lm" then
+                        value = tonumber(value)
+                        if not value then return nil, S("@1 must be a number", key) end
+                        if not (obj.is_player and obj:is_player()) then
+                            matches = false
+                        else
+                            mcl_experience.update(obj)
+                            local level = mcl_experience.get_level(obj)
+                            matches = level >= value
+                        end
+                    elseif key == "gamemode" or key == "m" then
+                        if checked.gamemode then
+                            return nil, S("Only 1 of keys m and gamemode can exist")
+                        end
+                        checked.gamemode = true
+                        if not (obj.is_player and obj:is_player()) then
+                            matches = false
+                        else
+                            local gamemode = better_commands.gamemode_aliases[value] or value
+                            if better_commands.mcl then
+                                if table.indexof(mcl_gamemode.gamemodes, gamemode) == -1 then
+                                    return nil, S("Invalid gamemode @1", gamemode)
+                                end
+                            elseif gamemode ~= "creative" and gamemode ~= "survival" then
+                                return nil, S("Invalid gamemode @1", gamemode)
+                            end
+                            matches = better_commands.get_gamemode(obj) == gamemode
                         end
                     end
                     if not matches then

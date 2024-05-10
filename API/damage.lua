@@ -37,7 +37,7 @@ end
 -- Make sure players always die when /killed
 minetest.register_on_player_hpchange(function(player, hp_change, reason)
     if reason.better_commands == "kill" then
-        return hp_change, true
+        return math.min(hp_change, -1000000000), true
     end
     return hp_change
 end, true)

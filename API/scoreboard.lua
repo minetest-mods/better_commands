@@ -90,6 +90,10 @@ local sidebar_template = {
     }
 }
 
+local function sort_scores(a, b)
+    return (a.score == b.score) and (a.name < b.name) or (tonumber(a.score) > tonumber(b.score))
+end
+
 function better_commands.update_hud()
     local bg_width = 16
     for _, player in ipairs(minetest.get_connected_players()) do
@@ -100,13 +104,14 @@ function better_commands.update_hud()
             better_commands.sidebars[playername] = sidebar
         end
         local team = better_commands.teams.players[playername]
-        local team_color, objective
+        local team_color, display, objective
         if team then
             team_color = better_commands.teams.teams[team].color
-            objective = better_commands.scoreboard.displays.colors[team_color] or better_commands.scoreboard.displays.sidebar
+            display = better_commands.scoreboard.displays.colors[team_color] or better_commands.scoreboard.displays.sidebar
         else
-            objective = better_commands.scoreboard.displays.sidebar
+            display = better_commands.scoreboard.displays.sidebar
         end
+        objective = display and display.objective
         local objective_data = better_commands.scoreboard.objectives[objective]
         if objective_data then
             local name_text, score_text, max_width = "", "", #objective
@@ -134,9 +139,11 @@ function better_commands.update_hud()
                 max_width = math.max(width + 2, max_width)
                 table.insert(sortable_scores, {name = display_name, score = score})
             end
-            table.sort(sortable_scores, function(a,b)
-                return (a.score == b.score) and (a.name < b.name) or (tonumber(a.score) > tonumber(b.score)) end
-            )
+            if not display.ascending then
+                table.sort(sortable_scores, sort_scores)
+            else
+                table.sort(sortable_scores, function(...) return not sort_scores(...) end)
+            end
             for _, data in ipairs(sortable_scores) do
                 name_text = name_text..data.name.."\n"
                 score_text = score_text..data.score.."\n"
@@ -193,3 +200,5 @@ function better_commands.get_display_name(name, objective)
     end
     return name
 end
+
+better_commands.register_on_update(better_commands.update_hud)

@@ -125,7 +125,7 @@ function better_commands.get_tp_rot(context, victim, split_param, i)
         elseif split_param[i].type == "relative" then
             victim_rot.y = victim_rot.y+math.rad(tonumber(split_param[i][3]:sub(2,-1)) or 0)
             yaw_pitch = true
-        elseif split_param[i].type == "string" and split_param[i][3] == "facing" then
+        elseif split_param[i][3] == "facing" then
             facing = true
         end
         if yaw_pitch and split_param[i+1] then
@@ -159,3 +159,27 @@ function better_commands.get_tp_rot(context, victim, split_param, i)
     end
     return victim_rot
 end
+
+---Gets a player's gamemode
+---@param player minetest.Player
+---@return string?
+function better_commands.get_gamemode(player)
+    if player.is_player and player:is_player() then
+        local gamemode
+        if better_commands.mcl then
+            gamemode = mcl_gamemode.get_gamemode(player)
+        else
+            gamemode = minetest.is_creative_enabled(player:get_player_name()) and "creative" or "survival"
+        end
+        return gamemode
+    end
+end
+
+better_commands.gamemode_aliases = {
+    [0] = "survival",
+    [1] = "creative",
+    ["0"] = "survival", -- not sure whether these are necessary
+    ["1"] = "creative",
+    s = "survival",
+    c = "creative",
+}

@@ -114,7 +114,7 @@ better_commands.execute_subcommands = {
         local split_param = branches.param
         local i = branch_data.i
         if split_param[i+1] then
-            if split_param[i+1][3] == "entity" and split_param[i+2].type == "selector" then
+            if split_param[i+1][3] == "entity" and split_param[i+2] then
                 local targets, err = better_commands.parse_selector(split_param[i+2], branch_data)
                 if err or not targets then return false, err end
                 if #targets > 1 then

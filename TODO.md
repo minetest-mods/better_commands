@@ -40,8 +40,8 @@ A place for me to write out my future plans. Also, I can just copy/paste into a 
   - [ ] `scores`
   - [ ] `tag`
   - [ ] `team`
-  - [ ] `level`/`l`/`lm` (MCLA/VL only)
-  - [ ] `gamemode`/`l`/`lm` (more of an "is creative?" command)
+  - [x] `level`/`l`/`lm` (MCLA/VL only)
+  - [x] `gamemode`/`m` (more of an "is creative?" argument)
   - [ ] `advancements` (with MCLA/VL/awards), change syntax
   - [ ] `haspermission` (privs)
 - [ ] Add more commands
@@ -65,7 +65,7 @@ A place for me to write out my future plans. Also, I can just copy/paste into a 
   - [ ] `experience`/`xp` (MCLA/VL only)
   - [ ] `fog`
   - [ ] `forceload`
-  - [ ] `gamemode` (in MTG, grants/revokes `creative`)
+  - [x] `gamemode` (in MTG, grants/revokes `creative`)
   - [ ] `gamerule`? (maybe equivalent to `changesetting`?)
   - [ ] `item`?
   - [ ] `kick`
@@ -85,7 +85,6 @@ A place for me to write out my future plans. Also, I can just copy/paste into a 
   - [ ] `ride`?
   - [ ] `seed`
   - [ ] `setidletimeout`?
-  - [ ] `spreadplayers`?
   - [ ] `stop`
   - [ ] `structure`?
   - [x] `summon`
