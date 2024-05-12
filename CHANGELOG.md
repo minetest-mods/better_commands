@@ -28,3 +28,5 @@ Initial release. Missing *lots* of commands, several `execute` subcommands, lots
 * The `/kill` command is more likely to successfully kill entities.
 * The `rm`/`r` selector arguments now actually treat their values as numbers (not strings), and are now inclusive as intended.
 * Fixed a potential issue with the `/execute` command that *might* have caused unintended behavior.
+* Fixed crashing when trying to divide by 0 using `scoreboard players operation ... /= ...`
+* Scoreboard values are now forced to be integers.
