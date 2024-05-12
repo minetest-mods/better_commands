@@ -35,8 +35,10 @@ function better_commands.register_on_update(func)
     table.insert(better_commands.registered_on_update, func)
 end
 
+better_commands.paused = false
 local timer = 0
 minetest.register_globalstep(function(dtime)
+    if better_commands.paused then return end
     timer = timer + dtime
     if timer > better_commands.settings.save_interval then
         timer = 0

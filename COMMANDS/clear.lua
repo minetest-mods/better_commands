@@ -16,18 +16,23 @@ better_commands.register_command("clear", {
             targets, err = better_commands.parse_selector(selector, context)
             if err or not targets then return false, err, 0 end
         end
-        local filter
-        if split_param[2] and split_param[2][3] == "*" then
-            filter = "*"
-        elseif split_param[2] then
+        local filter, group
+        if split_param[2] then
             if split_param[2][5] then
                 split_param[3] = split_param[2][5]
             end
             split_param[2][5] = nil
             split_param[2][6] = nil
-            filter, err = better_commands.parse_item(split_param[2], true)
-            if err or not filter then return false, err, 0 end
-            minetest.log(dump(filter:get_name()))
+
+            if split_param[2][3] == "*" then
+                filter = "*"
+            elseif split_param[2][3]:sub(1,6) == "group:" then
+                group = true
+                filter = split_param[2][3]:sub(7, -1)
+            else
+                filter, err = better_commands.parse_item(split_param[2], true)
+                if err or not filter then return false, err, 0 end
+            end
         end
         local remove_max = tonumber(split_param[3] and split_param[3][3])
         if split_param[3] and not remove_max then
@@ -42,30 +47,28 @@ better_commands.register_command("clear", {
         local last
         local count = 0
         local match_total = 0
-        minetest.log(dump(split_param))
         for _, target in ipairs(targets) do
             if target.is_player and target:is_player() then
-                local found = false
                 local match_count = 0
                 local inv = target:get_inventory()
                 for _, list in ipairs(better_commands.settings.clear_lists) do
                     if inv:get_list(list) then
                         if all and remove_max == -1 then
                             inv:set_list(list, {})
-                            found = true
                         elseif remove_max == 0 then
                             for _, stack in ipairs(inv:get_list(list)) do
                                 if all then
-                                    found = true
                                     match_count = match_count + stack:get_count()
+                                elseif group then
+                                    if minetest.get_item_group(stack:get_name(), filter) then
+                                        match_count = match_count + stack:get_count()
+                                    end
                                 elseif split_param[2].extra_data then
                                     if stack:peek_item(1):equals(filter) then
-                                        found = true
                                         match_count = match_count + stack:get_count()
                                     end
     ---@diagnostic disable-next-line: param-type-mismatch
                                 elseif stack:get_name() == filter:get_name() then
-                                    found = true
                                     match_count = match_count + stack:get_count()
                                 end
                             end
@@ -74,6 +77,10 @@ better_commands.register_command("clear", {
                                 local matches = false
                                 if all then
                                     matches = true
+                                elseif group then
+                                    if minetest.get_item_group(stack:get_name(), filter) then
+                                        matches = true
+                                    end
                                 elseif split_param[2].extra_data then
                                     if stack:peek_item(1):equals(filter) then
                                         matches = true
@@ -83,7 +90,6 @@ better_commands.register_command("clear", {
                                     matches = true
                                 end
                                 if matches then
-                                    found = true
                                     local count = stack:get_count()
                                     local to_remove = count
                                     if remove_max > 0 then
@@ -111,10 +117,10 @@ better_commands.register_command("clear", {
                                 break
                             end
                         end
-                        match_total = match_total + match_count
                     end
                 end
-                if found then
+                if match_count > 0 or (all and remove_max == -1) then
+                    match_total = match_total + match_count
                     count = count + 1
                     last = better_commands.get_entity_name(target)
                 end

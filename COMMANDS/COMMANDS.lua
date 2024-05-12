@@ -31,3 +31,5 @@ better_commands.register_command("?", table.copy(minetest.registered_chatcommand
 better_commands.register_command("dumpscore",{func=function()minetest.log(dump(better_commands.scoreboard)) return true, nil, 1 end})
 better_commands.register_command("dumpteam",{func=function()minetest.log(dump(better_commands.teams)) return true, nil, 1 end})
 -- ]]
+better_commands.register_command("pause", {func=function()better_commands.paused=true return true, nil, 1 end,privs={server=true}})
+better_commands.register_command("resume", {func=function()better_commands.paused=false return true, nil, 1 end,privs={server=true}})

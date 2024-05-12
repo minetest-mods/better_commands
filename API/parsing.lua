@@ -22,7 +22,7 @@ function better_commands.parse_params(str)
     -- items/entities with extra data
     i = 1
     repeat
-        -- modname:id[data] (modname optional)
+        -- modname:id[data] count wear (everything but id and data optional)
         tmp = {str:find("%s([_%w]*:?[_%w]+)%s*(%[.-%])%s*(%d*)%s*(%d*)", i)}
         if tmp[1] then
             tmp[1] = tmp[1] + 1 -- ignore the space
@@ -53,6 +53,7 @@ function better_commands.parse_params(str)
     -- items/entities without extra data
     i = 1
     repeat
+        -- modname:id count wear (everything but id optional)
         tmp = {str:find("(%s[_%w]*:?[_%w]+)%s*(%d*)%s*(%d*)", i)}
         if tmp[1] then
             tmp[1] = tmp[1] + 1 -- ignore the space
@@ -498,7 +499,6 @@ end
 ---@return string? err
 ---@nodiscard
 function better_commands.parse_item(item_data, ignore_count)
-    minetest.log(dump(item_data))
     if not better_commands.handle_alias(item_data[3]) then
         return nil, S("Invalid item: @1", item_data[3])
     end

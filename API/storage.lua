@@ -14,7 +14,7 @@ function better_commands.save(key)
 end
 
 better_commands.load("teams", {teams = {}})
-better_commands.load("scoreboard", {objectives = {}, players = {}, displays = {}})
+better_commands.load("scoreboard", {objectives = {}, players = {}, displays = {colors = {}}})
 better_commands.load("spawnpoints", {})
 
 better_commands.register_on_update(function ()
