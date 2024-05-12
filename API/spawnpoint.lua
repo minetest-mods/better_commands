@@ -7,7 +7,3 @@ minetest.register_on_mods_loaded(function()
         end
     end)
 end)
-
-function better_commands.set_spawn(player, pos)
-    better_commands.spawnpoints[player:get_player_name()] = pos
-end

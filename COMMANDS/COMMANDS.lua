@@ -15,6 +15,8 @@ local command_files = {
     "setblock",
     "summon",
     "gamemode",
+    "spawnpoint",
+    "clear",
 }
 
 for _, file in ipairs(command_files) do

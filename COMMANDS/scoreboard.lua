@@ -134,9 +134,9 @@ better_commands.register_command("scoreboard", {
                     display = better_commands.scoreboard.displays.sidebar
                     sortable = true
                 else
-                    local color = location:match("^sidebar%.(.+)")
+                    local color = location:match("^sidebar%.team.(.+)")
                     if not color then
-                        return false, S("Must be 'list', 'below_name', 'sidebar', or 'sidebar.<color>"), 0
+                        return false, S("Must be 'list', 'below_name', 'sidebar', or 'sidebar.team.<color>"), 0
                     elseif better_commands.team_colors[color] then
                         display = better_commands.scoreboard.displays.colors[color]
                         better_commands.scoreboard.displays.colors[color] = {objective = objective}
@@ -172,6 +172,7 @@ better_commands.register_command("scoreboard", {
                 end
                 local score = tonumber(split_param[5] and split_param[5][3])
                 if not score then return false, S("Missing score"), 0 end
+                score = math.floor(score)
                 local names, err = better_commands.get_scoreboard_names(selector, context, objective)
                 if err or not names then return false, err, 0 end
                 local last
@@ -416,20 +417,28 @@ better_commands.register_command("scoreboard", {
                             source_scores[source] = {score = 0}
                         end
                         if operator == "+=" then
-                            target_scores[target].score = target_scores[target].score + source_scores[source].score
+                            target_scores[target].score = math.floor(target_scores[target].score + source_scores[source].score)
                             op_string, preposition = "Added", "to"
                         elseif operator == "-=" then
-                            target_scores[target].score = target_scores[target].score - source_scores[source].score
+                            target_scores[target].score = math.floor(target_scores[target].score - source_scores[source].score)
                             op_string, preposition = "Subtracted", "from"
                         elseif operator == "*=" then
-                            target_scores[target].score = target_scores[target].score * source_scores[source].score
+                            target_scores[target].score = math.floor(target_scores[target].score * source_scores[source].score)
                             op_string, preposition, swap = "Multiplied", "by", true
                         elseif operator == "/=" then
-                            target_scores[target].score = target_scores[target].score / source_scores[source].score
-                            op_string, preposition, swap = "Divided", "by", true
+                            if source_scores[source].score == 0 then
+                                minetest.chat_send_player(name, S("Skipping attempt to divide by zero"))
+                            else
+                                target_scores[target].score = math.floor(target_scores[target].score / source_scores[source].score)
+                                op_string, preposition, swap = "Divided", "by", true
+                            end
                         elseif operator == "%=" then
-                            target_scores[target].score = target_scores[target].score % source_scores[source].score
-                            op_string, preposition, swap = "Modulo-ed (?)", "and", true
+                            if source_scores[source].score == 0 then
+                                minetest.chat_send_player(name, S("Skipping attempt to divide by zero"))
+                            else
+                                target_scores[target].score = math.floor(target_scores[target].score % source_scores[source].score)
+                                op_string, preposition, swap = "Modulo-ed (?)", "and", true
+                            end
                         elseif operator == "=" then
                             target_scores[target].score = source_scores[source].score
                             op_string, preposition, swap = "Set", "to", true
@@ -605,13 +614,14 @@ better_commands.register_command("trigger", {
         else
             local value = split_param[3] and split_param[3][3]
             if not value then return false, S("Missing value"), 0 end
-            if not tonumber(value) then return false, S("Value must be a number"), 0 end
+            value = tonumber(value)
+            if not value then return false, S("Value must be a number"), 0 end
             if subcommand == "add" then
-                scores.score = scores.score + tonumber(value)
+                scores.score = scores.score + math.floor(value)
                 scores.enabled = false
                 return true, S("Triggered [@1] (added @2 to value)", display_name, value), scores.score
             elseif subcommand == "set" then
-                scores.score = tonumber(value)
+                scores.score = math.floor(value)
                 scores.enabled = false
                 return true, S("Triggered [@1] (set value to @2)", display_name, value), scores.score
             else

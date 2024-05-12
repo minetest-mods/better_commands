@@ -1,5 +1,5 @@
 # TODO
-A place for me to write out my future plans. Also, I can just copy/paste into a random generator and decide what to do next.
+A place for me to write out my future plans. I decide what to do next [randomly](https://wheelofnames.com/24r-ygp) (yes, this is genuinely how I do it).
 
 - [ ] Add scoreboard playerlist and nametags (?)
 - [ ] Figure out feet/eyes since most entities don't have that
@@ -52,9 +52,9 @@ A place for me to write out my future plans. Also, I can just copy/paste into a 
   - [ ] `advancement`
   - [ ] `fill` (Extra argument for LBM vs `set_node(s)`)
   - [ ] `changesetting`?
-  - [ ] `clear`
-  - [ ] `spawnpoint`
-  - [ ] `clearspawnpoint`
+  - [x] `clear`
+  - [x] `spawnpoint`
+  - [x] `clearspawnpoint`
   - [ ] `clone`
   - [ ] `damage`
   - [ ] `data`

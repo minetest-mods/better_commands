@@ -19,9 +19,11 @@ Initial release. Missing *lots* of commands, several `execute` subcommands, lots
   * `placed.<itemstring>`
   * `crafted.<itemstring>`
 * Added `ascending|descending` argument for `/scoreboard objectives setdisplay`
-* Added `/gamemode` (grants/revokes `creative` priv in non-MCL games)
+* Added `/gamemode` command (grants/revokes `creative` priv in non-MCL games)
+* Added `/spawnpoint` and `/clearspawnpoint` commands
 * Added `gamemode`/`m` selector argument
 * Added `level`/`l`/`lm` selector arguments
+* Added `/clear` command
 ### Bugfixes
 * The `/kill` command is more likely to successfully kill entities.
 * The `rm`/`r` selector arguments now actually treat their values as numbers (not strings), and are now inclusive as intended.

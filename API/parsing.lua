@@ -497,19 +497,22 @@ end
 ---@return minetest.ItemStack? result
 ---@return string? err
 ---@nodiscard
-function better_commands.parse_item(item_data)
+function better_commands.parse_item(item_data, ignore_count)
+    minetest.log(dump(item_data))
     if not better_commands.handle_alias(item_data[3]) then
         return nil, S("Invalid item: @1", item_data[3])
     end
     if item_data.type == "item" and not item_data.extra_data then
         local stack = ItemStack(item_data[3])
-        stack:set_count(tonumber(item_data[4]) or 1)
+        if not ignore_count then
+            stack:set_count(tonumber(item_data[4]) or 1)
+        end
         stack:set_wear(tonumber(item_data[5]) or 0)
         return stack
     elseif item_data.type == "item" then
         local arg_table = {}
         if item_data[4] then
-            -- basically matching "(thing)=(thing)[,%]]"
+            -- basically matching (thing)=(thing) followed by , or ]
             for key, value in item_data[4]:gmatch("([%w_]+)%s*=%s*([^,%]]+)%s*[,%]]") do
                 arg_table[key:trim()] = value:trim()
             end
@@ -518,11 +521,18 @@ function better_commands.parse_item(item_data)
         if arg_table then
             local meta = stack:get_meta()
             for key, value in pairs(arg_table) do
-                meta:set_string(key, value)
+                minetest.log(S("@1 = @2", key, value))
+                if key == "wear" then
+                    stack:set_wear(tonumber(value) or 0)
+                else
+                    meta:set_string(key, value)
+                end
             end
         end
-        stack:set_count(tonumber(item_data[5]) or 1)
-        stack:set_wear(tonumber(item_data[6]) or 1)
+        if not ignore_count then
+            stack:set_count(tonumber(item_data[5]) or 1)
+        end
+        stack:set_wear(tonumber(item_data[6]) or stack:get_wear())
         return stack
     end
     return nil, S("Invalid item: @1", item_data[3])
