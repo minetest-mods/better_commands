@@ -20,6 +20,11 @@ better_commands.register_command("clear", {
         if split_param[2] and split_param[2][3] == "*" then
             filter = "*"
         elseif split_param[2] then
+            if split_param[2][5] then
+                split_param[3] = split_param[2][5]
+            end
+            split_param[2][5] = nil
+            split_param[2][6] = nil
             filter, err = better_commands.parse_item(split_param[2], true)
             if err or not filter then return false, err, 0 end
             minetest.log(dump(filter:get_name()))
