@@ -51,7 +51,7 @@ A place for me to write out my future plans. I decide what to do next [randomly]
   - [ ] `bossbar`? (probably significantly modified, maybe MCLA/VL only)
   - [ ] `advancement`
   - [ ] `fill` (Extra argument for LBM vs `set_node(s)`)
-  - [ ] `changesetting`?
+  - [x] `changesetting`?
   - [x] `clear`
   - [x] `spawnpoint`
   - [x] `clearspawnpoint`
@@ -66,7 +66,7 @@ A place for me to write out my future plans. I decide what to do next [randomly]
   - [ ] `fog`
   - [ ] `forceload`
   - [x] `gamemode` (in MTG, grants/revokes `creative`)
-  - [ ] `gamerule`? (maybe equivalent to `changesetting`?)
+  - [x] `gamerule`? (maybe equivalent to `changesetting`?)
   - [ ] `item`?
   - [ ] `kick`
   - [ ] `list`

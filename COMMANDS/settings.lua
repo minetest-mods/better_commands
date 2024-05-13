@@ -19,6 +19,7 @@ better_commands.register_command("gamerule", {
             end
             local new = not minetest.settings:get(setting)
             minetest.settings:set(setting, value)
+            better_commands.reload_settings()
             if new then
                 return true, S("Set @1 to @2 (new setting)", setting, value), 1
             else

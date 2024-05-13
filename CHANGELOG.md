@@ -26,6 +26,7 @@ Initial release. Missing *lots* of commands, several `execute` subcommands, lots
 * Added `level`/`l`/`lm` selector arguments
 * Added `/clear` command
 * Added `/teammsg` command
+* Added `/gamerule` and `/changesetting` commands
 ### Bugfixes
 * The `/kill` command is more likely to successfully kill entities.
 * The `rm`/`r` selector arguments now actually treat their values as numbers (not strings), and are now inclusive as intended.
