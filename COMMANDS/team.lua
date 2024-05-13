@@ -2,8 +2,8 @@ local bc = better_commands
 local S = minetest.get_translator(minetest.get_current_modname())
 
 better_commands.register_command("team", {
-    params = "add|empty|join|leave|list|modify|remove ...",
-    description = "Controls teams",
+    params = S("add|empty|join|leave|list|modify|remove ..."),
+    description = S("Controls teams"),
     privs = {server = true},
     func = function (name, param, context)
         context = better_commands.complete_context(name, context)

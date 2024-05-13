@@ -11,7 +11,7 @@ better_commands.times = {
 }
 
 better_commands.register_command("time", {
-    params = "(add <time>)|(set <time>)|(query daytime|gametime|day)",
+    params = S("(add <time>)|(set <time>)|(query daytime|gametime|day)"),
     description = S("Sets or gets the time"),
     privs = {settime = true, server = true},
     func = function(name, param, context)

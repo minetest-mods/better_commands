@@ -44,7 +44,7 @@ better_commands.register_command("spawnpoint", {
 better_commands.register_command("clearspawnpoint", {
     description = S("Clear players' spawnpoints"),
     privs = {server = true},
-    params = "[targets]",
+    params = S("[targets]"),
     func = function (name, param, context)
         context = better_commands.complete_context(name, context)
         if not context then return false, S("Missing context"), 0 end

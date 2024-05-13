@@ -16,7 +16,7 @@ A place for me to write out my future plans. I decide what to do next [randomly]
   - [x] `crafted.<itemstring>`
   - [ ] `total_world_time`
   - [ ] `leave_game`
-  - [ ] Advancements/awards?
+  - [x] `awards.<award>`
 - [ ] Add missing `execute` subcommands
   - [ ] `in`
   - [ ] `summon`
@@ -89,7 +89,7 @@ A place for me to write out my future plans. I decide what to do next [randomly]
   - [ ] `structure`?
   - [x] `summon`
   - [ ] `tag`
-  - [ ] `teammsg`/`tm`
+  - [x] `teammsg`/`tm`
   - [ ] `testfor`
   - [ ] `testforblock`
   - [ ] `testforblocks`

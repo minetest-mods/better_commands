@@ -14,7 +14,7 @@ function better_commands.get_entity_name(obj, no_id, no_format)
         if no_format then return player_name end
         return better_commands.format_name(obj:get_player_name())
     else
-        local luaentity = obj:get_luaentity()
+        local luaentity = obj.get_luaentity and obj:get_luaentity()
         if luaentity then
             if no_id then
                 return luaentity._nametag or luaentity.nametag or ""
@@ -24,7 +24,6 @@ function better_commands.get_entity_name(obj, no_id, no_format)
                     name = luaentity.name
                     if name == "__builtin:item" then
                         local stack = ItemStack(luaentity.itemstring)
-                        if not stack:is_known() then return S("Unknown Item") end
                         return stack:get_short_description()
                     elseif name == "__builtin:falling_node" then
                         local stack = ItemStack(luaentity.node.name)

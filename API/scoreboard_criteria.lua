@@ -1,21 +1,20 @@
 local item_pattern = "[_%w]*:?[_%w]+"
 
 better_commands.criteria_patterns = {
-    "^killed_by%..*$",                                          -- killed_by.<entity name>
-    "^teamkill%..*$",                                           -- teamkill.<team name>
-    "^killedByTeam%..*$",                                       -- killedByTeam.<team name>
-    "^picked_up%.%*$",                                          -- picked_up.*
+    "^killed_by%..+$",                                          -- killed_by.<entity name>
+    "^teamkill%..+$",                                           -- teamkill.<team name>
+    "^killedByTeam%..+$",                                       -- killedByTeam.<team name>
     "^picked_up%."..item_pattern.."$",                          -- picked_up.<itemstring>
-    "^mined%.%*$",                                              -- mined.*
     "^mined%."..item_pattern.."$",                              -- mined.<itemstring>
-    "^dug%.%*$",                                                -- dug.*
     "^dug%."..item_pattern.."$",                                -- dug.<itemstring>
-    "^placed%.%*$",                                             -- placed.*
     "^placed%."..item_pattern.."$",                             -- placed.<itemstring>
-    "^crafted%.%*$",                                            -- crafted.*
     "^crafted%."..item_pattern.."$",                            -- crafted.<itemstring>
     --"^distanceTo%.%-?%d*%.?%d+,%-?%d*%.?%d+,%-?%d*%.?%d+$"    -- distanceTo.<x>,<y>,<z>
 }
+
+if better_commands.awards then
+    table.insert(better_commands.criteria_patterns, "^awards%..+$")
+end
 
 better_commands.valid_criteria = {
     dummy = true,
@@ -23,6 +22,13 @@ better_commands.valid_criteria = {
     deathCount = true,
     playerKillCount = true,
     health = true,
+    awards = better_commands.awards and true,
+    ["picked_up.*"] = true,
+    ["mined.*"] = true,
+    ["dug.*"] = true,
+    ["placed.*"] = true,
+    ["crafted.*"] = true,
+    ["awards.*"] = better_commands.awards and true
     --xp = better_commands.mcl and true,
     --level = better_commands.mcl and true,
     --food = (better_commands.mcl or minetest.get_modpath("stamina") and true),
@@ -200,6 +206,18 @@ if better_commands.settings.scoreboard_death then
                     if def.scores[player_name] then
                         def.scores[player_name].score = def.scores[player_name].score + 1
                     end
+                end
+            end
+        end
+    end)
+end
+
+if better_commands.awards then
+    awards.register_on_unlock(function(name, def)
+        for _, objective in pairs(better_commands.scoreboard.objectives) do
+            if objective.criterion == "awards.*" or objective.criterion == "awards."..def.name then
+                if objective.scores[name] then
+                    objective.scores[name].score = objective.scores[name].score + 1
                 end
             end
         end

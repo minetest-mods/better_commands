@@ -27,7 +27,7 @@ local function handle_give_command(receiver, stack_data)
 	elseif itemstack:get_name() == "ignore" then
 		return false, S("Giving 'ignore' is not allowed"), 0
 	end
-	local receiverref = core.get_player_by_name(receiver)
+	local receiverref = minetest.get_player_by_name(receiver)
 	if receiverref == nil then
 		return false, S("@1 is not a known player", receiver), 0
 	end
@@ -38,12 +38,12 @@ local function handle_give_command(receiver, stack_data)
 	-- The actual item stack string may be different from what the "giver"
 	-- entered (e.g. big numbers are always interpreted as 2^16-1).
 	local item_name = itemstack_name(itemstack)
-	core.chat_send_player(receiver, S("You have been given [@1]", item_name))
+	minetest.chat_send_player(receiver, S("You have been given [@1]", item_name))
 	return true, S("Gave [@1] to @2", item_name, better_commands.format_name(receiver)), 1
 end
 
 better_commands.register_command("give", {
-    params = "<target> <item> [count] [wear]",
+    params = S("<target> <item> [count] [wear]"),
     description = S("Gives [count] of <item> to <target>"),
     privs = {server = true},
     func = function(name, param, context)
@@ -76,7 +76,7 @@ better_commands.register_command("give", {
 })
 
 better_commands.register_command("giveme", {
-    params = "<item> [count] [wear]",
+    params = S("<item> [count] [wear]"),
     description = S("Gives [count] of <item> to yourself"),
     privs = {server = true},
     func = function(name, param, context)

@@ -287,7 +287,7 @@ better_commands.execute_subcommands = {
 }
 
 better_commands.register_command("execute", {
-    params = "<align|anchored|as|at|facing|positioned|rotated|run> ...",
+    params = S("<align|anchored|as|at|facing|positioned|rotated|run> ..."),
     description = S("Run any Better Command (not other commands) after changing the context"),
     privs = {server = true, ban = true, privs = true},
     func = function(name, param, context)

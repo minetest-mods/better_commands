@@ -2,7 +2,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
 better_commands.register_command("bc", {
-    params = "<command data>",
+    params = S("<command data>"),
     description = S("Runs any Better Commands command, so Better Commands don't have to override existing commands"),
     privs = {},
     func = function(name, param, context)
@@ -27,7 +27,7 @@ better_commands.register_command("bc", {
 })
 
 better_commands.register_command("old", {
-    params = "<command data>",
+    params = S("<command data>"),
     description = S("Runs any command that Better Commands has overridden"),
     privs = {},
     func = function(name, param, context)

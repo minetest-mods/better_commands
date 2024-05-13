@@ -17,6 +17,7 @@ local command_files = {
     "gamemode",
     "spawnpoint",
     "clear",
+    "settings",
 }
 
 for _, file in ipairs(command_files) do

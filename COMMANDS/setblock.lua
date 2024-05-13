@@ -2,7 +2,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
 better_commands.register_command("setblock", {
-    params = "<pos> <block> [keep|replace]",
+    params = S("<pos> <block> [keep|replace]"),
     description = S("Places <block> at <pos>. If keep, only replace air"),
     func = function(name, param, context)
         context = better_commands.complete_context(name, context)

@@ -29,6 +29,7 @@
         "better_commands",
         "better_command_blocks",
         "mcl_gamemode",
-        "mcl_experience"
+        "mcl_experience",
+        "awards"
     ],
 }

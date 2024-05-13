@@ -2,7 +2,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
 better_commands.register_command("kill", {
-    params = "[target]",
+    params = S("[target]"),
     description = S("Kills [target] or self"),
     privs = {server = true},
     func = function(name, param, context)
@@ -46,7 +46,7 @@ better_commands.register_command("kill", {
 })
 
 better_commands.register_command("killme", {
-    params = "",
+    params = S(""),
     description = S("Kills self"),
     privs = {server = true},
     func = function(name, param, context)

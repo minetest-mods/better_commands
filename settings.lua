@@ -1,5 +1,6 @@
 better_commands.settings = {}
 
+
 ---Gets a setting and stores it in better_commands.settings
 ---@param setting string
 ---@param default any
@@ -33,6 +34,10 @@ local settings = {
     {"scoreboard_death", true, "bool"},
 }
 
-for _, setting in ipairs(settings) do
-    get_setting(unpack(setting))
+function better_commands.reload_settings()
+    for _, setting in ipairs(settings) do
+        get_setting(unpack(setting))
+    end
 end
+
+better_commands.reload_settings()

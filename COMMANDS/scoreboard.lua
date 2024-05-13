@@ -16,8 +16,8 @@ local scoreboard_operators = {
 }
 
 better_commands.register_command("scoreboard", {
-    params = "objectives|players ...",
-    description = "Manupulates the scoreboard. If you want more info, read the wiki.",
+    params = S("objectives|players ..."),
+    description = S("Manupulates the scoreboard"),
     privs = {server = true},
     func = function(name, param, context)
         context = better_commands.complete_context(name, context)
