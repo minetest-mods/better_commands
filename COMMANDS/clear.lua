@@ -49,14 +49,16 @@ better_commands.register_command("clear", {
         local match_total = 0
         for _, target in ipairs(targets) do
             if target.is_player and target:is_player() then
+                count = count + 1
                 local match_count = 0
                 local inv = target:get_inventory()
                 for _, list in ipairs(better_commands.settings.clear_lists) do
-                    if inv:get_list(list) then
+                    local inv_list = inv:get_list(list)
+                    if inv_list then
                         if all and remove_max == -1 then
                             inv:set_list(list, {})
                         elseif remove_max == 0 then
-                            for _, stack in ipairs(inv:get_list(list)) do
+                            for _, stack in ipairs(inv_list) do
                                 if all then
                                     match_count = match_count + stack:get_count()
                                 elseif group then
@@ -73,7 +75,7 @@ better_commands.register_command("clear", {
                                 end
                             end
                         else
-                            for i, stack in ipairs(inv:get_list(list)) do
+                            for i, stack in ipairs(inv_list) do
                                 local matches = false
                                 if all then
                                     matches = true
@@ -121,24 +123,27 @@ better_commands.register_command("clear", {
                 end
                 if match_count > 0 or (all and remove_max == -1) then
                     match_total = match_total + match_count
-                    count = count + 1
                     last = better_commands.get_entity_name(target)
                 end
             end
         end
         if count < 1 then
-            return false, S("No matching players/items")
+            return false, S("No player was found")
         elseif count == 1 then
-            if remove_max == 0 then
-                return true, S("@1 has @2 matching items", last, match_total), match_total
+            if match_total < 1 then
+                return false, S("No items were found on player @1", last)
+            elseif remove_max == 0 then
+                return true, S("Found @1 matching items(s) on player @2", match_total, last), match_total
             elseif all and remove_max == -1 then
-                return true, S("Removed all items from @1", last), 1
+                return true, S("Removed all items from player @1", match_total, last), 1
             else
-                return true, S("Removed @1 items from @2", match_total, last), 1
+                return true, S("Removed @1 item(s) from player @2", match_total, last), 1
             end
         else
-            if remove_max == 0 then
-                return true, S("@1 matching items found in @2 players' inventories", match_total, count), match_total
+            if match_total < 1 then
+                return false, S("No items were found on @1 players", count)
+            elseif remove_max == 0 then
+                return true, S("Found @1 matching items(s) on @2 players", match_total, count), match_total
             elseif all and remove_max == -1 then
                 return true, S("Removed all items from @1 players", count), 1
             else

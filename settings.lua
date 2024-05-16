@@ -1,6 +1,5 @@
 better_commands.settings = {}
 
-
 ---Gets a setting and stores it in better_commands.settings
 ---@param setting string
 ---@param default any

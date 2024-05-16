@@ -30,10 +30,12 @@ better_commands.register_command("gamemode", {
             return false, S("Invalid gamemode @1", gamemode), 0
         end
         local targets = {context.executor}
+        local self = true
         if split_param[2] then
             local err
             targets, err = better_commands.parse_selector(split_param[2], context)
             if err or not targets then return false, err, 0 end
+            self = false
         end
         local count = 0
         local last
@@ -58,8 +60,11 @@ better_commands.register_command("gamemode", {
             end
         end
         if count < 1 then
-            return false, S("No matching entity found"), 0
+            return false, S("No player was found"), 0
         elseif count == 1 then
+            if self then
+                return true, S("Set own gamemode to @1", gamemode)
+            end
             return true, S("Set gamemode of @1 to @2", last, gamemode), 1
         else
             return true, S("Set gamemode of @1 players to @2", count, gamemode), count

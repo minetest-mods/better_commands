@@ -100,13 +100,13 @@ better_commands.register_command("teammsg", {
             return false, nil, 0
         end
         if not (context.executor.is_player and context.executor:is_player()) then
-            return false, S("/teammsg can only be used by players"), 0
+            return false, S("An entity is required to run this command here"), 0
         end
         local sender = context.executor:get_player_name()
         local team = better_commands.teams.players[sender]
         local team_color = better_commands.team_colors[better_commands.teams.teams[team].color or "white"]
         local display_name = better_commands.teams.teams[team].display_name or team
-        if not team then return false, S("/teammsg cannot be used unless on a team"), 0 end
+        if not team then return false, S("You must be on a team to message your team"), 0 end
         local start = S("[@1] <@2> ", minetest.colorize(team_color, display_name), better_commands.get_entity_name(context.executor))
         local message
         if context.command_block or minetest.check_player_privs(context.origin, {server = true}) then

@@ -13,7 +13,7 @@ better_commands.execute_subcommands = {
         local param = branches.param[branch_data.i+1]
         if not param then return false, S("Missing argument for subcommand @1", "align") end
         local axes = {param[3]:match("^([xyz])([xyz]?)([xyz]?)$")}
-        if not axes[1] then return false, S("Invalid axes: @1", param) end
+        if not axes[1] then return false, S("Invalid swizzle, expected combination of 'x', 'y', and 'z'") end
         for _ ,axis in pairs(axes) do
             branch_data.pos[axis] = math.floor(branch_data.pos[axis])
         end
@@ -34,7 +34,7 @@ better_commands.execute_subcommands = {
         if anchor == "feet" or anchor == "eyes" then
             branch_data.anchor = anchor
         else
-            return false, S("Anchor must be 'feet' or 'eyes', not @1", anchor)
+            return false, S("Invalid entity anchor position @1", anchor)
         end
         branch_data.i = branch_data.i + 2
         return true
@@ -303,13 +303,13 @@ better_commands.register_command("execute", {
         branches[1].original_command = param
         local success_count = 0
         while true do -- for each branch:
-            local status, message, err, count
+            local status, message, command_output, count
             while true do -- for each subcommand:
                 local cmd_index = branches[branch].i
                 if cmd_index > #split_param then break end
                 local subcmd = split_param[cmd_index][3]
                 if better_commands.execute_subcommands[subcmd] then
-                    status, message, _, count = better_commands.execute_subcommands[subcmd](branches, branch)
+                    status, message, command_output, count = better_commands.execute_subcommands[subcmd](branches, branch)
                     if not status then return status, message, 0 end
                     if status == "branched" or status == "notarget" or status == "done" then
                         break
@@ -320,6 +320,9 @@ better_commands.register_command("execute", {
             end
             if status == "done" then
                 success_count = success_count + (message and 1 or 0) -- "message" is status when done
+                if command_output then
+                    minetest.chat_send_player(name, command_output)
+                end
             end
             if branch >= #branches then
                 break

@@ -5,7 +5,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 ---@param itemstack minetest.ItemStack
 ---@return string
 local function itemstack_name(itemstack)
-	return string.format("%s * %s", itemstack:get_short_description(), itemstack:get_count())
+	return string.format("%s [%s]", itemstack:get_count(), itemstack:get_short_description())
 end
 
 ---Handles the /give and /giveme commands
@@ -22,14 +22,14 @@ local function handle_give_command(receiver, stack_data)
 	if itemstack:is_empty() then
 		return false, S("Cannot give an empty item"), 0
 	elseif (not itemstack:is_known()) or (itemstack:get_name() == "unknown") then
-		return false, S("Cannot give an unknown item"), 0
+		return false, S("Unknown item '@1'", itemstack:get_name()), 0
 	-- Forbid giving 'ignore' due to unwanted side effects
 	elseif itemstack:get_name() == "ignore" then
 		return false, S("Giving 'ignore' is not allowed"), 0
 	end
 	local receiverref = minetest.get_player_by_name(receiver)
 	if receiverref == nil then
-		return false, S("@1 is not a known player", receiver), 0
+		return false, S("No player was found"), 0
 	end
 	local leftover = receiverref:get_inventory():add_item("main", itemstack)
 	if not leftover:is_empty() then
@@ -38,7 +38,6 @@ local function handle_give_command(receiver, stack_data)
 	-- The actual item stack string may be different from what the "giver"
 	-- entered (e.g. big numbers are always interpreted as 2^16-1).
 	local item_name = itemstack_name(itemstack)
-	minetest.chat_send_player(receiver, S("You have been given [@1]", item_name))
 	return true, S("Gave [@1] to @2", item_name, better_commands.format_name(receiver)), 1
 end
 
@@ -66,11 +65,11 @@ better_commands.register_command("give", {
             end
         end
 		if count < 1 then
-			return false, S("No target entity found"), 0
+			return false, S("No player was found"), 0
 		elseif count == 1 then
 			return true, message, 1
 		else
-			return true, S("Gave item to @1 players", count), count
+			return true, S("Gave item(s) to @1 players", count), count
 		end
     end
 })
