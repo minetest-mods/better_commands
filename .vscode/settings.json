@@ -1,6 +1,6 @@
 {
     "Lua.workspace.library": [
-        "C:/Users/Nolan/AppData/Roaming/Code/User/globalStorage/sumneko.lua/addonManager/addons/minetest/module/library"
+        "/home/nolan/.config/Code/User/globalStorage/sumneko.lua/addonManager/addons/minetest/module/library"
     ],
     "Lua.diagnostics.disable": [
         "undefined-field",
@@ -32,4 +32,5 @@
         "mcl_experience",
         "awards"
     ],
+    "Lua.workspace.checkThirdParty": false,
 }

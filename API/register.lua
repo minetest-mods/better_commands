@@ -14,7 +14,6 @@ function better_commands.register_command_alias(new, old)
     better_commands.register_command(new, better_commands.commands[old])
 end
 
-
 -- Register commands last (so overriding works properly)
 minetest.register_on_mods_loaded(function()
     for name, def in pairs(better_commands.commands) do

@@ -33,3 +33,4 @@ Initial release. Missing *lots* of commands, several `execute` subcommands, lots
 * Fixed a potential issue with the `/execute` command that *might* have caused unintended behavior.
 * Fixed crashing when trying to divide by 0 using `scoreboard players operation ... /= ...`
 * Scoreboard values are now forced to be integers.
+* Fixed a bug when trying to run on case-sensitive operating systems (I just switched to Linux, so that's been fun).

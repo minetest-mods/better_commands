@@ -607,7 +607,6 @@ function better_commands.parse_time_string(time, absolute)
     elseif unit ~= "t" then
         return nil, S("Unit must be either t (default), s, or d, not @1", unit)
     end
-    minetest.log(amount)
 
     if not absolute then
         result = (minetest.get_timeofday() + (amount/24000)) % 1
