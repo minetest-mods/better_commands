@@ -17,12 +17,12 @@ better_commands.register_command("summon", {
         local summoned
         if split_param[2] then
             local pos, err = better_commands.parse_pos(split_param, 2, context)
-            if err or not pos then return false, err, 0 end
+            if err or not pos then return false, minetest.colorize("red", err), 0 end
             summoned = minetest.add_entity(pos, checked_entity, entity[4])
             if not summoned then return false, minetest.colorize("red", S("Could not summon @1", entity[3])), 0 end
             if split_param[5] then
                 local victim_rot, err = better_commands.get_tp_rot(context, summoned, split_param, 5)
-                if err or not victim_rot then return false, err, 0 end
+                if err or not victim_rot then return false, minetest.colorize("red", err), 0 end
                 better_commands.set_entity_rotation(summoned, victim_rot)
             end
         else

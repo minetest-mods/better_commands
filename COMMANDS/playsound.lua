@@ -15,11 +15,11 @@ better_commands.register_command("playsound", {
         local targets, err, next
         if split_param[2].type == "selector" then
             targets, err = better_commands.parse_selector(split_param[2], context)
-            if err or not targets then return false, err, 0 end
+            if err or not targets then return false, minetest.colorize("red", err), 0 end
             next = 3
         else
             local pos, err = better_commands.parse_pos(split_param, 2, context)
-            if err or not pos then return false, err, 0
+            if err or not pos then return false, minetest.colorize("red", err), 0
             end
             targets = {pos}
             next = 5

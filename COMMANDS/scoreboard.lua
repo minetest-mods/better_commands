@@ -174,7 +174,7 @@ better_commands.register_command("scoreboard", {
                 if not score then return false, minetest.colorize("red", S("Missing score")), 0 end
                 score = math.floor(score)
                 local names, err = better_commands.get_scoreboard_names(selector, context, objective)
-                if err or not names then return false, err, 0 end
+                if err or not names then return false, minetest.colorize("red", err), 0 end
                 local last
                 local scores = better_commands.scoreboard.objectives[objective].scores
                 for name in pairs(names) do
@@ -215,7 +215,7 @@ better_commands.register_command("scoreboard", {
                     end
                     local scores = better_commands.scoreboard.objectives[objective].scores
                     local names, err = better_commands.get_scoreboard_names(selector, context, objective)
-                    if err or not names then return false, err, 0 end
+                    if err or not names then return false, minetest.colorize("red", err), 0 end
                     local last
                     for name in pairs(names) do
                         last = name
@@ -268,7 +268,7 @@ better_commands.register_command("scoreboard", {
                         return false, minetest.colorize("red", S("Must be 'blank', 'fixed', or 'styled'")), 0
                     end
                     local names, err = better_commands.get_scoreboard_names(selector, context, objective)
-                    if err or not names then return false, err, 0 end
+                    if err or not names then return false, minetest.colorize("red", err), 0 end
                     local scores = better_commands.scoreboard.objectives[objective].scores
                     local count = 0
                     for name in pairs(names) do
@@ -293,7 +293,7 @@ better_commands.register_command("scoreboard", {
                     return false, minetest.colorize("red", S("@1 is not a trigger objective", objective)), 0
                 end
                 local names, err = better_commands.get_scoreboard_names(selector, context, objective)
-                if err or not names then return false, err, 0 end
+                if err or not names then return false, minetest.colorize("red", err), 0 end
                 local scores = objective_data.scores
                 local display_name = objective_data.display_name or objective
                 local last
@@ -319,7 +319,7 @@ better_commands.register_command("scoreboard", {
                     return false, minetest.colorize("red", S("Unknown scoreboard objective '@1'", objective)), 0
                 end
                 local names, err = better_commands.get_scoreboard_names(selector, context, objective, true)
-                if err or not names then return false, err, 0 end
+                if err or not names then return false, minetest.colorize("red", err), 0 end
                 local name = names[1]
                 if name then
                     local score = better_commands.scoreboard.objectives[objective].scores[name]
@@ -355,7 +355,7 @@ better_commands.register_command("scoreboard", {
                     return true, S("There are @1 tracked player(s): @2", result_count, result_string), result_count
                 else
                     local names, err = better_commands.get_scoreboard_names(selector, context, nil, true)
-                    if err or not names then return false, err, 0 end
+                    if err or not names then return false, minetest.colorize("red", err), 0 end
                     local name = names[1]
                     local results = {}
                     for _, data in pairs(better_commands.scoreboard.objectives) do
@@ -397,11 +397,11 @@ better_commands.register_command("scoreboard", {
                     return false, minetest.colorize("red", S("Invalid target objective")), 0
                 end
                 local sources, err = better_commands.get_scoreboard_names(source_selector, context)
-                if err or not sources then return false, err, 0 end
+                if err or not sources then return false, minetest.colorize("red", err), 0 end
                 local targets, err = better_commands.get_scoreboard_names(target_selector, context)
                 local source_scores = better_commands.scoreboard.objectives[source_objective].scores
                 local target_scores = better_commands.scoreboard.objectives[target_objective].scores
-                if err or not targets then return false, err, 0 end
+                if err or not targets then return false, minetest.colorize("red", err), 0 end
                 local change_count, score_count = 0, 0
                 local last_source, last_target, op_string, preposition
                 local swap = false
@@ -460,7 +460,7 @@ better_commands.register_command("scoreboard", {
                     end
                 end
                 if change_count < 1 then
-                    return false, minetest.colorize("red", S("No matching entity found")), 0
+                    return false, minetest.colorize("red", S("No entity was found")), 0
                 elseif change_count == 1 then
                     return true, S(
                         "@1 [@2] score of @3 @4 [@5] score of @6", -- a bit unnecessary, perhaps.
@@ -492,7 +492,7 @@ better_commands.register_command("scoreboard", {
                 max = tonumber(max)
                 if not max then return false, minetest.colorize("red", S("Must be a number")), 0 end
                 local names, err = better_commands.get_scoreboard_names(selector, context)
-                if err or not names then return false, err, 0 end
+                if err or not names then return false, minetest.colorize("red", err), 0 end
                 local scores = better_commands.scoreboard.objectives[objective].scores
                 local count = 0
                 local last
@@ -517,7 +517,7 @@ better_commands.register_command("scoreboard", {
                     return false, minetest.colorize("red", S("Invalid objective")), 0
                 end
                 local names, err = better_commands.get_scoreboard_names(selector, context)
-                if err or not names then return false, err, 0 end
+                if err or not names then return false, minetest.colorize("red", err), 0 end
                 local count = 0
                 local last
                 for name in pairs(names) do
@@ -557,7 +557,7 @@ better_commands.register_command("scoreboard", {
                 max = tonumber(max)
                 if not max then return false, minetest.colorize("red", S("Must be a number")), 0 end
                 local names, err = better_commands.get_scoreboard_names(selector, context, objective, true)
-                if err or not names then return false, err, 0 end
+                if err or not names then return false, minetest.colorize("red", err), 0 end
                 local scoreboard_name = names[1]
                 local scores = better_commands.scoreboard.objectives[objective].scores
                 if not scores[scoreboard_name] then

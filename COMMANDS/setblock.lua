@@ -16,13 +16,13 @@ better_commands.register_command("setblock", {
         if split_param[5] then
             keep = split_param[5][3]:lower()
             if keep ~= "keep" and keep ~= "replace" then
-                return false, minetest.colorize("red", S("Last argument ust be either 'replace' (default)), 'keep', or missing, not @1", keep), 0
+                return false, minetest.colorize("red", S("Last argument ust be either 'replace' (default)), 'keep', or missing, not @1", keep), 0)
             end
         end
         local pos, err = better_commands.parse_pos(split_param, 1, context)
-        if err or not pos then return false, err, 0 end
+        if err or not pos then return false, minetest.colorize("red", err), 0 end
         local node, meta, err = better_commands.parse_node(split_param[4])
-        if err or not node then return false, err, 0 end
+        if err or not node then return false, minetest.colorize("red", err), 0 end
 
         if keep == "keep" and minetest.get_node(pos).name ~= "air" then
             return false, minetest.colorize("red", S("Position is not empty")), 0

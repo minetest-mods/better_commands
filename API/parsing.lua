@@ -427,7 +427,7 @@ function better_commands.parse_selector(selector_data, context, require_one)
     end
     if require_one then
         if #result == 0 then
-            return nil, S("No matching entities found")
+            return nil, S("No entity was found")
         elseif #result > 1 then
             return nil, S("Multiple matching entities found")
         end

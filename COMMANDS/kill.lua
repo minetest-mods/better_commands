@@ -12,7 +12,7 @@ better_commands.register_command("kill", {
         if param == "" then param = "@s" end
         local split_param = better_commands.parse_params(param)
         local targets, err = better_commands.parse_selector(split_param[1], context)
-        if err or not targets then return false, err, 0 end
+        if err or not targets then return false, minetest.colorize("red", err), 0 end
         local count = 0
         local last
         for _, target in ipairs(targets) do
@@ -36,7 +36,7 @@ better_commands.register_command("kill", {
             end
         end
         if count < 1 then
-            return false, minetest.colorize("red", S("No matching entity found")), 0
+            return false, minetest.colorize("red", S("No entity was found")), 0
         elseif count == 1 then
             return true, S("Killed @1", last), count
         else

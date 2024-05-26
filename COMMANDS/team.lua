@@ -10,7 +10,7 @@ better_commands.register_command("team", {
         if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
         if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local split_param, err = better_commands.parse_params(param)
-        if err then return false, err, 0 end
+        if err then return false, minetest.colorize("red", err), 0 end
         if not split_param[1] then return false, minetest.colorize("red", S("Missing subcommand")), 0 end
         local subcommand = split_param[1] and split_param[1][3]
         if subcommand == "add" then
@@ -62,7 +62,7 @@ better_commands.register_command("team", {
                 local count = 0
                 local last
                 local names, err = better_commands.get_scoreboard_names(selector, context)
-                if err or not names then return false, err, 0 end
+                if err or not names then return false, minetest.colorize("red", err), 0 end
                 for name in pairs(names) do
                     if count < 1 then last = better_commands.format_name(name) end
                     count = count + 1
@@ -90,7 +90,7 @@ better_commands.register_command("team", {
                 end
             else
                 local names, err = better_commands.get_scoreboard_names(selector, context)
-                if err or not names then return false, err, 0 end
+                if err or not names then return false, minetest.colorize("red", err), 0 end
                 for _, name in ipairs(names) do
                     if better_commands.teams.players[name] then
                         count = count + 1

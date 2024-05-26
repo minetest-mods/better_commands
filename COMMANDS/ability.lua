@@ -1,4 +1,4 @@
---local bc = better_commands
+--local bc = better_commands--local bc = better_commands
 local S = minetest.get_translator(minetest.get_current_modname())
 
 better_commands.register_command("ability", {
@@ -18,7 +18,7 @@ better_commands.register_command("ability", {
             return false, minetest.colorize("red", S("[value] must be true or false (or missing), not '@1'", set)), 0
         end
         local targets, err = better_commands.parse_selector(split_param[1], context, true)
-        if err or not targets then return false, err, 0 end
+        if err or not targets then return false, minetest.colorize("red", err), 0 end
         local priv = split_param[2] and split_param[2][3]
         local target = targets[1]
         if target.is_player and target:is_player() then
@@ -74,6 +74,6 @@ better_commands.register_command("ability", {
                 end
             end
         end
-        return false, minetest.colorize("red", S("No matching entity found")), 0
+        return false, minetest.colorize("red", S("No entity was found")), 0
     end
 })

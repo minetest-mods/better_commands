@@ -14,8 +14,7 @@ better_commands.register_command("gamerule", {
         local value = split_param[2] and split_param[2][3]
         if value then
             if setting:sub(1, 7) == "secure." then
-                return false, S("Failed. Cannot modify secure settings. "
-                .. "Edit the settings file manually"), 0
+                return false, S("Failed. Cannot modify secure settings. Edit the settings file manually"), 0
             end
             local new = not minetest.settings:get(setting)
             minetest.settings:set(setting, value)

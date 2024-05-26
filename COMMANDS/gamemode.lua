@@ -18,7 +18,7 @@ better_commands.register_command("gamemode", {
         if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
         if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local split_param, err = better_commands.parse_params(param)
-        if err then return false, err, 0 end
+        if err then return false, minetest.colorize("red", err), 0 end
         local gamemode = split_param[1] and split_param[1][3]
         if not gamemode then return false, minetest.colorize("red", S("Missing gamemode")), 0 end
         gamemode = better_commands.gamemode_aliases[gamemode] or gamemode
@@ -34,7 +34,7 @@ better_commands.register_command("gamemode", {
         if split_param[2] then
             local err
             targets, err = better_commands.parse_selector(split_param[2], context)
-            if err or not targets then return false, err, 0 end
+            if err or not targets then return false, minetest.colorize("red", err), 0 end
             self = false
         end
         local count = 0

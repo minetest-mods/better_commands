@@ -223,7 +223,7 @@ better_commands.execute_subcommands = {
             end
         else
             if not (branches.param[branch_data.i+1] and branches.param[branch_data.i+2]) then
-                return false, minetest.colorize("red", S("Missing argument(s)) for rotated")
+                return false, minetest.colorize("red", S("Missing argument(s)) for rotated"))
             end
             local victim_rot = branch_data.rot
             if branches.param[branch_data.i+1].type == "number" then

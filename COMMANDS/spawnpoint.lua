@@ -9,7 +9,7 @@ better_commands.register_command("spawnpoint", {
         if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
         if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local split_param, err = better_commands.parse_params(param)
-        if err then return false, err, 0 end
+        if err then return false, minetest.colorize("red", err), 0 end
         local selector = split_param[1]
         if not selector then
             if context.executor.is_player and context.executor:is_player() then
@@ -20,7 +20,7 @@ better_commands.register_command("spawnpoint", {
             end
         else
             local targets, err = better_commands.parse_selector(selector, context)
-            if err or not targets then return false, err, 0 end
+            if err or not targets then return false, minetest.colorize("red", err), 0 end
             local last
             local count = 0
             for _, target in ipairs(targets) do
@@ -31,7 +31,7 @@ better_commands.register_command("spawnpoint", {
                 end
             end
             if count < 1 then
-                return false, minetest.colorize("red", S("No matching players found.")), 0
+                return false, minetest.colorize("red", S("No player was found.")), 0
             elseif count == 1 then
                 return true, S("Set spawn point to @1 for @2", minetest.pos_to_string(context.pos), last), 1
             else
@@ -50,7 +50,7 @@ better_commands.register_command("clearspawnpoint", {
         if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
         if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local split_param, err = better_commands.parse_params(param)
-        if err then return false, err, 0 end
+        if err then return false, minetest.colorize("red", err), 0 end
         local selector = split_param[1]
         if not selector then
             if context.executor.is_player and context.executor:is_player() then
@@ -61,7 +61,7 @@ better_commands.register_command("clearspawnpoint", {
             end
         else
             local targets, err = better_commands.parse_selector(selector, context)
-            if err or not targets then return false, err, 0 end
+            if err or not targets then return false, minetest.colorize("red", err), 0 end
             local last
             local count = 0
             for _, target in ipairs(targets) do
@@ -72,7 +72,7 @@ better_commands.register_command("clearspawnpoint", {
                 end
             end
             if count < 1 then
-                return false, minetest.colorize("red", S("No matching players found.")), 0
+                return false, minetest.colorize("red", S("No player was found.")), 0
             elseif count == 1 then
                 return true, S("Cleared spawn point for @2", last), 1
             else

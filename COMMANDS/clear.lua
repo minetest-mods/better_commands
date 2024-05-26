@@ -14,7 +14,7 @@ better_commands.register_command("clear", {
             targets = {context.executor}
         else
             targets, err = better_commands.parse_selector(selector, context)
-            if err or not targets then return false, err, 0 end
+            if err or not targets then return false, minetest.colorize("red", err), 0 end
         end
         local filter, group
         if split_param[2] then
@@ -31,7 +31,7 @@ better_commands.register_command("clear", {
                 filter = split_param[2][3]:sub(7, -1)
             else
                 filter, err = better_commands.parse_item(split_param[2], true)
-                if err or not filter then return false, err, 0 end
+                if err or not filter then return false, minetest.colorize("red", err), 0 end
             end
         end
         local remove_max = tonumber(split_param[3] and split_param[3][3])

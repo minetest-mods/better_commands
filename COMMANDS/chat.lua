@@ -15,7 +15,7 @@ better_commands.register_command("say", {
         if context.command_block or minetest.check_player_privs(context.origin, {server = true}) then
             local err
             message, err = better_commands.expand_selectors(param, split_param, 1, context)
-            if err then return false, err, 0 end
+            if err then return false, minetest.colorize("red", err), 0 end
         else
             message = param
         end
@@ -37,13 +37,13 @@ better_commands.register_command("msg", {
             return false, nil, 0
         end
         local targets, err = better_commands.parse_selector(split_param[1], context)
-        if err or not targets then return false, err, 0 end
+        if err or not targets then return false, minetest.colorize("red", err), 0 end
         local target_start = S("@1 whispers to you: ", better_commands.get_entity_name(context.executor))
         local message
         if context.command_block or minetest.check_player_privs(context.origin, {server = true}) then
             local err
             message, err = better_commands.expand_selectors(param, split_param, 2, context)
-            if err then return false, err, 0 end
+            if err then return false, minetest.colorize("red", err), 0 end
         else
 ---@diagnostic disable-next-line: param-type-mismatch
             message = param:sub(split_param[2][1], -1)
@@ -78,7 +78,7 @@ better_commands.register_command("me", {
         if context.command_block or minetest.check_player_privs(context.origin, {server = true}) then
             local err
             message, err = better_commands.expand_selectors(param, split_param, 1, context)
-            if err then return false, err, 0 end
+            if err then return false, minetest.colorize("red", err), 0 end
         else
             message = param
         end
@@ -112,7 +112,7 @@ better_commands.register_command("teammsg", {
         if context.command_block or minetest.check_player_privs(context.origin, {server = true}) then
             local err
             message, err = better_commands.expand_selectors(param, split_param, 1, context)
-            if err then return false, err, 0 end
+            if err then return false, minetest.colorize("red", err), 0 end
         else
 ---@diagnostic disable-next-line: param-type-mismatch
             message = param:sub(split_param[1][1], -1)
