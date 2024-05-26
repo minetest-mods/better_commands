@@ -7,8 +7,8 @@ better_commands.register_command("bc", {
     privs = {},
     func = function(name, param, context)
         context = better_commands.complete_context(name, context)
-        if not context then return false, S("Missing context"), 0 end
-        if not context.executor then return false, S("Missing executor"), 0 end
+        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
+        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local command, command_param = param:match("^%/?([%S]+)%s*(.-)$")
         local def = better_commands.commands[command]
         if def then
@@ -18,10 +18,10 @@ better_commands.register_command("bc", {
             if privs then
                 return def.func(name, command_param, context)
             else
-                return false, S("You don't have permission to run this command (missing privileges: @1)", table.concat(missing, ", ")), 0
+                return false, minetest.colorize("red", S("You don't have permission to run this command (missing privileges: @1)", table.concat(missing, ", "))), 0
             end
         else
-            return false, S("Invalid command: @1", command), 0
+            return false, minetest.colorize("red", S("Invalid command: @1", command)), 0
         end
     end
 })
@@ -32,8 +32,8 @@ better_commands.register_command("old", {
     privs = {},
     func = function(name, param, context)
         context = better_commands.complete_context(name, context)
-        if not context then return false, S("Missing context"), 0 end
-        if not context.executor then return false, S("Missing executor"), 0 end
+        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
+        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local command, command_param = param:match("^%/?([%S]+)%s*(.-)$")
         local def = better_commands.old_commands[command]
         if def then
@@ -43,10 +43,10 @@ better_commands.register_command("old", {
             if privs then
                 return def.func(name, command_param, context)
             else
-                return false, S("You don't have permission to run this command (missing privileges: @1)", table.concat(missing, ", ")), 0
+                return false, minetest.colorize("red", S("You don't have permission to run this command (missing privileges: @1)", table.concat(missing, ", "))), 0
             end
         else
-            return false, S("Invalid command: @1", command), 0
+            return false, minetest.colorize("red", S("Invalid command: @1", command)), 0
         end
     end
 })

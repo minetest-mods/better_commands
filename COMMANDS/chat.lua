@@ -7,8 +7,8 @@ better_commands.register_command("say", {
     privs = {shout = true},
     func = function(name, param, context)
         context = better_commands.complete_context(name, context)
-        if not context then return false, S("Missing context"), 0 end
-        if not context.executor then return false, S("Missing executor"), 0 end
+        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
+        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local split_param = better_commands.parse_params(param)
         if not split_param[1] then return false, nil, 0 end
         local message
@@ -30,8 +30,8 @@ better_commands.register_command("msg", {
     privs = {shout = true},
     func = function(name, param, context)
         context = better_commands.complete_context(name, context)
-        if not context then return false, S("Missing context"), 0 end
-        if not context.executor then return false, S("Missing executor"), 0 end
+        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
+        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local split_param = better_commands.parse_params(param)
         if not split_param[1] and split_param[2] then
             return false, nil, 0
@@ -70,8 +70,8 @@ better_commands.register_command("me", {
     privs = {shout = true},
     func = function(name, param, context)
         context = better_commands.complete_context(name, context)
-        if not context then return false, S("Missing context"), 0 end
-        if not context.executor then return false, S("Missing executor"), 0 end
+        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
+        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local split_param = better_commands.parse_params(param)
         if not split_param[1] then return false, nil, 0 end
         local message
@@ -93,20 +93,20 @@ better_commands.register_command("teammsg", {
     privs = {shout = true},
     func = function(name, param, context)
         context = better_commands.complete_context(name, context)
-        if not context then return false, S("Missing context"), 0 end
-        if not context.executor then return false, S("Missing executor"), 0 end
+        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
+        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local split_param = better_commands.parse_params(param)
         if not split_param[1] then
             return false, nil, 0
         end
         if not (context.executor.is_player and context.executor:is_player()) then
-            return false, S("An entity is required to run this command here"), 0
+            return false, minetest.colorize("red", S("An entity is required to run this command here")), 0
         end
         local sender = context.executor:get_player_name()
         local team = better_commands.teams.players[sender]
         local team_color = better_commands.team_colors[better_commands.teams.teams[team].color or "white"]
         local display_name = better_commands.teams.teams[team].display_name or team
-        if not team then return false, S("You must be on a team to message your team"), 0 end
+        if not team then return false, minetest.colorize("red", S("You must be on a team to message your team")), 0 end
         local start = S("[@1] <@2> ", minetest.colorize(team_color, display_name), better_commands.get_entity_name(context.executor))
         local message
         if context.command_block or minetest.check_player_privs(context.origin, {server = true}) then

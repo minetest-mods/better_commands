@@ -7,8 +7,8 @@ better_commands.register_command("kill", {
     privs = {server = true},
     func = function(name, param, context)
         context = better_commands.complete_context(name, context)
-        if not context then return false, S("Missing context"), 0 end
-        if not context.executor then return false, S("Missing executor"), 0 end
+        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
+        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         if param == "" then param = "@s" end
         local split_param = better_commands.parse_params(param)
         local targets, err = better_commands.parse_selector(split_param[1], context)
@@ -22,7 +22,7 @@ better_commands.register_command("kill", {
                     better_commands.deal_damage(
                         ---@diagnostic disable-next-line: param-type-mismatch
                         target,
-                        -math.max(target:get_hp(), 1000000000000), -- 1 trillion damage to make sure they die :D
+                        math.max(target:get_hp(), 1000000000000), -- 1 trillion damage to make sure they die :D
                         {
                             type = "set_hp",
                             bypasses_totem = true,
@@ -36,7 +36,7 @@ better_commands.register_command("kill", {
             end
         end
         if count < 1 then
-            return false, S("No matching entity found"), 0
+            return false, minetest.colorize("red", S("No matching entity found")), 0
         elseif count == 1 then
             return true, S("Killed @1", last), count
         else
@@ -50,7 +50,7 @@ better_commands.register_command("killme", {
     description = S("Kills self"),
     privs = {server = true},
     func = function(name, param, context)
-        if param ~= "" then return false, S("Unexpected argument: @1", param), 0 end
+        if param ~= "" then return false, minetest.colorize("red", S("Unexpected argument: @1", param)), 0 end
         return better_commands.commands.kill.func(name, "", context)
     end
 })

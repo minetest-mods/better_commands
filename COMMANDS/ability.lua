@@ -7,15 +7,15 @@ better_commands.register_command("ability", {
     privs = {privs = true},
     func = function(name, param, context)
         context = better_commands.complete_context(name, context)
-        if not context then return false, S("Missing context"), 0 end
-        if not context.executor then return false, S("Missing executor"), 0 end
+        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
+        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local split_param = better_commands.parse_params(param)
         if not split_param[1] then
             return false, nil, 0
         end
         local set = split_param[3] and split_param[3][3]:lower()
         if set and set ~= "true" and set ~= "false" then
-            return false, S("[value] must be true or false (or missing), not '@1'", set), 0
+            return false, minetest.colorize("red", S("[value] must be true or false (or missing), not '@1'", set)), 0
         end
         local targets, err = better_commands.parse_selector(split_param[1], context, true)
         if err or not targets then return false, err, 0 end
@@ -46,12 +46,12 @@ better_commands.register_command("ability", {
                     if minetest.registered_privileges[priv] then
                         return true, S("@1 = @2", priv, tostring(privs[priv])), 1
                     else
-                        return false, S("Invalid privilege: @1", priv), 0
+                        return false, minetest.colorize("red", S("Invalid privilege: @1", priv)), 0
                     end
                 end
             else
                 if not minetest.registered_privileges[priv] then
-                    return false, S("Invalid privilege: @1", priv), 0
+                    return false, minetest.colorize("red", S("Invalid privilege: @1", priv)), 0
                 else
                     if set == "true" then
                         privs[priv] = true
@@ -74,6 +74,6 @@ better_commands.register_command("ability", {
                 end
             end
         end
-        return false, S("No matching entity found"), 0
+        return false, minetest.colorize("red", S("No matching entity found")), 0
     end
 })

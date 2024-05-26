@@ -8,14 +8,14 @@ better_commands.register_command("teleport", {
     privs = {server = true},
     func = function(name, param, context)
         context = better_commands.complete_context(name, context)
-        if not context then return false, S("Missing context"), 0 end
-        if not context.executor then return false, S("Missing executor"), 0 end
+        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
+        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local split_param = better_commands.parse_params(param)
         if not split_param[1] then return false, nil, 0 end
         if split_param[1].type == "selector" then
             if not split_param[2] then
                 if not context.executor.is_player then
-                    return false, S("Command blocks can't teleport (although I did consider making it possible)"), 0
+                    return false, minetest.colorize("red", S("Command blocks can't teleport (although I did consider making it possible))"), 0
                 end
                 local targets, err = better_commands.parse_selector(split_param[1], context, true)
                 if err or not targets then return false, err, 0 end
@@ -27,12 +27,12 @@ better_commands.register_command("teleport", {
                 return true, S("Teleported @1 to @2", better_commands.get_entity_name(context.executor), better_commands.get_entity_name(targets[1])), 1
             elseif split_param[2].type == "selector" then
                 if not context.executor.is_player and split_param[1][3] == "@s" then
-                    return false, S("Command blocks can't teleport (although I did consider making it possible)"), 0
+                    return false, minetest.colorize("red", S("Command blocks can't teleport (although I did consider making it possible))"), 0
                 end
                 local victims, err = better_commands.parse_selector(split_param[1], context)
                 if err or not victims then return false, err, 0 end
                 if #victims == 0 then
-                    return false, S("No matching entities found"), 0
+                    return false, minetest.colorize("red", S("No matching entities found")), 0
                 end
                 local targets, err  = better_commands.parse_selector(split_param[2], context, true)
                 if err or not targets then return false, err, 0 end
@@ -50,7 +50,7 @@ better_commands.register_command("teleport", {
                     end
                 end
                 if count < 1 then
-                    return false, S("No entities found"), 0
+                    return false, minetest.colorize("red", S("No entities found")), 0
                 elseif count == 1 then
                     return true, S(
                         "Teleported @1 to @2",
@@ -68,7 +68,7 @@ better_commands.register_command("teleport", {
                 end
             elseif split_param[2].type == "number" or split_param[2].type == "relative" or split_param[2].type == "look_relative" then
                 if not context.executor.is_player and split_param[1][3] == "@s" then
-                    return false, S("Command blocks can't teleport (although I did consider making it possible)"), 0
+                    return false, minetest.colorize("red", S("Command blocks can't teleport (although I did consider making it possible))"), 0
                 end
                 local victims, err = better_commands.parse_selector(split_param[1], context)
                 if err or not victims then return false, err, 0 end
@@ -95,7 +95,7 @@ better_commands.register_command("teleport", {
                     end
                 end
                 if count < 1 then
-                    return false, S("No entities found"), 0
+                    return false, minetest.colorize("red", S("No entities found")), 0
                 elseif count == 1 then
                     return true, S("Teleported @1 to @2", last, minetest.pos_to_string(target_pos, 1)), 1
                 else
@@ -104,7 +104,7 @@ better_commands.register_command("teleport", {
             end
         elseif split_param[1].type == "number" or split_param[1].type == "relative" or split_param[1].type == "look_relative" then
             if not context.executor.is_player and split_param[1][3] == "@s" then
-                return false, S("Command blocks can't teleport (although I did consider making it possible)"), 0
+                return false, minetest.colorize("red", S("Command blocks can't teleport (although I did consider making it possible))"), 0
             end
             local target_pos, err = better_commands.parse_pos(split_param, 1, context)
             if err then

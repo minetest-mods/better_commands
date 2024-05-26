@@ -20,16 +20,16 @@ local function handle_give_command(receiver, stack_data)
 	local itemstack, err = better_commands.parse_item(stack_data)
     if err or not itemstack then return false, err, 0 end
 	if itemstack:is_empty() then
-		return false, S("Cannot give an empty item"), 0
+		return false, minetest.colorize("red", S("Cannot give an empty item")), 0
 	elseif (not itemstack:is_known()) or (itemstack:get_name() == "unknown") then
-		return false, S("Unknown item '@1'", itemstack:get_name()), 0
+		return false, minetest.colorize("red", S("Unknown item '@1'", itemstack:get_name())), 0
 	-- Forbid giving 'ignore' due to unwanted side effects
 	elseif itemstack:get_name() == "ignore" then
-		return false, S("Giving 'ignore' is not allowed"), 0
+		return false, minetest.colorize("red", S("Giving 'ignore' is not allowed")), 0
 	end
 	local receiverref = minetest.get_player_by_name(receiver)
 	if receiverref == nil then
-		return false, S("No player was found"), 0
+		return false, minetest.colorize("red", S("No player was found")), 0
 	end
 	local leftover = receiverref:get_inventory():add_item("main", itemstack)
 	if not leftover:is_empty() then
@@ -47,8 +47,8 @@ better_commands.register_command("give", {
     privs = {server = true},
     func = function(name, param, context)
         context = better_commands.complete_context(name, context)
-        if not context then return false, S("Missing context"), 0 end
-        if not context.executor then return false, S("Missing executor"), 0 end
+        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
+        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local split_param = better_commands.parse_params(param)
         if not (split_param[1] and split_param[2]) then
             return false, nil, 0
@@ -65,7 +65,7 @@ better_commands.register_command("give", {
             end
         end
 		if count < 1 then
-			return false, S("No player was found"), 0
+			return false, minetest.colorize("red", S("No player was found")), 0
 		elseif count == 1 then
 			return true, message, 1
 		else

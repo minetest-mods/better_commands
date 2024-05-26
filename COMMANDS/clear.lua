@@ -6,7 +6,7 @@ better_commands.register_command("clear", {
     params = S("[targets] [items] [maxCount]"),
     func = function(name, param, context)
         context = better_commands.complete_context(name, context)
-        if not context then return false, S("Missing context"), 0 end
+        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
         local split_param = better_commands.parse_params(param)
         local selector = split_param[1]
         local targets, err
@@ -36,7 +36,7 @@ better_commands.register_command("clear", {
         end
         local remove_max = tonumber(split_param[3] and split_param[3][3])
         if split_param[3] and not remove_max then
-            return false, S("maxCount must be a number"), 0
+            return false, minetest.colorize("red", S("maxCount must be a number")), 0
         end
         if remove_max then
             remove_max = math.floor(remove_max)
@@ -128,10 +128,10 @@ better_commands.register_command("clear", {
             end
         end
         if count < 1 then
-            return false, S("No player was found")
+            return false, minetest.colorize("red", S("No player was found"))
         elseif count == 1 then
             if match_total < 1 then
-                return false, S("No items were found on player @1", last)
+                return false, minetest.colorize("red", S("No items were found on player @1", last))
             elseif remove_max == 0 then
                 return true, S("Found @1 matching items(s) on player @2", match_total, last), match_total
             elseif all and remove_max == -1 then
@@ -141,7 +141,7 @@ better_commands.register_command("clear", {
             end
         else
             if match_total < 1 then
-                return false, S("No items were found on @1 players", count)
+                return false, minetest.colorize("red", S("No items were found on @1 players", count))
             elseif remove_max == 0 then
                 return true, S("Found @1 matching items(s) on @2 players", match_total, count), match_total
             elseif all and remove_max == -1 then

@@ -15,19 +15,19 @@ better_commands.register_command("gamemode", {
     privs = {server = true},
     func = function(name, param, context)
         context = better_commands.complete_context(name, context)
-        if not context then return false, S("Missing context"), 0 end
-        if not context.executor then return false, S("Missing executor"), 0 end
+        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
+        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local split_param, err = better_commands.parse_params(param)
         if err then return false, err, 0 end
         local gamemode = split_param[1] and split_param[1][3]
-        if not gamemode then return false, S("Missing gamemode"), 0 end
+        if not gamemode then return false, minetest.colorize("red", S("Missing gamemode")), 0 end
         gamemode = better_commands.gamemode_aliases[gamemode] or gamemode
         if better_commands.mcl then
             if table.indexof(mcl_gamemode.gamemodes, gamemode) == -1 then
-                return false, S("Invalid gamemode @1", gamemode), 0
+                return false, minetest.colorize("red", S("Invalid gamemode @1", gamemode)), 0
             end
         elseif gamemode ~= "creative" and gamemode ~= "survival" then
-            return false, S("Invalid gamemode @1", gamemode), 0
+            return false, minetest.colorize("red", S("Invalid gamemode @1", gamemode)), 0
         end
         local targets = {context.executor}
         local self = true
@@ -60,7 +60,7 @@ better_commands.register_command("gamemode", {
             end
         end
         if count < 1 then
-            return false, S("No player was found"), 0
+            return false, minetest.colorize("red", S("No player was found")), 0
         elseif count == 1 then
             if self then
                 return true, S("Set own gamemode to @1", gamemode)

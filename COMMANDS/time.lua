@@ -16,8 +16,8 @@ better_commands.register_command("time", {
     privs = {settime = true, server = true},
     func = function(name, param, context)
         context = better_commands.complete_context(name, context)
-        if not context then return false, S("Missing context"), 0 end
-        if not context.executor then return false, S("Missing executor"), 0 end
+        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
+        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local split_param = better_commands.parse_params(param)
         if not (split_param[1] and split_param[2]) then return false, nil, 0 end
         local action = split_param[1][3]:lower()
@@ -39,13 +39,13 @@ better_commands.register_command("time", {
             elseif time == "day" then
                 return true, S("Day count: @1", minetest.get_day_count()), 1
             end
-            return false, S("Must be 'daytime', 'gametime', or 'day', got @1", time), 0
+            return false, minetest.colorize("red", S("Must be 'daytime', 'gametime', or 'day', got @1", time)), 0
         elseif action == "set" then
             local new_time, err = better_commands.parse_time_string(time, true)
             if err then return false, err, 0 end
             minetest.set_timeofday(new_time)
             return true, S("Time set"), 1
         end
-        return false, S("Must be 'add', 'set', or 'query'"), 0
+        return false, minetest.colorize("red", S("Must be 'add', 'set', or 'query'")), 0
     end
 })
