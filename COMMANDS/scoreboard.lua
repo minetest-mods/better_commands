@@ -20,8 +20,6 @@ better_commands.register_command("scoreboard", {
     description = S("Manupulates the scoreboard"),
     privs = {server = true},
     func = function(name, param, context)
-        context = better_commands.complete_context(name, context)
-        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
         local split_param = better_commands.parse_params(param)
         if not (split_param[1] and split_param[2]) then
             return false, minetest.colorize("red", S("Missing arguments")), 0
@@ -581,9 +579,6 @@ better_commands.register_command("trigger", {
     privs = {},
     param = "<objective> [add|set <value>]",
     func = function (name, param, context)
-        context = better_commands.complete_context(name, context)
-        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
-        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         if not (context.executor.is_player and context.executor:is_player()) then
             return false, minetest.colorize("red", S("/trigger can only be used by players")), 0
         end

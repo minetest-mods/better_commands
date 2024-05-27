@@ -6,9 +6,6 @@ better_commands.register_command("bc", {
     description = S("Runs any Better Commands command, so Better Commands don't have to override existing commands"),
     privs = {},
     func = function(name, param, context)
-        context = better_commands.complete_context(name, context)
-        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
-        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local command, command_param = param:match("^%/?([%S]+)%s*(.-)$")
         local def = better_commands.commands[command]
         if def then
@@ -31,9 +28,6 @@ better_commands.register_command("old", {
     description = S("Runs any command that Better Commands has overridden"),
     privs = {},
     func = function(name, param, context)
-        context = better_commands.complete_context(name, context)
-        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
-        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local command, command_param = param:match("^%/?([%S]+)%s*(.-)$")
         local def = better_commands.old_commands[command]
         if def then

@@ -3,12 +3,9 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 better_commands.register_command("say", {
     params = S("<message>"),
-    description = S("Says <message> to all players (which can include selectors such as @@a if you have the server priv)"),
+    description = S("Says <message> to all players (which can include selectors such as @@a if you have the 'server' priv)"),
     privs = {shout = true},
     func = function(name, param, context)
-        context = better_commands.complete_context(name, context)
-        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
-        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local split_param = better_commands.parse_params(param)
         if not split_param[1] then return false, nil, 0 end
         local message
@@ -26,12 +23,9 @@ better_commands.register_command("say", {
 
 better_commands.register_command("msg", {
     params = S("<target> <message>"),
-    description = S("Sends <message> privately to <target> (which can include selectors like @@a if you have the server priv)"),
+    description = S("Sends <message> privately to <target> (which can include selectors like @@a if you have the 'server' priv)"),
     privs = {shout = true},
     func = function(name, param, context)
-        context = better_commands.complete_context(name, context)
-        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
-        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local split_param = better_commands.parse_params(param)
         if not split_param[1] and split_param[2] then
             return false, nil, 0
@@ -65,13 +59,10 @@ better_commands.register_command_alias("w", "msg")
 better_commands.register_command_alias("tell", "msg")
 
 better_commands.register_command("me", {
-    description = S("Broadcasts a message about yourself (which can include selectors like @@a if you have the server priv)"),
+    description = S("Broadcasts a message about yourself (which can include selectors like @@a if you have the 'server' priv)"),
     params = S("<action>"),
     privs = {shout = true},
     func = function(name, param, context)
-        context = better_commands.complete_context(name, context)
-        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
-        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local split_param = better_commands.parse_params(param)
         if not split_param[1] then return false, nil, 0 end
         local message
@@ -89,12 +80,9 @@ better_commands.register_command("me", {
 
 better_commands.register_command("teammsg", {
     params = S("<message>"),
-    description = S("Sends <message> privately to all team members (which can include selectors like @@a if you have the server priv)"),
+    description = S("Sends <message> privately to all team members (which can include selectors like @@a if you have the 'server' priv)"),
     privs = {shout = true},
     func = function(name, param, context)
-        context = better_commands.complete_context(name, context)
-        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
-        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local split_param = better_commands.parse_params(param)
         if not split_param[1] then
             return false, nil, 0

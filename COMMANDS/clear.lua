@@ -5,8 +5,6 @@ better_commands.register_command("clear", {
     privs = { server = true },
     params = S("[targets] [items] [maxCount]"),
     func = function(name, param, context)
-        context = better_commands.complete_context(name, context)
-        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
         local split_param = better_commands.parse_params(param)
         local selector = split_param[1]
         local targets, err

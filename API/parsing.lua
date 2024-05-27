@@ -182,7 +182,7 @@ function better_commands.parse_selector(selector_data, context, require_one)
     if selector_data[3]:sub(1,1) ~= "@" then
         local player = minetest.get_player_by_name(selector_data[3])
         if not player then
-            return nil, S("Player @1 not found", selector_data[3])
+            return nil, S("No player was found")
         else
             return {player}
         end
@@ -247,19 +247,19 @@ function better_commands.parse_selector(selector_data, context, require_one)
         for _, arg in ipairs(arg_table) do
             local key, value = unpack(arg)
             if better_commands.supported_keys[key] == nil then
-                return nil, S("Invalid key: @1", key)
+                return nil, S("Unknown option '@1'", key)
             elseif key == "x" or key == "y" or key == "z" then
                 if checked[key] then
-                    return nil, S("Duplicate key: @1", key)
+                    return nil, S("Duplicate option '@1'", key)
                 end
-                if value:sub(1,1) == "~" then
+                if value:sub(1,1) == "!" then
                     value = value:sub(2,-1)
                     if value == "" then value = 0 end
                 end
                 checked[key] = true
                 pos[key] = tonumber(value)
                 if not pos[key] then
-                    return nil, S("Invalid value for @1", key)
+                    return nil, S("Expected number for option '@1'", key)
                 end
                 checked[key] = true
             elseif key == "sort" then
@@ -288,7 +288,7 @@ function better_commands.parse_selector(selector_data, context, require_one)
                     local key, value = unpack(arg)
                     if better_commands.supported_keys[key] == true then
                         if checked[key] then
-                            return nil, S("Duplicate key: @1", key)
+                            return nil, S("Duplicate option '@1'", key)
                         end
                         checked[key] = true
                     end
@@ -315,7 +315,7 @@ function better_commands.parse_selector(selector_data, context, require_one)
                             end
                         else
                             if checked.type then
-                                return nil, S("Duplicate key: @1", key)
+                                return nil, S("Duplicate option '@1'", key)
                             end
                             checked.type = true
                             if not type_table[value] then
@@ -330,7 +330,7 @@ function better_commands.parse_selector(selector_data, context, require_one)
                             end
                         else
                             if checked.name then
-                                return nil, S("Duplicate key: @1", key)
+                                return nil, S("Duplicate option '@1'", key)
                             end
                             checked.name = true
                             if obj_name ~= value then
@@ -339,11 +339,11 @@ function better_commands.parse_selector(selector_data, context, require_one)
                         end
                     elseif key == "r" then
                         value = tonumber(value)
-                        if not value then return nil, S("@1 must be a number", key) end
+                        if not value then return nil, S("Expected number for option '@1'", key) end
                         matches = vector.distance(obj:get_pos(), pos) <= value
                     elseif key == "rm" then
                         value = tonumber(value)
-                        if not value then return nil, S("@1 must be a number", key) end
+                        if not value then return nil, S("Expected number for option '@1'", key) end
                         matches = vector.distance(obj:get_pos(), pos) >= value
                     elseif key == "level" then
                         if not (obj.is_player and obj:is_player()) then
@@ -357,7 +357,7 @@ function better_commands.parse_selector(selector_data, context, require_one)
                         end
                     elseif key == "l" then
                         value = tonumber(value)
-                        if not value then return nil, S("@1 must be a number", key) end
+                        if not value then return nil, S("Expected number for option '@1'", key) end
                         if not (obj.is_player and obj:is_player()) then
                             matches = false
                         else
@@ -367,7 +367,7 @@ function better_commands.parse_selector(selector_data, context, require_one)
                         end
                     elseif key == "lm" then
                         value = tonumber(value)
-                        if not value then return nil, S("@1 must be a number", key) end
+                        if not value then return nil, S("Expected number for option '@1'", key) end
                         if not (obj.is_player and obj:is_player()) then
                             matches = false
                         else
@@ -386,10 +386,10 @@ function better_commands.parse_selector(selector_data, context, require_one)
                             local gamemode = better_commands.gamemode_aliases[value] or value
                             if better_commands.mcl then
                                 if table.indexof(mcl_gamemode.gamemodes, gamemode) == -1 then
-                                    return nil, S("Invalid gamemode @1", gamemode)
+                                    return nil, S("Unknown game mode: @1", gamemode)
                                 end
                             elseif gamemode ~= "creative" and gamemode ~= "survival" then
-                                return nil, S("Invalid gamemode @1", gamemode)
+                                return nil, S("Unknown game mode: @1", gamemode)
                             end
                             matches = better_commands.get_gamemode(obj) == gamemode
                         end
@@ -444,9 +444,6 @@ end
 ---@return string? err
 ---@nodiscard
 function better_commands.parse_pos(data, start, context)
-    if not context then
-        return nil, S("Missing context")
-    end
     local axes = {"x","y","z"}
     local result = table.copy(context.pos)
     local look
@@ -474,7 +471,7 @@ function better_commands.parse_pos(data, start, context)
             result[axes[i+1]] = tonumber(coordinate:sub(2,-1)) or 0
             look = true
         else
-            return nil, S("Invalid coordinate: @1", coordinate)
+            return nil, S("Invalid coordinate '@1'", coordinate)
         end
     end
     if look then
@@ -500,7 +497,7 @@ end
 ---@nodiscard
 function better_commands.parse_item(item_data, ignore_count)
     if not better_commands.handle_alias(item_data[3]) then
-        return nil, S("Invalid item: @1", item_data[3])
+        return nil, S("Invalid item '@1'", item_data[3])
     end
     if item_data.type == "item" and not item_data.extra_data then
         local stack = ItemStack(item_data[3])
@@ -521,7 +518,6 @@ function better_commands.parse_item(item_data, ignore_count)
         if arg_table then
             local meta = stack:get_meta()
             for key, value in pairs(arg_table) do
-                minetest.log(S("@1 = @2", key, value))
                 if key == "wear" then
                     stack:set_wear(tonumber(value) or 0)
                 else
@@ -535,7 +531,7 @@ function better_commands.parse_item(item_data, ignore_count)
         stack:set_wear(tonumber(item_data[6]) or stack:get_wear())
         return stack
     end
-    return nil, S("Invalid item: @1", item_data[3])
+    return nil, S("Invalid item: '@1'", item_data[3])
 end
 
 ---Parses node data, returns node and metadata table
@@ -550,10 +546,10 @@ function better_commands.parse_node(item_data)
     end
     local itemstring = better_commands.handle_alias(item_data[3])
     if not itemstring then
-        return nil, nil, S("Invalid item: @1", item_data[3])
+        return nil, nil, S("Unknown node '@1'", item_data[3])
     end
     if not minetest.registered_nodes[itemstring] then
-        return nil, nil, S("Not a node: @1", itemstring)
+        return nil, nil, S("'@1' is not a node", itemstring)
     end
     if item_data.type == "item" and not item_data.extra_data then
         return {name = itemstring}
@@ -573,7 +569,7 @@ function better_commands.parse_node(item_data)
         end
         return node_table, meta_table
     end
-    return nil, nil, S("Invalid item: @1", item_data[3])
+    return nil, nil, S("Invalid item '@1'", item_data[3])
 end
 
 ---Parses a time string and returns a time (between 0 and 1)
@@ -597,7 +593,7 @@ function better_commands.parse_time_string(time, absolute)
         if unit == "" then unit = "t" end
         amount = tonumber(amount)
     end
-    -- Don't think it's even possible to be negative but just in case
+    -- The pattern shouldn't let through any negative numbers... but just in case
     if amount < 0 then return nil, S("Amount must not be negative") end
     if unit == "s" then
         local second_multiplier = tonumber(minetest.settings:get("time_speed")) or 72
@@ -605,7 +601,7 @@ function better_commands.parse_time_string(time, absolute)
     elseif unit == "d" then
         amount = amount * 24000
     elseif unit ~= "t" then
-        return nil, S("Unit must be either t (default), s, or d, not @1", unit)
+        return nil, S("Invalid unit '@1'", unit)
     end
 
     if not absolute then
@@ -647,7 +643,7 @@ function better_commands.expand_selectors(str, split_param, index, context)
             end
             for j, obj in ipairs(targets) do
                 if j > 1 then next_part = next_part.." " end
-                if not obj.is_player then
+                if not obj.is_player then -- this should only happen with @s
                     next_part = next_part..S("Command Block")
                     break
                 end

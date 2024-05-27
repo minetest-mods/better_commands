@@ -6,8 +6,6 @@ better_commands.register_command("gamerule", {
     params = S("<setting> [value]"),
     privs = {server = true},
     func = function(name, param, context)
-        context = better_commands.complete_context(name, context)
-        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
         local split_param = better_commands.parse_params(param)
         if not split_param[1] then return false, nil, 0 end
         local setting = split_param[1][3]

@@ -13,7 +13,7 @@ function better_commands.get_scoreboard_names(selector, context, objective, requ
     local result = {}
     local objectives = better_commands.scoreboard.objectives
     if objective and not objectives[objective] then
-        return nil, S("Invalid objective: @1", objective)
+        return nil, S("Invalid objective '@1'", objective)
     end
     if selector[3] == "*" then
         if objective then

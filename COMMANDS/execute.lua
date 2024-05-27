@@ -291,9 +291,6 @@ better_commands.register_command("execute", {
     description = S("Run any Better Command (not other commands) after changing the context"),
     privs = {server = true, ban = true, privs = true},
     func = function(name, param, context)
-        context = better_commands.complete_context(name, context)
-        if not context then return false, minetest.colorize("red", S("Missing context")), 0 end
-        if not context.executor then return false, minetest.colorize("red", S("Missing executor")), 0 end
         local split_param = better_commands.parse_params(param)
         if not split_param[1] then return false, nil, 0 end
         local branch = 1
