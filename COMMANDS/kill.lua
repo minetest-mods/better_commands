@@ -85,7 +85,7 @@ better_commands.register_command("remove", {
                 else
                     count = count + 1
                     last = better_commands.get_entity_name(target)
-                    target:get_luaentity():remove()
+                    target:remove()
                 end
             end
         end

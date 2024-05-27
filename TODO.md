@@ -60,7 +60,7 @@ A place for me to write out my future plans. I decide what to do next [randomly]
   - [ ] `deop` (removes all but basic privs)
   - [ ] `op` (grants certain privs, including `server`)
   - [ ] `effect` (MCLA/VL only)
-  - [ ] `enchant` (MCLA/VL only, also override forceenchant?)
+  - [x] `enchant` (MCLA/VL only, also override forceenchant?)
   - [ ] `experience`/`xp` (MCLA/VL only)
   - [ ] `fog`
   - [ ] `forceload`

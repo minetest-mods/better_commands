@@ -7,43 +7,44 @@ better_commands.register_command("enchant", {
     func = function(name, param, context)
         local split_param, err = better_commands.parse_params(param)
         if err then return false, better_commands.error(err), 0 end
+        if not split_param[1] and split_param[2] then
+            return false, nil, 0
+        end
+        local selector = split_param[1]
         local enchantment = split_param[2] and split_param[2][3]
         if not enchantment then return false, better_commands.error(S("Missing enchantment")), 0 end
         local level_str = split_param[3] and split_param[3][3]
         local level = tonumber(level_str or "1")
-        local targets, err = better_commands.parse_selector(split_param[1], context)
+        local targets, err = better_commands.parse_selector(selector, context)
         if err or not targets then return false, better_commands.error(err), 0 end
         local count = 0
+        local total_count = 0
         local last
+        minetest.log("?")
         for _, target in ipairs(targets) do
             if target.is_player and target:is_player() then
+                minetest.log("???")
+                total_count = total_count + 1
                 local itemstack = target:get_wielded_item()
                 local can_enchant, errorstring, extra_info = mcl_enchanting.can_enchant(itemstack, enchantment, level)
                 if not can_enchant then
                     if errorstring == "enchantment invalid" then
-                        return false, better_commands.error(S("Invalid enchantment '@1'", enchantment)), 0
+                        err = S("Invalid enchantment '@1'", enchantment)
                     elseif errorstring == "item missing" then
-                        return false, better_commands.error(S("@1 is not holding any item", better_commands.get_entity_name(target))), 0
+                        err = S("@1 is not holding any item", better_commands.get_entity_name(target))
                     elseif errorstring == "item not supported" then
-                        return false,
-                            better_commands.error(S("@1 cannot support that enchantment", itemstack:get_short_description())), 0
+                        err = S("@1 cannot support that enchantment", itemstack:get_short_description())
                     elseif errorstring == "level invalid" then
-                        return false, better_commands.error(S("Invalid integer '@1'", level_str)), 0
+                        err = S("Invalid integer '@1'", level_str)
                     elseif errorstring == "level too high" then
-                        return false,
-                            better_commands.error(
-                                S("@1 is higher than the maximum level of @2 supported by that enchantment", level_str,
-                                    extra_info)), 0
+                        err = S("@1 is higher than the maximum level of @2 supported by that enchantment", level_str, extra_info)
                     elseif errorstring == "level too small" then
-                        return false,
-                            better_commands.error(
-                                S("@1 is lower than the minimum level of @2 supported by that enchantment", level_str,
-                                    extra_info)), 0
+                        err = S("@1 is lower than the minimum level of @2 supported by that enchantment", level_str, extra_info)
                     elseif errorstring == "incompatible" then
-                        return false,
-                            better_commands.error(
-                                S("@1 can't be combined with @2.",
-                                    mcl_enchanting.get_enchantment_description(enchantment, level), extra_info)), 0
+                        err = S("@1 can't be combined with @2.",
+                                    mcl_enchanting.get_enchantment_description(enchantment, level), extra_info)
+                    else
+                        err = S("Failed to enchant item.")
                     end
                 else
                     count = count + 1
@@ -52,8 +53,13 @@ better_commands.register_command("enchant", {
                 end
             end
         end
+        minetest.log("??")
         if count < 1 then
-            return false, better_commands.error(S("No player was found")), 0
+            if total_count < 1 then
+                return false, better_commands.error(S("No player was found")), 0
+            else
+                return false, better_commands.error(err), 0
+            end
         elseif count == 1 then
             return true, S("Applied enchantment @1 to @2's item", mcl_enchanting.get_enchantment_description(enchantment, level), last), 1
         else
@@ -71,24 +77,27 @@ better_commands.register_command("forceenchant", {
         if err then return false, better_commands.error(err), 0 end
         local selector = split_param[1]
         local enchantment = split_param[2] and split_param[2][3]
+        if not enchantment then return false, better_commands.error("Missing enchantment"), 0 end
         local level_str = split_param[3] and split_param[3][3]
         local level = tonumber(level_str or "1")
         local targets, err = better_commands.parse_selector(selector, context)
         if err or not targets then return false, better_commands.error(err), 0 end
+        local total_count = 0
         local count = 0
         local last
         for _, target in ipairs(targets) do
             if target.is_player and target:is_player() then
+                total_count = total_count + 1
                 local itemstack = target:get_wielded_item()
                 local _, errorstring = mcl_enchanting.can_enchant(itemstack, enchantment, level)
                 if errorstring == "enchantment invalid" then
-                    return false, better_commands.error(S("Invalid enchantment '@1'", enchantment)), 0
+                    err = S("Invalid enchantment '@1'", enchantment)
                 elseif errorstring == "item missing" then
-                    return false, better_commands.error(S("@1 is not holding any item", better_commands.get_entity_name(target))), 0
+                    err = S("@1 is not holding any item", better_commands.get_entity_name(target))
                 elseif errorstring == "item not supported" and not mcl_enchanting.is_enchantable(itemstack:get_name()) then
-                    return false, better_commands.error(S("@1 cannot support that enchantment")), 0
+                    err = S("@1 cannot support that enchantment")
                 elseif errorstring == "level invalid" then
-                    return false, better_commands.error(S("Invalid integer '@1'", level_str)), 0
+                    err = S("Invalid integer '@1'", level_str)
                 else
                     target:set_wielded_item(mcl_enchanting.enchant(itemstack, enchantment, level))
                     count = count + 1
@@ -97,7 +106,11 @@ better_commands.register_command("forceenchant", {
             end
         end
         if count < 1 then
-            return false, better_commands.error(S("No player was found")), 0
+            if total_count < 1 then
+                return false, better_commands.error(S("No player was found")), 0
+            else
+                return false, better_commands.error(err), 0
+            end
         elseif count == 1 then
             return true, S("Applied enchantment @1 to @2's item", mcl_enchanting.get_enchantment_description(enchantment, level), last), 1
         else

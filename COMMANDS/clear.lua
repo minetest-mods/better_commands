@@ -128,22 +128,22 @@ better_commands.register_command("clear", {
         if count < 1 then
             return false, better_commands.error(S("No player was found"))
         elseif count == 1 then
-            if match_total < 1 then
-                return false, better_commands.error(S("No items were found on player @1", last))
+            if all and remove_max == -1 then
+                return true, S("Removed all items from player @1", last), 1
+            elseif match_total < 1 then
+                return false, better_commands.error(S("No items were found on player @1", last)), 0
             elseif remove_max == 0 then
                 return true, S("Found @1 matching items(s) on player @2", match_total, last), match_total
-            elseif all and remove_max == -1 then
-                return true, S("Removed all items from player @1", match_total, last), 1
             else
                 return true, S("Removed @1 item(s) from player @2", match_total, last), 1
             end
         else
-            if match_total < 1 then
-                return false, better_commands.error(S("No items were found on @1 players", count))
+            if all and remove_max == -1 then
+                return true, S("Removed all items from @1 players", count), count
+            elseif match_total < 1 then
+                return false, better_commands.error(S("No items were found on @1 players", count)), 0
             elseif remove_max == 0 then
                 return true, S("Found @1 matching items(s) on @2 players", match_total, count), match_total
-            elseif all and remove_max == -1 then
-                return true, S("Removed all items from @1 players", count), 1
             else
                 return true, S("Removed @1 items from @2 players", match_total, count), count
             end

@@ -28,7 +28,8 @@ Initial release. Missing *lots* of commands, several `execute` subcommands, lots
 * Added `/teammsg` command
 * Added `/gamerule` and `/changesetting` commands
 * Added `/remove` (removes entities instead of killing them)
-* Removed `anchored` execute subcommand (there really is no good way of making it work)
+* Added `/enchant` and `/forceenchant` (MCL only)
+* Removed `anchored` execute subcommand (if you want it, make a PR, because I can't think of any good way to do it)
 * Command results are now shown to other players as well, unless `better_commands.send_command_feedback` is disabled
 * Error messages are now red
 * Command outputs now match ACOVG's better

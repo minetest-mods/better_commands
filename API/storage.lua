@@ -13,7 +13,7 @@ function better_commands.save(key)
     storage:set_string(key, minetest.serialize(better_commands[key]))
 end
 
-better_commands.load("teams", {teams = {}})
+better_commands.load("teams", {teams = {}, players = {}})
 better_commands.load("scoreboard", {objectives = {}, players = {}, displays = {colors = {}}})
 better_commands.load("spawnpoints", {})
 
@@ -24,10 +24,11 @@ better_commands.register_on_update(function ()
 end)
 
 minetest.register_on_shutdown(function()
-    storage:set_string("scoreboard", minetest.serialize(better_commands.scoreboard))
-    storage:set_string("teams", minetest.serialize(better_commands.teams))
-    storage:set_string("spawnpoints", minetest.serialize(better_commands.spawnpoints))
+    better_commands.save("scoreboard")
+    better_commands.save("teams")
+    better_commands.save("spawnpoints")
     storage:set_string("successful_shutdown", "true")
 end)
 
+-- IDK if I'll ever do anything with successful_shutdown
 storage:set_string("successful_shutdown", "")
