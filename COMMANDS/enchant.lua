@@ -55,7 +55,7 @@ better_commands.register_command("enchant", {
         if count < 1 then
             return false, better_commands.error(S("No player was found")), 0
         elseif count == 1 then
-            return true, S("Enchanted item of @1.", last), 1
+            return true, S("Applied enchantment @1 to @2's item", mcl_enchanting.get_enchantment_description(enchantment, level), last), 1
         else
             return true, S("Enchanted items of @1 players.", count), count
         end
@@ -82,13 +82,13 @@ better_commands.register_command("forceenchant", {
                 local itemstack = target:get_wielded_item()
                 local _, errorstring = mcl_enchanting.can_enchant(itemstack, enchantment, level)
                 if errorstring == "enchantment invalid" then
-                    return false, better_commands.error(S("There is no such enchantment '@1'.", enchantment)), 0
+                    return false, better_commands.error(S("Invalid enchantment '@1'", enchantment)), 0
                 elseif errorstring == "item missing" then
-                    return false, better_commands.error(S("The target doesn't hold an item.")), 0
+                    return false, better_commands.error(S("@1 is not holding any item", better_commands.get_entity_name(target))), 0
                 elseif errorstring == "item not supported" and not mcl_enchanting.is_enchantable(itemstack:get_name()) then
-                    return false, better_commands.error(S("The target item is not enchantable.")), 0
+                    return false, better_commands.error(S("@1 cannot support that enchantment")), 0
                 elseif errorstring == "level invalid" then
-                    return false, better_commands.error(S("'@1' is not a valid number.", level_str)), 0
+                    return false, better_commands.error(S("Invalid integer '@1'", level_str)), 0
                 else
                     target:set_wielded_item(mcl_enchanting.enchant(itemstack, enchantment, level))
                     count = count + 1
@@ -99,9 +99,9 @@ better_commands.register_command("forceenchant", {
         if count < 1 then
             return false, better_commands.error(S("No player was found")), 0
         elseif count == 1 then
-            return true, S("Enchanted item of @1 with @2 @3", last, enchantment, level), 1
+            return true, S("Applied enchantment @1 to @2's item", mcl_enchanting.get_enchantment_description(enchantment, level), last), 1
         else
-            return true, S("Enchanted items of @1 players with @2 @3", count, enchantment, level), count
+            return true, S("Enchanted items of @1 players.", count), count
         end
     end
 })
