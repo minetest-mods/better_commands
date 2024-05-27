@@ -27,7 +27,7 @@ better_commands.register_command("gamerule", {
             if value then
                 return true, S("@1 = @2", setting, value), 1
             else
-                return false, minetest.colorize("red", S("Setting @1 has not been set", setting)), 1
+                return false, better_commands.error(S("Setting @1 has not been set", setting)), 1
             end
         end
     end

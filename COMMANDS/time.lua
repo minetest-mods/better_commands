@@ -21,7 +21,7 @@ better_commands.register_command("time", {
         local time = split_param[2][3]:lower()
         if action == "add" then
             local new_time, err = better_commands.parse_time_string(time)
-            if err then return false, minetest.colorize("red", err), 0 end
+            if err then return false, better_commands.error(err), 0 end
             minetest.set_timeofday(new_time)
             return true, S("Time set"), 1
         elseif action == "query" then
@@ -36,13 +36,13 @@ better_commands.register_command("time", {
             elseif time == "day" then
                 return true, S("Day count: @1", minetest.get_day_count()), 1
             end
-            return false, minetest.colorize("red", S("Must be 'daytime', 'gametime', or 'day', got @1", time)), 0
+            return false, better_commands.error(S("Must be 'daytime', 'gametime', or 'day', got @1", time)), 0
         elseif action == "set" then
             local new_time, err = better_commands.parse_time_string(time, true)
-            if err then return false, minetest.colorize("red", err), 0 end
+            if err then return false, better_commands.error(err), 0 end
             minetest.set_timeofday(new_time)
             return true, S("Time set"), 1
         end
-        return false, minetest.colorize("red", S("Must be 'add', 'set', or 'query'")), 0
+        return false, better_commands.error(S("Must be 'add', 'set', or 'query'")), 0
     end
 })

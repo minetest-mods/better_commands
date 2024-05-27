@@ -92,7 +92,7 @@ function better_commands.complete_context(name, context)
     if not context.executor then minetest.log("error", "Missing executor") return end
     context.pos = context.pos or context.executor:get_pos()
     context.rot = context.rot or better_commands.get_entity_rotation(context.executor)
-    context.anchor = context.anchor or "feet"
+    --context.anchor = context.anchor or "feet"
     context.origin = context.origin or name
     return context
 end

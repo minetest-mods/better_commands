@@ -2,7 +2,6 @@
 A place for me to write out my future plans. I decide what to do next [randomly](https://wheelofnames.com/24r-ygp) (yes, this is genuinely how I do it).
 
 - [ ] Add scoreboard playerlist and nametags (?)
-- [ ] Figure out feet/eyes since most entities don't have that
 - [ ] Make output match ACOVG's (error messages, number results, etc.)
 - [ ] Add more scoreboard criteria (settings to disable)
   - [ ] `xp`/`level` (MCLA/VL only)
@@ -76,10 +75,9 @@ A place for me to write out my future plans. I decide what to do next [randomly]
   - [ ] `pardon`
   - [ ] `pardon-ip`
   - [ ] `particle`
-  - [ ] `place`
   - [ ] `random` (although seeds seem to be somewhat inconsistent in MT)
   - [ ] `recipe` (MCLA/VL only)
-  - [ ] `remove`
+  - [x] `remove`
   - [ ] `replaceitem`
   - [ ] `return`
   - [ ] `ride`?

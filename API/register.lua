@@ -1,6 +1,10 @@
 --local bc = better_commands
 local S = minetest.get_translator(minetest.get_current_modname())
 
+function better_commands.error(str)
+    return better_commands.error(minetest.strip_colors(str))
+end
+
 ---Registers an ACOVG command
 ---@param name string The name of the command (/<name>)
 ---@param def betterCommandDef The command definition
@@ -13,7 +17,7 @@ function better_commands.register_command(name, def)
         if context then
             success, message, count  = def.real_func(name,param,context)
         else
-            success, message, count = false, minetest.colorize("red", S("Missing context")), 0
+            success, message, count = false, better_commands.error(S("Missing context")), 0
         end
         if message then
             if minetest.settings:get_bool("better_commands.send_command_feedback", true) then

@@ -15,23 +15,23 @@ better_commands.register_command("gamemode", {
     privs = {server = true},
     func = function(name, param, context)
         local split_param, err = better_commands.parse_params(param)
-        if err then return false, minetest.colorize("red", err), 0 end
+        if err then return false, better_commands.error(err), 0 end
         local gamemode = split_param[1] and split_param[1][3]
-        if not gamemode then return false, minetest.colorize("red", S("Missing gamemode")), 0 end
+        if not gamemode then return false, better_commands.error(S("Missing gamemode")), 0 end
         gamemode = better_commands.gamemode_aliases[gamemode] or gamemode
         if better_commands.mcl then
             if table.indexof(mcl_gamemode.gamemodes, gamemode) == -1 then
-                return false, minetest.colorize("red", S("Invalid gamemode @1", gamemode)), 0
+                return false, better_commands.error(S("Invalid gamemode @1", gamemode)), 0
             end
         elseif gamemode ~= "creative" and gamemode ~= "survival" then
-            return false, minetest.colorize("red", S("Invalid gamemode @1", gamemode)), 0
+            return false, better_commands.error(S("Invalid gamemode @1", gamemode)), 0
         end
         local targets = {context.executor}
         local self = true
         if split_param[2] then
             local err
             targets, err = better_commands.parse_selector(split_param[2], context)
-            if err or not targets then return false, minetest.colorize("red", err), 0 end
+            if err or not targets then return false, better_commands.error(err), 0 end
             self = false
         end
         local count = 0
@@ -57,7 +57,7 @@ better_commands.register_command("gamemode", {
             end
         end
         if count < 1 then
-            return false, minetest.colorize("red", S("No player was found")), 0
+            return false, better_commands.error(S("No player was found")), 0
         elseif count == 1 then
             if self then
                 return true, S("Set own gamemode to @1", gamemode)

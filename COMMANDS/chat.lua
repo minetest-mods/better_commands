@@ -12,7 +12,7 @@ better_commands.register_command("say", {
         if context.command_block or minetest.check_player_privs(context.origin, {server = true}) then
             local err
             message, err = better_commands.expand_selectors(param, split_param, 1, context)
-            if err then return false, minetest.colorize("red", err), 0 end
+            if err then return false, better_commands.error(err), 0 end
         else
             message = param
         end
@@ -31,13 +31,13 @@ better_commands.register_command("msg", {
             return false, nil, 0
         end
         local targets, err = better_commands.parse_selector(split_param[1], context)
-        if err or not targets then return false, minetest.colorize("red", err), 0 end
+        if err or not targets then return false, better_commands.error(err), 0 end
         local target_start = S("@1 whispers to you: ", better_commands.get_entity_name(context.executor))
         local message
         if context.command_block or minetest.check_player_privs(context.origin, {server = true}) then
             local err
             message, err = better_commands.expand_selectors(param, split_param, 2, context)
-            if err then return false, minetest.colorize("red", err), 0 end
+            if err then return false, better_commands.error(err), 0 end
         else
 ---@diagnostic disable-next-line: param-type-mismatch
             message = param:sub(split_param[2][1], -1)
@@ -69,7 +69,7 @@ better_commands.register_command("me", {
         if context.command_block or minetest.check_player_privs(context.origin, {server = true}) then
             local err
             message, err = better_commands.expand_selectors(param, split_param, 1, context)
-            if err then return false, minetest.colorize("red", err), 0 end
+            if err then return false, better_commands.error(err), 0 end
         else
             message = param
         end
@@ -88,19 +88,19 @@ better_commands.register_command("teammsg", {
             return false, nil, 0
         end
         if not (context.executor.is_player and context.executor:is_player()) then
-            return false, minetest.colorize("red", S("An entity is required to run this command here")), 0
+            return false, better_commands.error(S("An entity is required to run this command here")), 0
         end
         local sender = context.executor:get_player_name()
         local team = better_commands.teams.players[sender]
         local team_color = better_commands.team_colors[better_commands.teams.teams[team].color or "white"]
         local display_name = better_commands.teams.teams[team].display_name or team
-        if not team then return false, minetest.colorize("red", S("You must be on a team to message your team")), 0 end
+        if not team then return false, better_commands.error(S("You must be on a team to message your team")), 0 end
         local start = S("[@1] <@2> ", minetest.colorize(team_color, display_name), better_commands.get_entity_name(context.executor))
         local message
         if context.command_block or minetest.check_player_privs(context.origin, {server = true}) then
             local err
             message, err = better_commands.expand_selectors(param, split_param, 1, context)
-            if err then return false, minetest.colorize("red", err), 0 end
+            if err then return false, better_commands.error(err), 0 end
         else
 ---@diagnostic disable-next-line: param-type-mismatch
             message = param:sub(split_param[1][1], -1)

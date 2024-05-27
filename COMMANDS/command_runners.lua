@@ -15,10 +15,10 @@ better_commands.register_command("bc", {
             if privs then
                 return def.real_func(name, command_param, context)
             else
-                return false, minetest.colorize("red", S("You don't have permission to run this command (missing privileges: @1)", table.concat(missing, ", "))), 0
+                return false, better_commands.error(S("You don't have permission to run this command (missing privileges: @1)", table.concat(missing, ", "))), 0
             end
         else
-            return false, minetest.colorize("red", S("Invalid command: @1", command)), 0
+            return false, better_commands.error(S("Invalid command: @1", command)), 0
         end
     end
 })
@@ -37,10 +37,10 @@ better_commands.register_command("old", {
             if privs then
                 return def.real_func(name, command_param, context)
             else
-                return false, minetest.colorize("red", S("You don't have permission to run this command (missing privileges: @1)", table.concat(missing, ", "))), 0
+                return false, better_commands.error(S("You don't have permission to run this command (missing privileges: @1)", table.concat(missing, ", "))), 0
             end
         else
-            return false, minetest.colorize("red", S("Invalid command: @1", command)), 0
+            return false, better_commands.error(S("Invalid command: @1", command)), 0
         end
     end
 })

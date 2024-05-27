@@ -12,10 +12,10 @@ better_commands.register_command("ability", {
         end
         local set = split_param[3] and split_param[3][3]:lower()
         if set and set ~= "true" and set ~= "false" then
-            return false, minetest.colorize("red", S("[value] must be true or false (or missing), not '@1'", set)), 0
+            return false, better_commands.error(S("[value] must be true or false (or missing), not '@1'", set)), 0
         end
         local targets, err = better_commands.parse_selector(split_param[1], context, true)
-        if err or not targets then return false, minetest.colorize("red", err), 0 end
+        if err or not targets then return false, better_commands.error(err), 0 end
         local priv = split_param[2] and split_param[2][3]
         local target = targets[1]
         if target.is_player and target:is_player() then
@@ -43,12 +43,12 @@ better_commands.register_command("ability", {
                     if minetest.registered_privileges[priv] then
                         return true, S("@1 = @2", priv, tostring(privs[priv])), 1
                     else
-                        return false, minetest.colorize("red", S("Invalid privilege '@1'", priv)), 0
+                        return false, better_commands.error(S("Invalid privilege '@1'", priv)), 0
                     end
                 end
             else
                 if not minetest.registered_privileges[priv] then
-                    return false, minetest.colorize("red", S("Invalid privilege '@1'", priv)), 0
+                    return false, better_commands.error(S("Invalid privilege '@1'", priv)), 0
                 else
                     if set == "true" then
                         privs[priv] = true
@@ -71,6 +71,6 @@ better_commands.register_command("ability", {
                 end
             end
         end
-        return false, minetest.colorize("red", S("No entity was found")), 0
+        return false, better_commands.error(S("No entity was found")), 0
     end
 })

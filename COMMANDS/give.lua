@@ -18,18 +18,18 @@ end
 -- Modified from builtin/game/chat.lua
 local function handle_give_command(receiver, stack_data)
 	local itemstack, err = better_commands.parse_item(stack_data)
-    if err or not itemstack then return false, minetest.colorize("red", err), 0 end
+    if err or not itemstack then return false, better_commands.error(err), 0 end
 	if itemstack:is_empty() then
-		return false, minetest.colorize("red", S("Cannot give an empty item")), 0
+		return false, better_commands.error(S("Cannot give an empty item")), 0
 	elseif (not itemstack:is_known()) or (itemstack:get_name() == "unknown") then
-		return false, minetest.colorize("red", S("Unknown item '@1'", itemstack:get_name())), 0
+		return false, better_commands.error(S("Unknown item '@1'", itemstack:get_name())), 0
 	-- Forbid giving 'ignore' due to unwanted side effects
 	elseif itemstack:get_name() == "ignore" then
-		return false, minetest.colorize("red", S("Giving 'ignore' is not allowed")), 0
+		return false, better_commands.error(S("Giving 'ignore' is not allowed")), 0
 	end
 	local receiverref = minetest.get_player_by_name(receiver)
 	if receiverref == nil then
-		return false, minetest.colorize("red", S("No player was found")), 0
+		return false, better_commands.error(S("No player was found")), 0
 	end
 	local leftover = receiverref:get_inventory():add_item("main", itemstack)
 	if not leftover:is_empty() then
@@ -52,7 +52,7 @@ better_commands.register_command("give", {
         end
 		local message
         local targets, err = better_commands.parse_selector(split_param[1], context)
-        if err or not targets then return false, minetest.colorize("red", err), 0 end
+        if err or not targets then return false, better_commands.error(err), 0 end
 		local count = 0
         for _, target in ipairs(targets) do
             if target.is_player and target:is_player() then
@@ -62,7 +62,7 @@ better_commands.register_command("give", {
             end
         end
 		if count < 1 then
-			return false, minetest.colorize("red", S("No player was found")), 0
+			return false, better_commands.error(S("No player was found")), 0
 		elseif count == 1 then
 			return true, message, 1
 		else

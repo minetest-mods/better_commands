@@ -20,8 +20,18 @@ local command_files = {
     "settings",
 }
 
+local mcl_only = {
+    "enchant"
+}
+
 for _, file in ipairs(command_files) do
     better_commands.run_file(file, "COMMANDS")
+end
+
+if better_commands.mcl then
+    for _, file in ipairs(mcl_only) do
+        better_commands.run_file(file, "COMMANDS")
+    end
 end
 
 better_commands.register_command("?", table.copy(minetest.registered_chatcommands.help))

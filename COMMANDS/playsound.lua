@@ -13,11 +13,11 @@ better_commands.register_command("playsound", {
         local targets, err, next
         if split_param[2].type == "selector" then
             targets, err = better_commands.parse_selector(split_param[2], context)
-            if err or not targets then return false, minetest.colorize("red", err), 0 end
+            if err or not targets then return false, better_commands.error(err), 0 end
             next = 3
         else
             local pos, err = better_commands.parse_pos(split_param, 2, context)
-            if err or not pos then return false, minetest.colorize("red", err), 0
+            if err or not pos then return false, better_commands.error(err), 0
             end
             targets = {pos}
             next = 5
@@ -27,21 +27,21 @@ better_commands.register_command("playsound", {
 ---@diagnostic disable-next-line: cast-local-type
             volume = split_param[next][3]
             if volume and not tonumber(volume) then
-                return false, minetest.colorize("red", S("Must be a number, not @1", volume)), 0
+                return false, better_commands.error(S("Must be a number, not @1", volume)), 0
             end
             volume = tonumber(volume)
             if split_param[next+1] then
 ---@diagnostic disable-next-line: cast-local-type
                 pitch = split_param[next+1][3]
                 if pitch and not tonumber(pitch) then
-                    return false, minetest.colorize("red", S("Must be a number, not @1", pitch)), 0
+                    return false, better_commands.error(S("Must be a number, not @1", pitch)), 0
                 end
                 pitch = tonumber(pitch)
                 if split_param[next+2] then
 ---@diagnostic disable-next-line: cast-local-type
                     distance = split_param[next+2][3]
                     if distance and not tonumber(distance) then
-                        return false, minetest.colorize("red", S("Must be a number, not @1", distance)), 0
+                        return false, better_commands.error(S("Must be a number, not @1", distance)), 0
                     end
                     distance = tonumber(distance)
                 end

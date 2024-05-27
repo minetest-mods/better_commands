@@ -11,15 +11,16 @@ better_commands.execute_subcommands = {
     align = function(branches, index)
         local branch_data = branches[index]
         local param = branches.param[branch_data.i+1]
-        if not param then return false, minetest.colorize("red", S("Missing argument for subcommand @1", "align")) end
+        if not param then return false, better_commands.error(S("Missing argument for subcommand @1", "align")) end
         local axes = {param[3]:match("^([xyz])([xyz]?)([xyz]?)$")}
-        if not axes[1] then return false, minetest.colorize("red", S("Invalid swizzle, expected combination of 'x', 'y', and 'z'")) end
+        if not axes[1] then return false, better_commands.error(S("Invalid swizzle, expected combination of 'x', 'y', and 'z'")) end
         for _ ,axis in pairs(axes) do
             branch_data.pos[axis] = math.floor(branch_data.pos[axis])
         end
         branch_data.i = branch_data.i + 2
         return true
     end,
+    --[[
     ---Sets anchor to feet or eyes
     ---@param branches contextTable[]
     ---@param index integer
@@ -29,16 +30,16 @@ better_commands.execute_subcommands = {
     anchored = function(branches, index)
         local branch_data = branches[index]
         local param = branches.param[branch_data.i+1]
-        if not param then return false, minetest.colorize("red", S("Missing argument for subcommand @1", "anchored")) end
+        if not param then return false, better_commands.error(S("Missing argument for subcommand @1", "anchored")) end
         local anchor = tostring(param[3]):lower()
         if anchor == "feet" or anchor == "eyes" then
             branch_data.anchor = anchor
         else
-            return false, minetest.colorize("red", S("Invalid entity anchor position @1", anchor))
+            return false, better_commands.error(S("Invalid entity anchor position @1", anchor))
         end
         branch_data.i = branch_data.i + 2
         return true
-    end,
+    end, --]]
     ---Changes executor
     ---@param branches contextTable[]
     ---@param index integer
@@ -48,9 +49,9 @@ better_commands.execute_subcommands = {
     as = function(branches, index)
         local branch_data = branches[index]
         local param = branches.param[branch_data.i+1]
-        if not param then return false, minetest.colorize("red", S("Missing argument for subcommand @1", "as")) end
+        if not param then return false, better_commands.error(S("Missing argument for subcommand @1", "as")) end
         if param.type ~= "selector" then
-            return false, minetest.colorize("red", S("Invalid target: @1", table.concat(param, "", 3)))
+            return false, better_commands.error(S("Invalid target: @1", table.concat(param, "", 3)))
         end
         local targets, err = better_commands.parse_selector(param, branch_data)
         if err or not targets then return false, err end
@@ -79,9 +80,9 @@ better_commands.execute_subcommands = {
     at = function(branches, index)
         local branch_data = branches[index]
         local param = branches.param[branch_data.i+1]
-        if not param then return false, minetest.colorize("red", S("Missing argument for subcommand @1", "at")) end
+        if not param then return false, better_commands.error(S("Missing argument for subcommand @1", "at")) end
         if param.type ~= "selector" then
-            return false, minetest.colorize("red", S("Invalid target: @1", table.concat(param, "", 3)))
+            return false, better_commands.error(S("Invalid target: @1", table.concat(param, "", 3)))
         end
         local targets, err = better_commands.parse_selector(param, branch_data)
         if err or not targets then return false, err end
@@ -157,11 +158,11 @@ better_commands.execute_subcommands = {
     positioned = function(branches, index)
         local branch_data = branches[index]
         local param = branches.param[branch_data.i+1]
-        if not param then return false, minetest.colorize("red", S("Missing argument for subcommand @1", "positioned")) end
+        if not param then return false, better_commands.error(S("Missing argument for subcommand @1", "positioned")) end
         if param[3] == "as" then
             local selector = branches.param[branch_data.i+2]
             if not selector or selector.type ~= "selector" then
-                return false, minetest.colorize("red", S("Invalid argument for @1", "positioned"))
+                return false, better_commands.error(S("Invalid argument for @1", "positioned"))
             end
             local targets, err = better_commands.parse_selector(selector, branch_data)
             if err or not targets then return false, err end
@@ -184,7 +185,7 @@ better_commands.execute_subcommands = {
             local pos, err = better_commands.parse_pos(branches.param, branch_data.i+1, branch_data)
             if err then return false, err end
             branch_data.pos = pos
-            branch_data.anchor = "feet"
+            --branch_data.anchor = "feet"
             branch_data.i = branch_data.i + 4
             return true
         end
@@ -198,11 +199,11 @@ better_commands.execute_subcommands = {
     rotated = function(branches, index)
         local branch_data = branches[index]
         local param = branches.param[branch_data.i+1]
-        if not param then return false, minetest.colorize("red", S("Missing argument for subcommand @1", "rotated")) end
+        if not param then return false, better_commands.error(S("Missing argument for subcommand @1", "rotated")) end
         if param[3] == "as" then
             local selector = branches.param[branch_data.i+2]
             if not selector or selector.type ~= "selector" then
-                return false, minetest.colorize("red", S("Invalid argument for rotated"))
+                return false, better_commands.error(S("Invalid argument for rotated"))
             end
             local targets, err = better_commands.parse_selector(selector, branch_data)
             if err or not targets then return false, err end
@@ -223,7 +224,7 @@ better_commands.execute_subcommands = {
             end
         else
             if not (branches.param[branch_data.i+1] and branches.param[branch_data.i+2]) then
-                return false, minetest.colorize("red", S("Missing argument(s)) for rotated"))
+                return false, better_commands.error(S("Missing argument(s)) for rotated"))
             end
             local victim_rot = branch_data.rot
             if branches.param[branch_data.i+1].type == "number" then
@@ -231,14 +232,14 @@ better_commands.execute_subcommands = {
             elseif branches.param[branch_data.i+1].type == "relative" then
                 victim_rot.y = victim_rot.y+math.rad(tonumber(branches.param[branch_data.i+1][3]:sub(2,-1)) or 0)
             else
-                return false, minetest.colorize("red", S("Invalid argument for rotated"))
+                return false, better_commands.error(S("Invalid argument for rotated"))
             end
             if branches.param[branch_data.i+2].type == "number" then
                 victim_rot.x = math.rad(tonumber(branches.param[branch_data.i+2][3]) or 0)
             elseif branches.param[branch_data.i+2].type == "relative" then
                 victim_rot.x = victim_rot.x+math.rad(tonumber(branches.param[branch_data.i+2][3]:sub(2,-1)) or 0)
             else
-                return false, minetest.colorize("red", S("Invalid argument for rotated"))
+                return false, better_commands.error(S("Invalid argument for rotated"))
             end
             branch_data.rot = victim_rot
             branch_data.i = branch_data.i + 3
@@ -260,7 +261,7 @@ better_commands.execute_subcommands = {
         ) then
             return "notarget"
         end
-        if not branches.param[branch_data.i+1] then return false, minetest.colorize("red", S("Missing command")) end
+        if not branches.param[branch_data.i+1] then return false, better_commands.error(S("Missing command")) end
         local command, command_param
         command, command_param = branch_data.original_command:match(
             "%/?([%S]+)%s*(.-)$",
@@ -281,13 +282,14 @@ better_commands.execute_subcommands = {
         if def and command ~= "old" and (branch_data.command_block or minetest.check_player_privs(branch_data.origin, def.privs)) then
             return "done", def.real_func(branch_data.origin, command_param, table.copy(branch_data))
         else
-            return false, minetest.colorize("red", S("Invalid command or privs: @1", command))
+            return false, better_commands.error(S("Invalid command or privs: @1", command))
         end
     end
 }
 
 better_commands.register_command("execute", {
-    params = S("<align|anchored|as|at|facing|positioned|rotated|run> ..."),
+    params = S("<align|as|at|facing|positioned|rotated|run> ..."),
+    --params = S("<align|anchored|as|at|facing|positioned|rotated|run> ..."),
     description = S("Run any Better Command (not other commands) after changing the context"),
     privs = {server = true, ban = true, privs = true},
     func = function(name, param, context)
@@ -312,7 +314,7 @@ better_commands.register_command("execute", {
                         break
                     end
                 else
-                    return false, minetest.colorize("red", S("Invalid subcommand: @1", subcmd)), 0
+                    return false, better_commands.error(S("Invalid subcommand: @1", subcmd)), 0
                 end
             end
             if status == "done" then

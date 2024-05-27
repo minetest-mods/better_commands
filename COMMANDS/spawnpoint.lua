@@ -6,18 +6,18 @@ better_commands.register_command("spawnpoint", {
     params = S("[targets]"),
     func = function (name, param, context)
         local split_param, err = better_commands.parse_params(param)
-        if err then return false, minetest.colorize("red", err), 0 end
+        if err then return false, better_commands.error(err), 0 end
         local selector = split_param[1]
         if not selector then
             if context.executor.is_player and context.executor:is_player() then
                 better_commands.spawnpoints[context.executor:get_player_name()] = context.pos
                 return true, S("Spawn point set"), 1
             else
-                return false, minetest.colorize("red", S("Non-player entities are not supported by this command"))
+                return false, better_commands.error(S("Non-player entities are not supported by this command"))
             end
         else
             local targets, err = better_commands.parse_selector(selector, context)
-            if err or not targets then return false, minetest.colorize("red", err), 0 end
+            if err or not targets then return false, better_commands.error(err), 0 end
             local last
             local count = 0
             for _, target in ipairs(targets) do
@@ -28,7 +28,7 @@ better_commands.register_command("spawnpoint", {
                 end
             end
             if count < 1 then
-                return false, minetest.colorize("red", S("No player was found.")), 0
+                return false, better_commands.error(S("No player was found.")), 0
             elseif count == 1 then
                 return true, S("Set spawn point to @1 for @2", minetest.pos_to_string(context.pos, 1), last), 1
             else
@@ -44,18 +44,18 @@ better_commands.register_command("clearspawnpoint", {
     params = S("[targets]"),
     func = function (name, param, context)
         local split_param, err = better_commands.parse_params(param)
-        if err then return false, minetest.colorize("red", err), 0 end
+        if err then return false, better_commands.error(err), 0 end
         local selector = split_param[1]
         if not selector then
             if context.executor.is_player and context.executor:is_player() then
                 better_commands.spawnpoints[context.executor:get_player_name()] = nil
                 return true, S("Spawn point cleared"), 1
             else
-                return false, minetest.colorize("red", S("Non-player entities are not supported by this command"))
+                return false, better_commands.error(S("Non-player entities are not supported by this command"))
             end
         else
             local targets, err = better_commands.parse_selector(selector, context)
-            if err or not targets then return false, minetest.colorize("red", err), 0 end
+            if err or not targets then return false, better_commands.error(err), 0 end
             local last
             local count = 0
             for _, target in ipairs(targets) do
@@ -66,7 +66,7 @@ better_commands.register_command("clearspawnpoint", {
                 end
             end
             if count < 1 then
-                return false, minetest.colorize("red", S("No player was found.")), 0
+                return false, better_commands.error(S("No player was found.")), 0
             elseif count == 1 then
                 return true, S("Cleared spawn point for @2", last), 1
             else

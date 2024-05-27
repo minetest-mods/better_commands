@@ -12,7 +12,7 @@ better_commands.register_command("clear", {
             targets = {context.executor}
         else
             targets, err = better_commands.parse_selector(selector, context)
-            if err or not targets then return false, minetest.colorize("red", err), 0 end
+            if err or not targets then return false, better_commands.error(err), 0 end
         end
         local filter, group
         if split_param[2] then
@@ -29,12 +29,12 @@ better_commands.register_command("clear", {
                 filter = split_param[2][3]:sub(7, -1)
             else
                 filter, err = better_commands.parse_item(split_param[2], true)
-                if err or not filter then return false, minetest.colorize("red", err), 0 end
+                if err or not filter then return false, better_commands.error(err), 0 end
             end
         end
         local remove_max = tonumber(split_param[3] and split_param[3][3])
         if split_param[3] and not remove_max then
-            return false, minetest.colorize("red", S("maxCount must be a number")), 0
+            return false, better_commands.error(S("maxCount must be a number")), 0
         end
         if remove_max then
             remove_max = math.floor(remove_max)
@@ -126,10 +126,10 @@ better_commands.register_command("clear", {
             end
         end
         if count < 1 then
-            return false, minetest.colorize("red", S("No player was found"))
+            return false, better_commands.error(S("No player was found"))
         elseif count == 1 then
             if match_total < 1 then
-                return false, minetest.colorize("red", S("No items were found on player @1", last))
+                return false, better_commands.error(S("No items were found on player @1", last))
             elseif remove_max == 0 then
                 return true, S("Found @1 matching items(s) on player @2", match_total, last), match_total
             elseif all and remove_max == -1 then
@@ -139,7 +139,7 @@ better_commands.register_command("clear", {
             end
         else
             if match_total < 1 then
-                return false, minetest.colorize("red", S("No items were found on @1 players", count))
+                return false, better_commands.error(S("No items were found on @1 players", count))
             elseif remove_max == 0 then
                 return true, S("Found @1 matching items(s) on @2 players", match_total, count), match_total
             elseif all and remove_max == -1 then
