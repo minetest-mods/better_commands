@@ -29,7 +29,7 @@ Initial release. Missing *lots* of commands, several `execute` subcommands, lots
 * Added `/gamerule` and `/changesetting` commands
 * Command results are now shown to other players as well, unless `better_commands.send_command_feedback` is disabled
 * Error messages are now red
-* Command outputs now match Minecraft's
+* Command outputs now match ACOVG's better
 ### Bugfixes
 * Fixed a bug with the `/kill` command (it should work now).
 * The `rm`/`r` selector arguments now actually treat their values as numbers (not strings), and are now inclusive as intended.
