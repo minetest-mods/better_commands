@@ -279,7 +279,7 @@ better_commands.execute_subcommands = {
         end
         local def = better_commands.commands[command]
         if def and command ~= "old" and (branch_data.command_block or minetest.check_player_privs(branch_data.origin, def.privs)) then
-            return "done", def.func(branch_data.origin, command_param, table.copy(branch_data))
+            return "done", def.real_func(branch_data.origin, command_param, table.copy(branch_data))
         else
             return false, minetest.colorize("red", S("Invalid command or privs: @1", command))
         end

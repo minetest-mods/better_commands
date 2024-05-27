@@ -33,9 +33,9 @@ better_commands.register_command("spawnpoint", {
             if count < 1 then
                 return false, minetest.colorize("red", S("No player was found.")), 0
             elseif count == 1 then
-                return true, S("Set spawn point to @1 for @2", minetest.pos_to_string(context.pos), last), 1
+                return true, S("Set spawn point to @1 for @2", minetest.pos_to_string(context.pos, 1), last), 1
             else
-                return true, S("Set spawn point to @1 for @2 players", minetest.pos_to_string(context.pos), count), count
+                return true, S("Set spawn point to @1 for @2 players", minetest.pos_to_string(context.pos, 1), count), count
             end
         end
     end

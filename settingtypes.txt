@@ -27,3 +27,6 @@ better_commands_scoreboard_death (Update kill/death objectives?) bool true
 
 # Comma-separated value of lists (or *) to clear with the /clear command.
 better_commands_clear_lists (Lists to /clear) string main,craft,offhand
+
+# Show the results of commands?
+better_commands.send_command_feedback (Send command feedback?) bool true

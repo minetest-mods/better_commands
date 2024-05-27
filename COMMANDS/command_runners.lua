@@ -16,7 +16,7 @@ better_commands.register_command("bc", {
             local missing
             if not privs then privs, missing = minetest.check_player_privs(name, def.privs) end
             if privs then
-                return def.func(name, command_param, context)
+                return def.real_func(name, command_param, context)
             else
                 return false, minetest.colorize("red", S("You don't have permission to run this command (missing privileges: @1)", table.concat(missing, ", "))), 0
             end
@@ -41,7 +41,7 @@ better_commands.register_command("old", {
             local missing
             if not privs then privs, missing = minetest.check_player_privs(name, def.privs) end
             if privs then
-                return def.func(name, command_param, context)
+                return def.real_func(name, command_param, context)
             else
                 return false, minetest.colorize("red", S("You don't have permission to run this command (missing privileges: @1)", table.concat(missing, ", "))), 0
             end

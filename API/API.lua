@@ -1,7 +1,7 @@
 ---@alias contextTable {executor: minetest.ObjectRef, pos: vector.Vector, rot: vector.Vector, anchor: string, origin: string, [any]: any}
 ---@alias splitParam {[1]: integer, [2]: integer, [3]: string, type: string, any: string}
 ---@alias betterCommandFunc fun(name: string, param: string, context: contextTable): success: boolean, message: string?, count: number
----@alias betterCommandDef {description: string, param?: string, privs: table<string, boolean>, func: betterCommandFunc}
+---@alias betterCommandDef {description: string, param?: string, privs: table<string, boolean>, func: betterCommandFunc, real_func: betterCommandFunc?}
 
 --local bc = better_commands
 

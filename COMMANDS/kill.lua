@@ -51,6 +51,6 @@ better_commands.register_command("killme", {
     privs = {server = true},
     func = function(name, param, context)
         if param ~= "" then return false, minetest.colorize("red", S("Unexpected argument: @1", param)), 0 end
-        return better_commands.commands.kill.func(name, "", context)
+        return better_commands.commands.kill.real_func(name, "", context)
     end
 })

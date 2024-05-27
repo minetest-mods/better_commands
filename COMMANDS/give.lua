@@ -79,6 +79,6 @@ better_commands.register_command("giveme", {
     description = S("Gives [count] of <item> to yourself"),
     privs = {server = true},
     func = function(name, param, context)
-		return better_commands.commands.give.func(name, "@s "..param, context)
+		return better_commands.commands.give.real_func(name, "@s "..param, context)
     end
 })
