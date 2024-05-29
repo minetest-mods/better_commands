@@ -114,6 +114,11 @@ better_commands.register_command("scoreboard", {
                     return false, better_commands.error(S("Unknown scoreboard objective '@1'", objective)), 0
                 end
                 better_commands.scoreboard.objectives[objective] = nil
+                for display, data in pairs(better_commands.scoreboard.objectives.displays) do
+                    if data.objective == objective then
+                        better_commands.scoreboard.objectives.displays[display] = nil
+                    end
+                end
                 return true, S("Removed objective @1", objective), 1
             elseif subcommand == "setdisplay" then
                 local location = split_param[3] and split_param[3][3]
@@ -126,7 +131,9 @@ better_commands.register_command("scoreboard", {
                 if location == "list" then
                     return false, better_commands.error(S("`list` support has not been added yet.")), 0
                 elseif location == "below_name" then
-                    return false, better_commands.error(S("`below_name` support has not been added yet.")), 0
+                    better_commands.scoreboard.displays.below_name = {objective = objective}
+                    display = better_commands.scoreboard.displays.below_name
+                    sortable = false
                 elseif location == "sidebar" then
                     better_commands.scoreboard.displays.sidebar = {objective = objective}
                     display = better_commands.scoreboard.displays.sidebar

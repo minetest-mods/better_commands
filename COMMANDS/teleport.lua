@@ -3,7 +3,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 -- some duplicate code
 better_commands.register_command("teleport", {
-    params = S("[entity/ies] <location/entity> ([yaw] [pitch] | [facing <location/entity>])"),
+    params = S("[<targets>] <location/entity> [<rot>]"),
     description = S("Teleports and rotates things"),
     privs = {server = true},
     func = function(name, param, context)

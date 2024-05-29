@@ -3,7 +3,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 better_commands.register_command("gamerule", {
     description = S("Sets or queries settings"),
-    params = S("<setting> [value]"),
+    params = S("<setting> [<value>]"),
     privs = {server = true},
     func = function(name, param, context)
         local split_param = better_commands.parse_params(param)

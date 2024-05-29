@@ -291,6 +291,7 @@ better_commands.register_command("execute", {
     params = S("<align|as|at|facing|positioned|rotated|run> ..."),
     --params = S("<align|anchored|as|at|facing|positioned|rotated|run> ..."),
     description = S("Run any Better Command (not other commands) after changing the context"),
+    -- Requires more privileges since it can literally run any command
     privs = {server = true, ban = true, privs = true},
     func = function(name, param, context)
         local split_param = better_commands.parse_params(param)

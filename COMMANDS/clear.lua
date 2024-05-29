@@ -1,9 +1,9 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
 better_commands.register_command("clear", {
-    description = S("Clears player inventories"),
+    params = S("[<targets>] [<items>] [<maxCount>]"),
+    description = S("Clears items from player inventory. Can also detect and query the amount of specified items."),
     privs = { server = true },
-    params = S("[targets] [items] [maxCount]"),
     func = function(name, param, context)
         local split_param = better_commands.parse_params(param)
         local selector = split_param[1]

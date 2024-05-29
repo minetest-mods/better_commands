@@ -3,7 +3,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 better_commands.register_command("spawnpoint", {
     description = S("Sets players' spawnpoints"),
     privs = {server = true},
-    params = S("[targets]"),
+    params = S("[<targets>]"),
     func = function (name, param, context)
         local split_param, err = better_commands.parse_params(param)
         if err then return false, better_commands.error(err), 0 end
@@ -41,7 +41,7 @@ better_commands.register_command("spawnpoint", {
 better_commands.register_command("clearspawnpoint", {
     description = S("Clear players' spawnpoints"),
     privs = {server = true},
-    params = S("[targets]"),
+    params = S("[<targets>]"),
     func = function (name, param, context)
         local split_param, err = better_commands.parse_params(param)
         if err then return false, better_commands.error(err), 0 end

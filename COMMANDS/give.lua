@@ -42,8 +42,8 @@ local function handle_give_command(receiver, stack_data)
 end
 
 better_commands.register_command("give", {
-    params = S("<target> <item> [count] [wear]"),
-    description = S("Gives [count] of <item> to <target>"),
+    params = S("<targets> <item>"),
+    description = S("Gives <item> to <targets> (item can include metadata and count/wear)"),
     privs = {server = true},
     func = function(name, param, context)
         local split_param = better_commands.parse_params(param)
@@ -72,8 +72,8 @@ better_commands.register_command("give", {
 })
 
 better_commands.register_command("giveme", {
-    params = S("<item> [count] [wear]"),
-    description = S("Gives [count] of <item> to yourself"),
+    params = S("<item>"),
+    description = S("Gives <item> to yourself (<item> can include metadata and count/wear)"),
     privs = {server = true},
     func = function(name, param, context)
 		return better_commands.commands.give.real_func(name, "@s "..param, context)

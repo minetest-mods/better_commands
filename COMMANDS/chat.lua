@@ -3,7 +3,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 better_commands.register_command("say", {
     params = S("<message>"),
-    description = S("Says <message> to all players (which can include selectors such as @@a if you have the 'server' priv)"),
+    description = S("Broadcasts <message> to all players (<message> can include selectors such as @@a if you have the 'server' priv)"),
     privs = {shout = true},
     func = function(name, param, context)
         local split_param = better_commands.parse_params(param)
@@ -23,7 +23,7 @@ better_commands.register_command("say", {
 
 better_commands.register_command("msg", {
     params = S("<target> <message>"),
-    description = S("Sends <message> privately to <target> (which can include selectors like @@a if you have the 'server' priv)"),
+    description = S("Sends <message> privately to <target> (<message> can include selectors like @@a if you have the 'server' priv)"),
     privs = {shout = true},
     func = function(name, param, context)
         local split_param = better_commands.parse_params(param)
@@ -59,8 +59,8 @@ better_commands.register_command_alias("w", "msg")
 better_commands.register_command_alias("tell", "msg")
 
 better_commands.register_command("me", {
-    description = S("Broadcasts a message about yourself (which can include selectors like @@a if you have the 'server' priv)"),
     params = S("<action>"),
+    description = S("Broadcasts a message about yourself (<message> can include selectors like @@a if you have the 'server' priv)"),
     privs = {shout = true},
     func = function(name, param, context)
         local split_param = better_commands.parse_params(param)

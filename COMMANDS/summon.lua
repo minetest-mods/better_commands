@@ -3,7 +3,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 better_commands.register_command("summon", {
     description = S("Summons an entity"),
-    params = S("<entity> [pos] [ (<yRot> [xRot]) | (facing <entity>) ])"),
+    params = S("<entity> [<pos>] [<rot>]"),
     privs = {server = true},
     func = function(name, param, context)
         local split_param = better_commands.parse_params(param)

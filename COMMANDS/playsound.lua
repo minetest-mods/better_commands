@@ -2,7 +2,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
 better_commands.register_command("playsound", {
-    params = S("<sound> <targets|pos> [volume] [pitch] [maxDistance]"),
+    params = S("<sound> <targets|pos> [<volume>] [<pitch>] [<maxDistance>]"),
     description = S("Plays a sound"),
     privs = {server = true},
     func = function(name, param, context)

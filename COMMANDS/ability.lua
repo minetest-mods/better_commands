@@ -2,8 +2,8 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
 better_commands.register_command("ability", {
-    params = S("<player> <priv> [value]"),
-    description = S("Sets <priv> of <player> to [value] (true/false). If [value] is not supplied, returns the existing value of <priv>"),
+    params = S("<player> <privilege> [<value>]"),
+    description = S("Sets <privilege> of <player> to <value> (true/false). If <value> is not supplied, returns the existing value of <privilege>"),
     privs = {privs = true},
     func = function(name, param, context)
         local split_param = better_commands.parse_params(param)

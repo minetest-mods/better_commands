@@ -1,8 +1,8 @@
 local S = minetest.get_translator("better_commands")
 
 better_commands.register_command("enchant", {
-    description = S("Enchant an item"),
     params = S("<selector> <enchantment> [<level>]"),
+    description = S("Adds an enchantment to a player's selected item, subject to the same restrictions as an anvil"),
     privs = { give = true },
     func = function(name, param, context)
         local split_param, err = better_commands.parse_params(param)
@@ -69,8 +69,8 @@ better_commands.register_command("enchant", {
 })
 
 better_commands.register_command("forceenchant", {
-    description = S("Forcefully enchant an item"),
     params = S("<selector> <enchantment> [<level>]"),
+    description = S("Adds an enchantment to a player's selected item, regardless of whether it would normally be possible"),
     privs = { give = true },
     func = function(name, param, context)
         local split_param, err = better_commands.parse_params(param)

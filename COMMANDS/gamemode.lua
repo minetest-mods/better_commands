@@ -11,7 +11,7 @@ better_commands.gamemode_aliases = {
 
 better_commands.register_command("gamemode", {
     description = S("Sets a player's gamemode"),
-    params = S("<gamemode> [player]"),
+    params = S("<gamemode> [<targets>]"),
     privs = {server = true},
     func = function(name, param, context)
         local split_param, err = better_commands.parse_params(param)

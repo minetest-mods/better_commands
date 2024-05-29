@@ -4,7 +4,7 @@
     ],
     "Lua.diagnostics.disable": [
         "undefined-field",
-        "cast-local-type"
+        "cast-local-type",
     ],
     "Lua.diagnostics.globals": [
         "mcl_formspec",

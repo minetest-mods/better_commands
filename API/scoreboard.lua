@@ -94,6 +94,46 @@ local function sort_scores(a, b)
     return (a.score == b.score) and (a.name < b.name) or (tonumber(a.score) > tonumber(b.score))
 end
 
+function better_commands.format_score(objective, name)
+    if not (objective and name and better_commands.scoreboard.objectives[objective]) then return end
+    local objective_data = better_commands.scoreboard.objectives[objective]
+    local score_data = objective_data.scores[name]
+    if not score_data then return end
+    local format_data = score_data.format or objective_data.format
+    local score
+    if format_data then
+        if format_data.type == "blank" then
+            score = ""
+        elseif format_data.type == "fixed" then
+            score = minetest.colorize("#ffffff", format_data.data)
+        else
+            score = minetest.colorize(format_data.data, tostring(score_data.score))
+        end
+    else
+        score = tostring(score_data.score)
+    end
+    return score
+end
+
+function better_commands.update_nametags()
+    local display = better_commands.scoreboard.displays.below_name
+    local objective
+    if display then
+        objective = display.objective
+    end
+    for _, player in ipairs(minetest.get_connected_players()) do
+        local nametag = better_commands.get_entity_name(player)
+        if objective then
+            local score = better_commands.format_score(objective, player:get_player_name())
+            if score then
+                local display_name = better_commands.scoreboard.objectives[objective].display_name or objective
+                nametag = string.format("%s\n%s %s", nametag, score, display_name)
+            end
+        end
+        player:set_nametag_attributes({text = nametag})
+    end
+end
+
 function better_commands.update_hud()
     local bg_width = 16
     for _, player in ipairs(minetest.get_connected_players()) do
@@ -119,22 +159,10 @@ function better_commands.update_hud()
             local scores = objective_data.scores
             local count = 0
             local sortable_scores = {}
-            for name, data in pairs(scores) do
+            for name in pairs(scores) do
                 count = count + 1
                 local display_name = better_commands.format_name(name)
-                local score
-                local format_data = objective_data.format or data.format
-                if format_data then
-                    if format_data.type == "blank" then
-                        score = ""
-                    elseif format_data.type == "fixed" then
-                        score = minetest.colorize("#ffffff", format_data.data)
-                    else
-                        score = minetest.colorize(format_data.data, tostring(data.score))
-                    end
-                else
-                    score = tostring(data.score)
-                end
+                local score = better_commands.format_score(objective, name) or "???"
                 local width = #minetest.strip_colors(display_name) + #minetest.strip_colors(score)
                 max_width = math.max(width + 2, max_width)
                 table.insert(sortable_scores, {name = display_name, score = score})
@@ -173,6 +201,7 @@ function better_commands.update_hud()
             player:hud_change(sidebar.names, "offset", {x = center_x_offset*2+20, y = 0})
             player:hud_change(sidebar.scores, "text", score_text)
         else
+            minetest.log(dump(better_commands.scoreboard.objectivest))
             for name, id in pairs(sidebar) do
                 player:hud_remove(id)
                 sidebar[name] = nil
@@ -202,3 +231,4 @@ function better_commands.get_display_name(name, objective)
 end
 
 better_commands.register_on_update(better_commands.update_hud)
+better_commands.register_on_update(better_commands.update_nametags)

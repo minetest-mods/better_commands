@@ -3,7 +3,7 @@
 local command_files = {
     "command_runners",
     "give",
-    "kill",
+    "damage",
     "chat",
     "execute",
     "scoreboard",
