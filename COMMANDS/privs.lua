@@ -74,3 +74,87 @@ better_commands.register_command("ability", {
         return false, better_commands.error(S("No entity was found")), 0
     end
 })
+
+better_commands.register_command("op", {
+    params = "[<targets>]",
+    description = "Grants all privileges to the player(s)",
+    privs = {privs = true},
+    func = function (name, param, context)
+        local split_param = better_commands.parse_params(param)
+        local selector = split_param[1]
+        local targets = {context.executor}
+        if selector then
+            local err
+            targets, err = better_commands.parse_selector(selector, context)
+            if err or not targets then return false, better_commands.error(err), 0 end
+        end
+        local count = 0
+        local last
+        if #targets > 0 then
+            local privs = {}
+            for priv in pairs(minetest.registered_privileges) do
+                privs[priv] = true
+            end
+            for _, target in ipairs(targets) do
+                if target.is_player and target:is_player() then
+                    count = count + 1
+                    last = better_commands.get_entity_name(target)
+                    -- not sure whether I need to copy it or not
+                    minetest.set_player_privs(target:get_player_name(), table.copy(privs))
+                end
+            end
+        end
+        if count < 1 then
+            return false, better_commands.error(S("No player was found")), 0
+        elseif count == 1 then
+            return true, S("Granted all privileges to @1", last), 1
+        else
+            return true, S("Granted all privileges to @1 players", count), count
+        end
+    end
+})
+
+better_commands.register_command("deop", {
+    params = "[<targets>]",
+    description = "Grants all privileges to the player(s)",
+    privs = {privs = true},
+    func = function (name, param, context)
+        local split_param = better_commands.parse_params(param)
+        local selector = split_param[1]
+        local targets = {context.executor}
+        if selector then
+            local err
+            targets, err = better_commands.parse_selector(selector, context)
+            if err or not targets then return false, better_commands.error(err), 0 end
+        end
+        local count = 0
+        local last
+        if #targets > 0 then
+            local default_privs_string = minetest.settings:get("default_privs")
+            local default_privs = {}
+            if not default_privs_string or default_privs_string == "" then
+                default_privs = {interact = true, shout = true}
+            else
+                local split_privs = string.split(default_privs_string, "%W", false, -1, true)
+                for _, priv in ipairs(split_privs) do
+                    default_privs[priv] = true
+                end
+            end
+            for _, target in ipairs(targets) do
+                if target.is_player and target:is_player() then
+                    count = count + 1
+                    last = better_commands.get_entity_name(target)
+                    -- not sure whether I need to copy it or not
+                    minetest.set_player_privs(target:get_player_name(), table.copy(default_privs))
+                end
+            end
+        end
+        if count < 1 then
+            return false, better_commands.error(S("No player was found")), 0
+        elseif count == 1 then
+            return true, S("Revoked all privileges from to @1", last), 1
+        else
+            return true, S("Revoked all privileges from @1 players", count), count
+        end
+    end
+})

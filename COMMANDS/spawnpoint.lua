@@ -13,7 +13,7 @@ better_commands.register_command("spawnpoint", {
                 better_commands.spawnpoints[context.executor:get_player_name()] = context.pos
                 return true, S("Spawn point set"), 1
             else
-                return false, better_commands.error(S("Non-player entities are not supported by this command"))
+                return false, better_commands.error(S("Non-player entities are not supported by this command")), 0
             end
         else
             local targets, err = better_commands.parse_selector(selector, context)
@@ -51,7 +51,7 @@ better_commands.register_command("clearspawnpoint", {
                 better_commands.spawnpoints[context.executor:get_player_name()] = nil
                 return true, S("Spawn point cleared"), 1
             else
-                return false, better_commands.error(S("Non-player entities are not supported by this command"))
+                return false, better_commands.error(S("Non-player entities are not supported by this command")), 0
             end
         else
             local targets, err = better_commands.parse_selector(selector, context)
@@ -68,9 +68,9 @@ better_commands.register_command("clearspawnpoint", {
             if count < 1 then
                 return false, better_commands.error(S("No player was found.")), 0
             elseif count == 1 then
-                return true, S("Cleared spawn point for @2", last), 1
+                return true, S("Cleared spawn point for @1", last), 1
             else
-                return true, S("Set spawn point for @2 players", count), count
+                return true, S("Set spawn point for @1 players", count), count
             end
         end
     end

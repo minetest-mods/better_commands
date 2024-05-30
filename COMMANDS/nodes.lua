@@ -38,3 +38,31 @@ better_commands.register_command("setblock", {
 })
 
 better_commands.register_command_alias("setnode", "setblock")
+
+--[[ bad (add group/* support)
+better_commands.register_command("testforblock", {
+    params = "<pos> <node>",
+    description = "Tests whether a certain node is in a specific location.",
+    privs = {server = true},
+    func = function (name, param, context)
+        local split_param = better_commands.parse_params(param)
+        local pos, err = better_commands.parse_pos(split_param, 1, context)
+        if err or not pos then return false, better_commands.error(err), 0 end
+        local node_param = split_param[4]
+        local node, node_meta, err = better_commands.parse_node(split_param[4])
+        if err or not node then return false, better_commands.error(err), 0 end
+        local found_node = minetest.get_node(pos)
+        if found_node.name == node.name then
+            local matches = true
+            if node_meta then
+                local meta = minetest.get_meta(pos)
+                for key, value in pairs(node_meta) do
+                    if meta:get_string(key) ~= value then
+                end
+            else
+                return true, S("Node matches"), 1
+            end
+        end
+        return false, better_commands.error("Node does not match"), 0
+    end
+})]]

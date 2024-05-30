@@ -10,9 +10,9 @@ local command_files = {
     "teleport",
     "team",
     "time",
-    "ability",
+    "privs",
     "playsound",
-    "setblock",
+    "nodes",
     "summon",
     "gamemode",
     "spawnpoint",
@@ -37,8 +37,8 @@ end
 better_commands.register_command("?", table.copy(minetest.registered_chatcommands.help))
 
 
---[[
 -- Temporary commands for testing
+--[[
 better_commands.register_command("dumpscore",{func=function()minetest.log(dump(better_commands.scoreboard)) return true, nil, 1 end})
 better_commands.register_command("dumpteam",{func=function()minetest.log(dump(better_commands.teams)) return true, nil, 1 end})
 -- ]]

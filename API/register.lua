@@ -2,6 +2,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
 function better_commands.error(str)
+    if not str or str == "" then return str end
     return minetest.colorize("red", minetest.strip_colors(str))
 end
 

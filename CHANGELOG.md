@@ -21,6 +21,7 @@
 * Added `/remove` (removes entities instead of killing them)
 * Added `/enchant` and `/forceenchant` commands (MCL only)
 * Added `/damage` command
+* Added `/op` and `/deop` (`/op` grants all privs, `/deop` revokes all but `default_privs`)
 ### Changes
 * Reorganized the changelog (older versions are now at the bottom).
 * Removed `anchored` execute subcommand (if you want to have rotation anchors, make a PR, because I can't think of any good way to do it)
