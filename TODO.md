@@ -1,7 +1,8 @@
 # TODO
 A place for me to write out my future plans. I decide what to do next [randomly](https://wheelofnames.com/24r-ygp) (yes, this is genuinely how I do it).
 
-- [ ] Add scoreboard playerlist and nametags (?)
+- [ ] Add scoreboard playerlist
+- [x] Add scoreboard nametags
 - [ ] Make output match ACOVG's (error messages, number results, etc.)
 - [ ] Add more scoreboard criteria (settings to disable)
   - [ ] `xp`/`level` (MCLA/VL only)
@@ -55,10 +56,10 @@ A place for me to write out my future plans. I decide what to do next [randomly]
   - [x] `spawnpoint`
   - [x] `clearspawnpoint`
   - [ ] `clone`
-  - [ ] `damage`
+  - [x] `damage`
   - [ ] `data`
-  - [ ] `deop` (removes all but basic privs)
-  - [ ] `op` (grants certain privs, including `server`)
+  - [x] `deop` (removes all but basic privs)
+  - [x] `op` (grants certain privs, including `server`)
   - [ ] `effect` (MCLA/VL only)
   - [x] `enchant` (MCLA/VL only, also override forceenchant?)
   - [ ] `experience`/`xp` (MCLA/VL only)
@@ -75,7 +76,7 @@ A place for me to write out my future plans. I decide what to do next [randomly]
   - [ ] `pardon`
   - [ ] `pardon-ip`
   - [ ] `particle`
-  - [ ] `random` (although seeds seem to be somewhat inconsistent in MT)
+  - [ ] `random`
   - [ ] `recipe` (MCLA/VL only)
   - [x] `remove`
   - [ ] `replaceitem`
