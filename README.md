@@ -2,7 +2,7 @@
 Adds commands and syntax from a certain other voxel game (such as `/kill @e[type=mobs_mc:zombie, distance = 2..]`) to Minetest. For compatible command blocks, use my [Better Command Blocks](https://content.minetest.net/packages/ThePython/better_command_blocks/) mod. I'm basically copying them from a certain other voxel game (whose name will not be mentioned), hereafter referred to as ACOVG.
 
 ## Links
-* [Wiki](https://thepython10110.gitbook.io/better-commands) (WIP)
+* [Wiki](https://thepython10110.gitbook.io/better-commands)
 * [GitHub](https://github.com/thepython10110/better_commands)
 * [ContentDB](https://content.minetest.net/packages/ThePython/better_commands)
 * [Forum](https://forum.minetest.net/viewtopic.php?t=30370)
