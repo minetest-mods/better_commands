@@ -1,0 +1,1296 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Minetest textdomain better_commands x.x.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: mtt_convert 0.1.0\n"
+
+msgid "Unknown Falling Node"
+msgstr ""
+
+msgid "Falling @1"
+msgstr ""
+
+msgid "Command Block"
+msgstr ""
+
+msgid "???"
+msgstr ""
+
+msgid "Unknown option '@1'"
+msgstr ""
+
+msgid "Duplicate option '@1'"
+msgstr ""
+
+msgid "Expected number for option '@1'"
+msgstr ""
+
+msgid "Only 1 of keys c and limit can exist"
+msgstr ""
+
+msgid "@1 must be a non-zero integer"
+msgstr ""
+
+msgid "Only 1 of keys m and gamemode can exist"
+msgstr ""
+
+msgid "Unknown game mode: @1"
+msgstr ""
+
+msgid "Multiple matching entities found"
+msgstr ""
+
+msgid "Missing coordinate"
+msgstr ""
+
+msgid "Cannot mix local and global coordinates"
+msgstr ""
+
+msgid "Invalid coordinate '@1'"
+msgstr ""
+
+msgid "Invalid item '@1'"
+msgstr ""
+
+msgid "Invalid item: '@1'"
+msgstr ""
+
+msgid "Invalid item"
+msgstr ""
+
+msgid "Unknown node '@1'"
+msgstr ""
+
+msgid "'@1' is not a node"
+msgstr ""
+
+msgid "Invalid amount"
+msgstr ""
+
+msgid "Amount must not be negative"
+msgstr ""
+
+msgid "Invalid unit '@1'"
+msgstr ""
+
+msgid "No player was found"
+msgstr ""
+
+msgid "No entity was found"
+msgstr ""
+
+msgid "Missing context"
+msgstr ""
+
+msgid "Invalid objective '@1'"
+msgstr ""
+
+msgid "No targets found"
+msgstr ""
+
+msgid "Multiple targets found"
+msgstr ""
+
+msgid "<message>"
+msgstr ""
+
+msgid "Broadcasts <message> to all players (<message> can include selectors such as @a if you have the 'server' priv)"
+msgstr ""
+
+msgid "<target> <message>"
+msgstr ""
+
+msgid "Sends <message> privately to <target> (<message> can include selectors like @a if you have the 'server' priv)"
+msgstr ""
+
+msgid "@1 whispers to you: "
+msgstr ""
+
+msgid "You whisper to @1: "
+msgstr ""
+
+msgid "<action>"
+msgstr ""
+
+msgid "Broadcasts a message about yourself (<message> can include selectors like @a if you have the 'server' priv)"
+msgstr ""
+
+msgid "Sends <message> privately to all team members (which can include selectors like @a if you have the 'server' priv)"
+msgstr ""
+
+msgid "An entity is required to run this command here"
+msgstr ""
+
+msgid "You must be on a team to message your team"
+msgstr ""
+
+msgid "[@1] <@2> "
+msgstr ""
+
+msgid "[<targets>] [<items>] [<maxCount>]"
+msgstr ""
+
+msgid "Clears items from player inventory. Can also detect and query the amount of specified items."
+msgstr ""
+
+msgid "maxCount must be a number"
+msgstr ""
+
+msgid "Removed all items from player @1"
+msgstr ""
+
+msgid "No items were found on player @1"
+msgstr ""
+
+msgid "Found @1 matching items(s) on player @2"
+msgstr ""
+
+msgid "Removed @1 item(s) from player @2"
+msgstr ""
+
+msgid "Removed all items from @1 players"
+msgstr ""
+
+msgid "No items were found on @1 players"
+msgstr ""
+
+msgid "Found @1 matching items(s) on @2 players"
+msgstr ""
+
+msgid "Removed @1 items from @2 players"
+msgstr ""
+
+msgid "<command>"
+msgstr ""
+
+msgid "Runs any Better Commands command, so Better Commands don't have to override existing commands"
+msgstr ""
+
+msgid "You don't have permission to run this command (missing privileges: @1)"
+msgstr ""
+
+msgid "Invalid command: @1"
+msgstr ""
+
+msgid "Runs any command that Better Commands has overridden"
+msgstr ""
+
+msgid "Kills entities (or self if <targets> left out)"
+msgstr ""
+
+msgid "Killed @1"
+msgstr ""
+
+msgid "Killed @1 entities"
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "Kills self"
+msgstr ""
+
+msgid "Unexpected argument(s) '@1'"
+msgstr ""
+
+msgid "[<target>]"
+msgstr ""
+
+msgid "Removes entities (or self if <entity> left out)"
+msgstr ""
+
+msgid "<targets> <amount> [type] [by <cause>]"
+msgstr ""
+
+msgid "Damages entities."
+msgstr ""
+
+msgid "<amount> must not be negative"
+msgstr ""
+
+msgid "Applied @1 damage to @2"
+msgstr ""
+
+msgid "Applied @1 damage to @2 entities"
+msgstr ""
+
+msgid "Missing argument"
+msgstr ""
+
+msgid "[<targets>]"
+msgstr ""
+
+msgid "<selector> <enchantment> [<level>]"
+msgstr ""
+
+msgid "Adds an enchantment to a player's selected item, subject to the same restrictions as an anvil"
+msgstr ""
+
+msgid "Missing enchantment"
+msgstr ""
+
+msgid "Invalid enchantment '@1'"
+msgstr ""
+
+msgid "@1 is not holding any item"
+msgstr ""
+
+msgid "@1 cannot support that enchantment"
+msgstr ""
+
+msgid "Invalid integer '@1'"
+msgstr ""
+
+msgid "@1 is higher than the maximum level of @2 supported by that enchantment"
+msgstr ""
+
+msgid "@1 is lower than the minimum level of @2 supported by that enchantment"
+msgstr ""
+
+msgid "@1 can't be combined with @2."
+msgstr ""
+
+msgid "Failed to enchant item."
+msgstr ""
+
+msgid "Applied enchantment @1 to @2's item"
+msgstr ""
+
+msgid "Enchanted items of @1 players."
+msgstr ""
+
+msgid "Adds an enchantment to a player's selected item, regardless of whether it would normally be possible"
+msgstr ""
+
+msgid "Missing argument for subcommand @1"
+msgstr ""
+
+msgid "Invalid swizzle, expected combination of 'x', 'y', and 'z'"
+msgstr ""
+
+msgid "Invalid entity anchor position @1"
+msgstr ""
+
+msgid "Invalid target: @1"
+msgstr ""
+
+msgid "Invalid argument for @1"
+msgstr ""
+
+msgid "Invalid argument for rotated"
+msgstr ""
+
+msgid "Missing argument(s)) for rotated"
+msgstr ""
+
+msgid "Missing command"
+msgstr ""
+
+msgid "Invalid command or privs: @1"
+msgstr ""
+
+msgid "<align|as|at|facing|positioned|rotated|run> ..."
+msgstr ""
+
+msgid "<align|anchored|as|at|facing|positioned|rotated|run> ..."
+msgstr ""
+
+msgid "Run any Better Command (not other commands) after changing the context"
+msgstr ""
+
+msgid "Invalid subcommand: @1"
+msgstr ""
+
+msgid "Successfully executed @1 times"
+msgstr ""
+
+msgid "Sets a player's gamemode"
+msgstr ""
+
+msgid "<gamemode> [<targets>]"
+msgstr ""
+
+msgid "Missing gamemode"
+msgstr ""
+
+msgid "Invalid gamemode @1"
+msgstr ""
+
+msgid "Set own gamemode to @1"
+msgstr ""
+
+msgid "Set gamemode of @1 to @2"
+msgstr ""
+
+msgid "Set gamemode of @1 players to @2"
+msgstr ""
+
+msgid "Cannot give an empty item"
+msgstr ""
+
+msgid "Unknown item '@1'"
+msgstr ""
+
+msgid "Giving 'ignore' is not allowed"
+msgstr ""
+
+msgid "Gave [@1] to @2"
+msgstr ""
+
+msgid "<targets> <item>"
+msgstr ""
+
+msgid "Gives <item> to <targets> (item can include metadata and count/wear)"
+msgstr ""
+
+msgid "Gave item(s) to @1 players"
+msgstr ""
+
+msgid "<item>"
+msgstr ""
+
+msgid "Gives <item> to yourself (<item> can include metadata and count/wear)"
+msgstr ""
+
+msgid "<pos> <block> [keep|replace]"
+msgstr ""
+
+msgid "Places <block> at <pos>. If keep, only replace air"
+msgstr ""
+
+msgid "Last argument ust be either 'replace' (default)), 'keep', or missing, not @1"
+msgstr ""
+
+msgid "Position is not empty"
+msgstr ""
+
+msgid "Node set"
+msgstr ""
+
+msgid "Node matches"
+msgstr ""
+
+msgid "<sound> <targets|pos> [<volume>] [<pitch>] [<maxDistance>]"
+msgstr ""
+
+msgid "Plays a sound"
+msgstr ""
+
+msgid "Must be a number, not @1"
+msgstr ""
+
+msgid "Sound played"
+msgstr ""
+
+msgid "<player> <privilege> [<value>]"
+msgstr ""
+
+msgid "Sets <privilege> of <player> to <value> (true/false). If <value> is not supplied, returns the existing value of <privilege>"
+msgstr ""
+
+msgid "[value] must be true or false (or missing), not '@1'"
+msgstr ""
+
+msgid "Invalid privilege '@1'"
+msgstr ""
+
+msgid "@1 privilege @2 by @3"
+msgstr ""
+
+msgid "@1 privilege @2 for @3"
+msgstr ""
+
+msgid "Granted all privileges to @1"
+msgstr ""
+
+msgid "Granted all privileges to @1 players"
+msgstr ""
+
+msgid "Revoked all privileges from to @1"
+msgstr ""
+
+msgid "Revoked all privileges from @1 players"
+msgstr ""
+
+msgid "@1 = @2"
+msgstr ""
+
+msgid "objectives|players ..."
+msgstr ""
+
+msgid "Manupulates the scoreboard"
+msgstr ""
+
+msgid "Missing arguments"
+msgstr ""
+
+msgid "Missing name"
+msgstr ""
+
+msgid "Objective @1 already exists"
+msgstr ""
+
+msgid "Missing criterion"
+msgstr ""
+
+msgid "Invalid criterion @1"
+msgstr ""
+
+msgid "Added objective @1"
+msgstr ""
+
+msgid "There are no objectives"
+msgstr ""
+
+msgid "There are @1 objective(s): @2"
+msgstr ""
+
+msgid "Missing objective"
+msgstr ""
+
+msgid "Unknown scoreboard objective '@1'"
+msgstr ""
+
+msgid "Must be 'displayname' or 'numberformat'"
+msgstr ""
+
+msgid "Missing display name"
+msgstr ""
+
+msgid "@1 set to @2"
+msgstr ""
+
+msgid "Cleared numberformat for @1"
+msgstr ""
+
+msgid "Invalid color"
+msgstr ""
+
+msgid "Must be 'blank', 'fixed', or 'styled'"
+msgstr ""
+
+msgid "Removed objective @1"
+msgstr ""
+
+msgid "`list` support has not been added yet."
+msgstr ""
+
+msgid "Must be 'list', 'below_name', 'sidebar', or 'sidebar.team.<color>"
+msgstr ""
+
+msgid "Expected ascending|descending, got @1"
+msgstr ""
+
+msgid "Display slot @1 does not support sorting."
+msgstr ""
+
+msgid "Set display slot @1 to show objective @2"
+msgstr ""
+
+msgid "Expected 'add', 'list', 'modify', 'remove', or 'setdisplay', got '@1'"
+msgstr ""
+
+msgid "Missing target"
+msgstr ""
+
+msgid "Missing score"
+msgstr ""
+
+msgid "No scores found"
+msgstr ""
+
+msgid "Set score for @1"
+msgstr ""
+
+msgid "Set score for @1 entities"
+msgstr ""
+
+msgid "Must be 'name' or 'numberformat'"
+msgstr ""
+
+msgid "Invalid objective: @1"
+msgstr ""
+
+msgid "Set display name of @1 to @2"
+msgstr ""
+
+msgid "Set display name of @1 entities to @2"
+msgstr ""
+
+msgid "Cleared format for @1"
+msgstr ""
+
+msgid "Must be 'name' or 'numberformat', not @1"
+msgstr ""
+
+msgid "@1 is not a trigger objective"
+msgstr ""
+
+msgid "No players found"
+msgstr ""
+
+msgid "Enabled trigger [@1] for @2"
+msgstr ""
+
+msgid "Enabled trigger [@1] for @2 players"
+msgstr ""
+
+msgid "@1 has @2 [@3]"
+msgstr ""
+
+msgid "@1 does not have a score for @2"
+msgstr ""
+
+msgid "There are no tracked players"
+msgstr ""
+
+msgid "There are @1 tracked player(s): @2"
+msgstr ""
+
+msgid "@1 has no scores"
+msgstr ""
+
+msgid "@1 has @2 score(s): @3"
+msgstr ""
+
+msgid "Missing source selector"
+msgstr ""
+
+msgid "Missing source objective"
+msgstr ""
+
+msgid "Invalid source objective"
+msgstr ""
+
+msgid "Missing operator"
+msgstr ""
+
+msgid "Invalid operator: @1"
+msgstr ""
+
+msgid "Missing target selector"
+msgstr ""
+
+msgid "Missing target objective"
+msgstr ""
+
+msgid "Invalid target objective"
+msgstr ""
+
+msgid "Skipping attempt to divide by zero"
+msgstr ""
+
+msgid "@1 [@2] score of @3 @4 [@5] score of @6"
+msgstr ""
+
+msgid "Changed @1 scores (@2 total operations)"
+msgstr ""
+
+msgid "Missing selector"
+msgstr ""
+
+msgid "Invalid objective"
+msgstr ""
+
+msgid "Missing min"
+msgstr ""
+
+msgid "Must be a number"
+msgstr ""
+
+msgid "Missing max"
+msgstr ""
+
+msgid "Randomized score for @1"
+msgstr ""
+
+msgid "Randomized @2 scores"
+msgstr ""
+
+msgid "Reset score for @1"
+msgstr ""
+
+msgid "Reset @2 scores"
+msgstr ""
+
+msgid "Player @1 has no scores recorded"
+msgstr ""
+
+msgid "Score @1 is in range @2 to @3"
+msgstr ""
+
+msgid "Score @1 is NOT in range @2 to @3"
+msgstr ""
+
+msgid "Expected 'add', 'display', 'enable', 'get', 'list', 'operation', 'random', 'reset', 'set', or 'test', got @1"
+msgstr ""
+
+msgid "Allows players to set their own scores in certain conditions"
+msgstr ""
+
+msgid "/trigger can only be used by players"
+msgstr ""
+
+msgid "You can only trigger objectives that are 'trigger' type"
+msgstr ""
+
+msgid "You cannot trigger this objective yet"
+msgstr ""
+
+msgid "Triggered [@1]"
+msgstr ""
+
+msgid "Missing value"
+msgstr ""
+
+msgid "Value must be a number"
+msgstr ""
+
+msgid "Triggered [@1] (added @2 to value)"
+msgstr ""
+
+msgid "Triggered [@1] (set value to @2)"
+msgstr ""
+
+msgid "Expected 'add' or 'set', got @1"
+msgstr ""
+
+msgid "Invalid color: @1"
+msgstr ""
+
+msgid "No target entities found"
+msgstr ""
+
+msgid "No entities found"
+msgstr ""
+
+msgid "Sets or queries settings"
+msgstr ""
+
+msgid "<setting> [<value>]"
+msgstr ""
+
+msgid "Failed. Cannot modify secure settings. Edit the settings file manually"
+msgstr ""
+
+msgid "Set @1 to @2 (new setting)"
+msgstr ""
+
+msgid "Set @1 to @2"
+msgstr ""
+
+msgid "Setting @1 has not been set"
+msgstr ""
+
+msgid "Sets players' spawnpoints"
+msgstr ""
+
+msgid "Spawn point set"
+msgstr ""
+
+msgid "Non-player entities are not supported by this command"
+msgstr ""
+
+msgid "No player was found."
+msgstr ""
+
+msgid "Set spawn point to @1 for @2"
+msgstr ""
+
+msgid "Set spawn point to @1 for @2 players"
+msgstr ""
+
+msgid "Clear players' spawnpoints"
+msgstr ""
+
+msgid "Spawn point cleared"
+msgstr ""
+
+msgid "Cleared spawn point for @1"
+msgstr ""
+
+msgid "Set spawn point for @1 players"
+msgstr ""
+
+msgid "Summons an entity"
+msgstr ""
+
+msgid "<entity> [<pos>] [<rot>]"
+msgstr ""
+
+msgid "Missing entity"
+msgstr ""
+
+msgid "Invalid entity: @1"
+msgstr ""
+
+msgid "Could not summon @1"
+msgstr ""
+
+msgid "Summoned @1"
+msgstr ""
+
+msgid "add|empty|join|leave|list|modify|remove ..."
+msgstr ""
+
+msgid "Controls teams"
+msgstr ""
+
+msgid "Missing subcommand"
+msgstr ""
+
+msgid "Missing team name"
+msgstr ""
+
+msgid "Team @1 already exists"
+msgstr ""
+
+msgid "Invalid team name @1: Can only contain letters, numbers, and underscores"
+msgstr ""
+
+msgid "Added team @1"
+msgstr ""
+
+msgid "Removed team [@1]"
+msgstr ""
+
+msgid "Removed all players from team [@1]"
+msgstr ""
+
+msgid "Team @1 does not exist"
+msgstr ""
+
+msgid "Joined team [@1]"
+msgstr ""
+
+msgid "Added @1 to team [@2]"
+msgstr ""
+
+msgid "Added @1 entities to [@2]"
+msgstr ""
+
+msgid "Non-players cannot be on a team"
+msgstr ""
+
+msgid "Removed @1 from any team"
+msgstr ""
+
+msgid "There are @1 team(s): @2"
+msgstr ""
+
+msgid "There are no teams"
+msgstr ""
+
+msgid "Team [@1] has @2 member(s): @3"
+msgstr ""
+
+msgid "There are no members on team [@1]"
+msgstr ""
+
+msgid "Team [@1] does not exist"
+msgstr ""
+
+msgid "Team name is required"
+msgstr ""
+
+msgid "Unknown team '@1'"
+msgstr ""
+
+msgid "Missing key"
+msgstr ""
+
+msgid "Set color of team [@1] to @2"
+msgstr ""
+
+msgid "Reset color of team [@1]"
+msgstr ""
+
+msgid "Set display name of team [@1] to @2"
+msgstr ""
+
+msgid "Reset display name of team [@1]"
+msgstr ""
+
+msgid "Value must be 'true' or 'false', not @1"
+msgstr ""
+
+msgid "Set friendly fire for team [@1] to @2"
+msgstr ""
+
+msgid "Reset name format for team [@1]"
+msgstr ""
+
+msgid "Set name format for team [@1] to @2"
+msgstr ""
+
+msgid "Value must be 'color', 'displayName', 'friendlyFire', or 'nameFormat'"
+msgstr ""
+
+msgid "Must be 'add', 'empty', 'join', 'leave', 'list', 'modify', or 'remove', not @1"
+msgstr ""
+
+msgid "[<targets>] <location/entity> [<rot>]"
+msgstr ""
+
+msgid "Teleports and rotates things"
+msgstr ""
+
+msgid "Command blocks can't teleport (although I did consider making it possible)"
+msgstr ""
+
+msgid "Teleported @1 to @2"
+msgstr ""
+
+msgid "Teleported @1 entities to @2"
+msgstr ""
+
+msgid "add|set|query ..."
+msgstr ""
+
+msgid "Sets or gets the time"
+msgstr ""
+
+msgid "Time set"
+msgstr ""
+
+msgid "Current time: @1"
+msgstr ""
+
+msgid "Time since world creation: @1"
+msgstr ""
+
+msgid "Day count: @1"
+msgstr ""
+
+msgid "Must be 'daytime', 'gametime', or 'day', got @1"
+msgstr ""
+
+msgid "Must be 'add', 'set', or 'query'"
+msgstr ""
+
+msgid "Item"
+msgstr ""
+
+msgid "Falling Node"
+msgstr ""
+
+msgid "Angelfish"
+msgstr ""
+
+msgid "Bat"
+msgstr ""
+
+msgid "Bird"
+msgstr ""
+
+msgid "Blue Tang"
+msgstr ""
+
+msgid "Cat"
+msgstr ""
+
+msgid "Chicken"
+msgstr ""
+
+msgid "Clownfish"
+msgstr ""
+
+msgid "Cow"
+msgstr ""
+
+msgid "Fox"
+msgstr ""
+
+msgid "Frog"
+msgstr ""
+
+msgid "Grizzly Bear"
+msgstr ""
+
+msgid "Horse"
+msgstr ""
+
+msgid "Opossum"
+msgstr ""
+
+msgid "Owl"
+msgstr ""
+
+msgid "Pig"
+msgstr ""
+
+msgid "Rat"
+msgstr ""
+
+msgid "Reindeer"
+msgstr ""
+
+msgid "Sheep"
+msgstr ""
+
+msgid "Song Bird"
+msgstr ""
+
+msgid "Tropical Fish"
+msgstr ""
+
+msgid "Turkey"
+msgstr ""
+
+msgid "Wolf"
+msgstr ""
+
+msgid "Badger"
+msgstr ""
+
+msgid "Butterfly"
+msgstr ""
+
+msgid "Fire Dragon"
+msgstr ""
+
+msgid "Lightning Dragon"
+msgstr ""
+
+msgid "Poison Dragon"
+msgstr ""
+
+msgid "Ice Dragon"
+msgstr ""
+
+msgid "Boss Dragon"
+msgstr ""
+
+msgid "Elephant"
+msgstr ""
+
+msgid "Gnorm"
+msgstr ""
+
+msgid "Golem"
+msgstr ""
+
+msgid "Hedgehog"
+msgstr ""
+
+msgid "Nyan Cat"
+msgstr ""
+
+msgid "Ogre"
+msgstr ""
+
+msgid "Orc"
+msgstr ""
+
+msgid "Morgul Orc"
+msgstr ""
+
+msgid "Panda"
+msgstr ""
+
+msgid "Flying Pig"
+msgstr ""
+
+msgid "Skeleton"
+msgstr ""
+
+msgid "Tortoise"
+msgstr ""
+
+msgid "Treeman"
+msgstr ""
+
+msgid "Wasp"
+msgstr ""
+
+msgid "King of Sting"
+msgstr ""
+
+msgid "Boss Waterdragon"
+msgstr ""
+
+msgid "Waterdragon"
+msgstr ""
+
+msgid "Whale"
+msgstr ""
+
+msgid "Wyvern"
+msgstr ""
+
+msgid "Jungle Wyvern"
+msgstr ""
+
+msgid "Cyst"
+msgstr ""
+
+msgid "Flyingrod"
+msgstr ""
+
+msgid "Lavawalker"
+msgstr ""
+
+msgid "Noodlemaster"
+msgstr ""
+
+msgid "Razorback"
+msgstr ""
+
+msgid "Soka Archer"
+msgstr ""
+
+msgid "Soka Melee"
+msgstr ""
+
+msgid "Tardigrade"
+msgstr ""
+
+msgid "Flesh Whip"
+msgstr ""
+
+msgid "Bee"
+msgstr ""
+
+msgid "Bunny"
+msgstr ""
+
+msgid "Kitten"
+msgstr ""
+
+msgid "Penguin"
+msgstr ""
+
+msgid "Pumba"
+msgstr ""
+
+msgid "Balrog"
+msgstr ""
+
+msgid "Crocodile"
+msgstr ""
+
+msgid "Jellyfish"
+msgstr ""
+
+msgid "Mese Monster"
+msgstr ""
+
+msgid "Dirt Monster"
+msgstr ""
+
+msgid "Dungeon Master"
+msgstr ""
+
+msgid "Fire Spirit"
+msgstr ""
+
+msgid "Land Guard"
+msgstr ""
+
+msgid "Lava Flan"
+msgstr ""
+
+msgid "Obsidian Flan"
+msgstr ""
+
+msgid "Oerkki"
+msgstr ""
+
+msgid "Sand Monster"
+msgstr ""
+
+msgid "Spider"
+msgstr ""
+
+msgid "Stone Monster"
+msgstr ""
+
+msgid "Tree Monster"
+msgstr ""
+
+msgid "Shark"
+msgstr ""
+
+msgid "Skeleton Archer"
+msgstr ""
+
+msgid "Dark Skeleton Archer"
+msgstr ""
+
+msgid "Turtle"
+msgstr ""
+
+msgid "Sea Turtle"
+msgstr ""
+
+msgid "Ant Queen"
+msgstr ""
+
+msgid "Ant Soldier"
+msgstr ""
+
+msgid "Ant Worker"
+msgstr ""
+
+msgid "Black Widow"
+msgstr ""
+
+msgid "Bloco"
+msgstr ""
+
+msgid "Crab"
+msgstr ""
+
+msgid "Daddy Long Legs"
+msgstr ""
+
+msgid "Dolidrosaurus"
+msgstr ""
+
+msgid "Duck"
+msgstr ""
+
+msgid "Duckking"
+msgstr ""
+
+msgid "Echidna"
+msgstr ""
+
+msgid "Enderduck"
+msgstr ""
+
+msgid "Felucco"
+msgstr ""
+
+msgid "Flying Duck"
+msgstr ""
+
+msgid "Giant Sandworm"
+msgstr ""
+
+msgid "Icelamander"
+msgstr ""
+
+msgid "Icesnake"
+msgstr ""
+
+msgid "Kraken"
+msgstr ""
+
+msgid "Larva"
+msgstr ""
+
+msgid "Lava Titan"
+msgstr ""
+
+msgid "Manticore"
+msgstr ""
+
+msgid "Mantis"
+msgstr ""
+
+msgid "Mantis Beast"
+msgstr ""
+
+msgid "Masticone"
+msgstr ""
+
+msgid "Mese Dragon"
+msgstr ""
+
+msgid "Moonheron"
+msgstr ""
+
+msgid "Morbat"
+msgstr ""
+
+msgid "Mordain"
+msgstr ""
+
+msgid "Morde"
+msgstr ""
+
+msgid "Morgre"
+msgstr ""
+
+msgid "Morgut"
+msgstr ""
+
+msgid "Morlu"
+msgstr ""
+
+msgid "Mortick"
+msgstr ""
+
+msgid "Morvalar"
+msgstr ""
+
+msgid "Morvy"
+msgstr ""
+
+msgid "Morwa"
+msgstr ""
+
+msgid "Night Master"
+msgstr ""
+
+msgid "Octopus"
+msgstr ""
+
+msgid "Phoenix"
+msgstr ""
+
+msgid "Pumpboom"
+msgstr ""
+
+msgid "Pumpking"
+msgstr ""
+
+msgid "Sand Bloco"
+msgstr ""
+
+msgid "Sandworm"
+msgstr ""
+
+msgid "Scrausics"
+msgstr ""
+
+msgid "Signosigno"
+msgstr ""
+
+msgid "Snow Biter"
+msgstr ""
+
+msgid "Spiderduck"
+msgstr ""
+
+msgid "Stoneater"
+msgstr ""
+
+msgid "Swimming Duck"
+msgstr ""
+
+msgid "Tarantula"
+msgstr ""
+
+msgid "Uloboros"
+msgstr ""
+
+msgid "Werewolf"
+msgstr ""
+
+msgid "Xgaloctobus"
+msgstr ""
+
+msgid "@1 Sheep"
+msgstr ""
+
