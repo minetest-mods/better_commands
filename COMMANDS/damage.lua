@@ -140,9 +140,9 @@ better_commands.register_command("damage", {
 		if count < 1 then
 			return false, better_commands.error(S("No entity was found")), 0
 		elseif count == 1 then
-			return true, S("Damaged @1", last), 1
+			return true, S("Applied @1 damage to @2", amount, last), 1
 		else
-			return true, S("Damaged @1 entities", count), count
+			return true, S("Applied @1 damage to @2 entities", count), count
 		end
     end
 })
