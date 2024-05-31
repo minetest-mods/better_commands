@@ -7,6 +7,7 @@ Adds commands and syntax from a certain other voxel game (such as `/kill @e[type
 * [ContentDB](https://content.minetest.net/packages/ThePython/better_commands)
 * [Forum](https://forum.minetest.net/viewtopic.php?t=30370)
 * [Changelog](./CHANGELOG.md)
+* [Translation](https://hosted.weblate.org/guide/better-commands/better-commands/)
 
 ### PLEASE help with bug reports and PR's
 This is kind of a huge project. ACOVG's commands are complicated.
