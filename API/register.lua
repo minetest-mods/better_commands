@@ -36,6 +36,8 @@ function better_commands.register_command(name, def)
                     end
                 end
             end
+        else
+            return success, nil, count
         end
         return success, "", count --don't actually send messages
     end

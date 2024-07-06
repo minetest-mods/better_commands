@@ -126,7 +126,7 @@ better_commands.register_command("clear", {
             end
         end
         if count < 1 then
-            return false, better_commands.error(S("No player was found"))
+            return false, better_commands.error(S("No player was found")), 0
         elseif count == 1 then
             if all and remove_max == -1 then
                 return true, S("Removed all items from player @1", last), 1

@@ -1,6 +1,16 @@
 # TODO
 A place for me to write out my future plans. I decide what to do next [randomly](https://wheelofnames.com/24r-ygp) (yes, this is genuinely how I do it).
 
+## Short-term goals
+Things that *must* be done before the next release
+- [ ] `/give <player> <item_without_metadata> <count>` only gives 1 item.
+  - Items with metadata work fine.
+
+
+
+
+## Long-term goals
+Things that I hope to do *eventually*.
 - [ ] Add scoreboard playerlist
 - [x] Add scoreboard nametags
 - [ ] Make output match ACOVG's (error messages, number results, etc.)
@@ -84,7 +94,7 @@ A place for me to write out my future plans. I decide what to do next [randomly]
   - [ ] `ride`?
   - [ ] `seed`
   - [ ] `setidletimeout`?
-  - [ ] `stop`
+  - [x] `stop`
   - [ ] `structure`?
   - [x] `summon`
   - [ ] `tag`

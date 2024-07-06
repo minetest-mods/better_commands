@@ -596,8 +596,8 @@ function better_commands.parse_time_string(time, absolute)
     -- The pattern shouldn't let through any negative numbers... but just in case
     if amount < 0 then return nil, S("Amount must not be negative") end
     if unit == "s" then
-        local second_multiplier = tonumber(minetest.settings:get("time_speed")) or 72
-        amount = amount * second_multiplier / 3.6 -- (3.6s = 1 millihour)
+        local tps = tonumber(minetest.settings:get("time_speed")) or 72
+        amount = amount * tps / 3.6 -- (3.6s = 1 millihour)
     elseif unit == "d" then
         amount = amount * 24000
     elseif unit ~= "t" then

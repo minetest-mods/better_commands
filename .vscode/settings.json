@@ -1,10 +1,10 @@
 {
     "Lua.workspace.library": [
-        "/home/nolan/.config/Code/User/globalStorage/sumneko.lua/addonManager/addons/minetest/module/library"
+        "C:/Users/Nolan/AppData/Roaming/Code/User/globalStorage/sumneko.lua/addonManager/addons/minetest/module/library"
     ],
     "Lua.diagnostics.disable": [
-        "undefined-field",
         "cast-local-type",
+        "undefined-field"
     ],
     "Lua.diagnostics.globals": [
         "mcl_formspec",
@@ -30,7 +30,10 @@
         "better_command_blocks",
         "mcl_gamemode",
         "mcl_experience",
-        "awards"
+        "awards",
+        "mcl_weather",
+        "weather",
+        "weather_mod"
     ],
     "Lua.workspace.checkThirdParty": false,
 }

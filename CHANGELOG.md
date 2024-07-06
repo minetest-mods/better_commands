@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.0
+### New features
+* Added `/stop` command
+* Added `/weather` command
+* Added `/toggledownfall` command
+### Bugfixes
+* Leaving out arguments no longer fails to show the `params` string.
+
 ## v2.0 (May 31, 2024)
 ### New features
 * Added `gamemode`/`m` selector argument

@@ -18,6 +18,8 @@ local command_files = {
     "spawnpoint",
     "clear",
     "settings",
+    "stop",
+    "weather",
 }
 
 local mcl_only = {
