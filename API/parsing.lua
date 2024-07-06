@@ -10,7 +10,7 @@ function better_commands.parse_params(str)
     local found = {}
     -- selectors, @?[data]
     repeat
-        tmp = {str:find("(@[psaer])%s*(%[.-%])", i)}
+        tmp = {str:find("(@[parsen])%s*(%[.-%])", i)}
         if tmp[1] then
             i = tmp[2] + 1
             tmp.type = "selector"
@@ -95,7 +95,7 @@ function better_commands.parse_params(str)
                 end
             end
             if not overlap then
-                if tmp[3]:find("^@[psaer]$") then
+                if tmp[3]:find("^@[parsen]$") then
                     tmp.type = "selector"
                 elseif better_commands.players[tmp[3]] then
                     tmp.type = "selector"
@@ -203,14 +203,13 @@ function better_commands.parse_selector(selector_data, context, require_one)
     if selector == "@s" then
         return {caller}
     end
-    if selector == "@e" or selector == "@a" or selector == "@p" or selector == "@r" then
-        for _, player in pairs(minetest.get_connected_players()) do
-            if player:get_pos() then
-                table.insert(objects, player)
-            end
+    -- Always include players
+    for _, player in pairs(minetest.get_connected_players()) do
+        if player:get_pos() then
+            table.insert(objects, player)
         end
     end
-    if selector == "@e" then
+    if selector == "@e" or selector == "@n" then
         for _, luaentity in pairs(minetest.luaentities) do
             if luaentity.object:get_pos() then
                 table.insert(objects, luaentity.object)
@@ -231,7 +230,7 @@ function better_commands.parse_selector(selector_data, context, require_one)
     end
 
     local sort
-    if selector == "@p" then
+    if selector == "@p" or selector == "@n" then
         sort = "nearest"
     elseif selector == "@r" then
         sort = "random"
@@ -239,7 +238,7 @@ function better_commands.parse_selector(selector_data, context, require_one)
         sort = "arbitrary"
     end
     local limit
-    if selector == "@p" or selector == "@r" then limit = 1 end
+    if selector == "@p" or selector == "@n" or selector == "@r" then limit = 1 end
 
     if arg_table then
         -- Look for pos first

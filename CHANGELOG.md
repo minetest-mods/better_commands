@@ -5,6 +5,7 @@
 * Added `/stop` command
 * Added `/weather` command
 * Added `/toggledownfall` command
+* Added `@n` selector
 ### Bugfixes
 * Leaving out arguments no longer fails to show the `params` string.
 
