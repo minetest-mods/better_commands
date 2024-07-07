@@ -36,7 +36,7 @@
 * Removed `anchored` execute subcommand (if you want to have rotation anchors, make a PR, because I can't think of any good way to do it)
 * Command results are now shown to other players as well, unless `better_commands.send_command_feedback` is disabled
 * Error messages are now red
-* Some command me2ssages now match ACOVG's better
+* Some command messages now match ACOVG's better
 ### Bugfixes
 * Fixed a bug with the `/kill` command (it should work now).
 * The `rm`/`r` selector arguments now actually treat their values as numbers (not strings), and are now inclusive as intended.

@@ -20,6 +20,7 @@ local command_files = {
     "settings",
     "stop",
     "weather",
+    "ride",
 }
 
 local mcl_only = {

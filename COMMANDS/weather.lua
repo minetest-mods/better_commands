@@ -64,7 +64,7 @@ better_commands.register_command("weather", {
         (better_commands.mcl and " [<duration>])" or ""),
     func = function (name, param, context)
         local split_param, err = better_commands.parse_params(param)
-        if err or not split_param then return false, err, 0 end
+        if err or not split_param then return false, better_commands.error(err), 0 end
         if not split_param[1] then
             return false, nil, 0
         end
@@ -84,7 +84,7 @@ better_commands.register_command("weather", {
                     return false, better_commands.error(S("Unexpected argument: @1", split_param[2][3])), 0
                 else
                     local duration, err = better_commands.parse_time_string(split_param[2][3], true)
-                    if err or not duration then return false, err, 0 end
+                    if err or not duration then return false, better_commands.error(err), 0 end
                     local tps = tonumber(minetest.settings:get("time_speed"))
                     -- Don't ask how the math works; I already forgot.
                     local duration_s = duration*24000/(tps/3.6)
@@ -94,7 +94,7 @@ better_commands.register_command("weather", {
             set_weather(w, end_time)
             return true, S("Set weather to @1", split_param[1][3])
         else
-            return false, S("Invalid weather: @1", split_param[1][3])
+            return false, better_commands.error(S("Invalid weather: @1", split_param[1][3]))
         end
     end
 })
@@ -109,7 +109,7 @@ better_commands.register_command("toggledownfall", {
             if new_weather then
                 set_weather(new_weather)
             else
-                return false, S("No weather called 'rain'"), 0
+                return false, better_commands.error(S("No weather called 'rain'")), 0
             end
         else
             set_weather("none")

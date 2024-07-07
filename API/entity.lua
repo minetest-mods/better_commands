@@ -105,7 +105,39 @@ function better_commands.entity_from_alias(alias, list)
     return entities[math.random(1, #entities)]
 end
 
----Handles rotation when summoning/teleporting
+---Handles Vector2 (yaw/pitch) rotation in split_param
+---@param base_rot vector.Vector
+---@param split_param splitParam
+---@param i integer
+---@param no_relative boolean?
+---@return vector.Vector?
+---@return string?
+function better_commands.handle_vector2_rot(base_rot, split_param, i, no_relative)
+    base_rot = table.copy(base_rot)
+    if split_param[i] then
+        if not split_param[i+1] then
+            return nil, S("Missing second rotation coordinate")
+        end
+        if split_param[i].type == "number" then
+            base_rot.y = math.rad(tonumber(split_param[i][3]) or 0)
+        elseif split_param[i].type == "relative" and not no_relative then
+            base_rot.y = base_rot.y+math.rad(tonumber(split_param[i][3]:sub(2,-1)) or 0)
+        else
+            return nil, S("Invalid rotation coordinate @1", split_param[i][3])
+        end
+        if split_param[i+1].type == "number" then
+            base_rot.x = math.rad(tonumber(split_param[i+1][3]) or 0)
+        elseif split_param[i+1].type == "relative" and not no_relative then
+            base_rot.x = base_rot.x+math.rad(tonumber(split_param[i+1][3]:sub(2,-1)) or 0)
+        else
+            return nil, S("Invalid rotation coordinate @1", split_param[i+1][3])
+        end
+        return base_rot
+    end
+    return base_rot
+end
+
+---Handles rotation in various commands
 ---@param context contextTable
 ---@param victim minetest.ObjectRef|vector.Vector
 ---@param split_param splitParam[]
@@ -118,21 +150,17 @@ function better_commands.get_tp_rot(context, victim, split_param, i)
     if split_param[i] then
         local yaw_pitch
         local facing
-        if split_param[i].type == "number" then
-            victim_rot.y = math.rad(tonumber(split_param[i][3]) or 0)
+        if split_param[i].type == "number" or split_param[i].type == "relative" then
             yaw_pitch = true
         elseif split_param[i].type == "relative" then
-            victim_rot.y = victim_rot.y+math.rad(tonumber(split_param[i][3]:sub(2,-1)) or 0)
             yaw_pitch = true
         elseif split_param[i][3] == "facing" then
             facing = true
+        else
+            return nil, S("Invalid rotation")
         end
-        if yaw_pitch and split_param[i+1] then
-            if split_param[i+1].type == "number" then
-                victim_rot.x = math.rad(tonumber(split_param[i+1][3]) or 0)
-            elseif split_param[i+1].type == "relative" then
-                victim_rot.x = victim_rot.x+math.rad(tonumber(split_param[i+1][3]:sub(2,-1)) or 0)
-            end
+        if yaw_pitch then
+            return better_commands.handle_vector2_rot(victim_rot, split_param, i)
         elseif facing and split_param[i+1] then
             if split_param[i+1].type == "selector" then
                 local targets, err = better_commands.parse_selector(split_param[i+1], context, true)

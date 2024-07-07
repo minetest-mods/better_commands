@@ -5,7 +5,7 @@ A place for me to write out my future plans. I decide what to do next [randomly]
 Things that *must* be done before the next release
 - [ ] `/give <player> <item_without_metadata> <count>` only gives 1 item.
   - Items with metadata work fine.
-
+- [ ] Test potentially broken summon/tp rotation
 
 
 
@@ -103,7 +103,7 @@ Things that I hope to do *eventually*.
   - [ ] `testforblock`
   - [ ] `testforblocks`
   - [ ] `tickingarea`?
-  - [ ] `toggledownfall` (depending on mods)
-  - [ ] `weather` (depending on mods)
+  - [x] `toggledownfall` (depending on mods)
+  - [x] `weather` (depending on mods)
   - [ ] `whitelist`
   - [ ] `worldborder`? (maybe not visible, probably no collision)
