@@ -1,15 +1,17 @@
 --local bc = better_commands
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 ---Parses parameters out of a string
 ---@param str string
 ---@return splitParam[] split_param
 function better_commands.parse_params(str)
+    str = " "..str -- Don't ask
     local i = 1
     local tmp
     local found = {}
     -- selectors, @?[data]
     repeat
+        -- p, a, r, s, e, and n are obviously the selectors but I just like the fact that they include the word "parse" (it was even better before I added @n)
         tmp = {str:find("(@[parsen])%s*(%[.-%])", i)}
         if tmp[1] then
             i = tmp[2] + 1
@@ -54,7 +56,7 @@ function better_commands.parse_params(str)
     i = 1
     repeat
         -- modname:id count wear (everything but id optional)
-        tmp = {str:find("(%s[_%w]*:?[_%w]+)%s*(%d*)%s*(%d*)", i)}
+        tmp = {str:find("%s([_%w]*:?[_%w]+)%s*(%d*)%s*(%d*)", i)}
         if tmp[1] then
             tmp[1] = tmp[1] + 1 -- ignore the space
             local overlap
@@ -172,7 +174,7 @@ end
 ---@param selector_data splitParam
 ---@param context contextTable
 ---@param require_one? boolean
----@return (minetest.ObjectRef|vector.Vector)[]? results
+---@return (core.ObjectRef|vector.Vector)[]? results
 ---@return string? err
 ---@nodiscard
 function better_commands.parse_selector(selector_data, context, require_one)
@@ -180,7 +182,7 @@ function better_commands.parse_selector(selector_data, context, require_one)
     local pos = table.copy(context.pos)
     local result = {}
     if selector_data[3]:sub(1,1) ~= "@" then
-        local player = minetest.get_player_by_name(selector_data[3])
+        local player = core.get_player_by_name(selector_data[3])
         if not player then
             return nil, S("No player was found")
         else
@@ -204,13 +206,13 @@ function better_commands.parse_selector(selector_data, context, require_one)
         return {caller}
     end
     -- Always include players
-    for _, player in pairs(minetest.get_connected_players()) do
+    for _, player in pairs(core.get_connected_players()) do
         if player:get_pos() then
             table.insert(objects, player)
         end
     end
     if selector == "@e" or selector == "@n" then
-        for _, luaentity in pairs(minetest.luaentities) do
+        for _, luaentity in pairs(core.luaentities) do
             if luaentity.object:get_pos() then
                 table.insert(objects, luaentity.object)
             end
@@ -220,7 +222,7 @@ function better_commands.parse_selector(selector_data, context, require_one)
     if selector == "@r" or selector == "@p" then
         for _, arg in ipairs(arg_table) do
             if arg[1] == "type" and arg[2]:lower() ~= "player" then
-                for _, luaentity in pairs(minetest.luaentities) do
+                for _, luaentity in pairs(core.luaentities) do
                     if luaentity.object:get_pos() then
                         table.insert(objects, luaentity.object)
                     end
@@ -491,7 +493,7 @@ end
 
 ---Parses item data, returning an itemstack or err message
 ---@param item_data splitParam
----@return minetest.ItemStack? result
+---@return core.ItemStack? result
 ---@return string? err
 ---@nodiscard
 function better_commands.parse_item(item_data, ignore_count)
@@ -535,7 +537,7 @@ end
 
 ---Parses node data, returns node and metadata table
 ---@param item_data splitParam
----@return minetest.Node? node
+---@return core.Node? node
 ---@return table? metadata
 ---@return string? err
 ---@nodiscard
@@ -547,7 +549,7 @@ function better_commands.parse_node(item_data)
     if not itemstring then
         return nil, nil, S("Unknown node '@1'", item_data[3])
     end
-    if not minetest.registered_nodes[itemstring] then
+    if not core.registered_nodes[itemstring] then
         return nil, nil, S("'@1' is not a node", itemstring)
     end
     if item_data.type == "item" and not item_data.extra_data then
@@ -595,7 +597,7 @@ function better_commands.parse_time_string(time, absolute)
     -- The pattern shouldn't let through any negative numbers... but just in case
     if amount < 0 then return nil, S("Amount must not be negative") end
     if unit == "s" then
-        local tps = tonumber(minetest.settings:get("time_speed")) or 72
+        local tps = tonumber(core.settings:get("time_speed")) or 72
         amount = amount * tps / 3.6 -- (3.6s = 1 millihour)
     elseif unit == "d" then
         amount = amount * 24000
@@ -604,7 +606,7 @@ function better_commands.parse_time_string(time, absolute)
     end
 
     if not absolute then
-        result = (minetest.get_timeofday() + (amount/24000)) % 1
+        result = (core.get_timeofday() + (amount/24000)) % 1
     elseif better_commands.settings.acovg_time then
         result = ((amount + 6000)/24000) % 1
     else

@@ -1,5 +1,5 @@
 --local bc = better_commands
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 better_commands.register_command("kill", {
     params = S("[<targets>]"),
@@ -14,7 +14,7 @@ better_commands.register_command("kill", {
         local last
         for _, target in ipairs(targets) do
             if target.is_player then
-                if better_commands.settings.kill_creative_players or not (target:is_player() and minetest.is_creative_enabled(target:get_player_name())) then
+                if better_commands.settings.kill_creative_players or not (target:is_player() and core.is_creative_enabled(target:get_player_name())) then
                     last = better_commands.get_entity_name(target)
                     better_commands.deal_damage(
                         ---@diagnostic disable-next-line: param-type-mismatch
@@ -66,7 +66,7 @@ better_commands.register_command("remove", {
         for _, target in ipairs(targets) do
             if target.is_player then
                 if target:is_player() then
-                    if better_commands.settings.kill_creative_players or not (minetest.is_creative_enabled(target:get_player_name())) then
+                    if better_commands.settings.kill_creative_players or not (core.is_creative_enabled(target:get_player_name())) then
                         last = better_commands.get_entity_name(target)
                         better_commands.deal_damage(
                             ---@diagnostic disable-next-line: param-type-mismatch
@@ -121,10 +121,13 @@ better_commands.register_command("damage", {
         local reason = {
             type = damage_type,
             object = damage_source,
-            _mcl_reason = {
-                source = damage_source
-            }
         }
+        if better_commands.mcl2 and damage_type then
+            if mcl_damage.types[damage_type] then
+                reason._mcl_reason = table.copy(reason)
+                reason.type = nil
+            end
+        end
         local targets, err = better_commands.parse_selector(selector, context)
         if err or not targets then return false, better_commands.error(err), 0 end
         local count = 0
@@ -142,7 +145,7 @@ better_commands.register_command("damage", {
 		elseif count == 1 then
 			return true, S("Applied @1 damage to @2", amount, last), 1
 		else
-			return true, S("Applied @1 damage to @2 entities", count), count
+			return true, S("Applied @1 damage to @2 entities", amount, count), count
 		end
     end
 })

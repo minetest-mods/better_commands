@@ -1,9 +1,9 @@
 --local bc = better_commands
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 function better_commands.error(str)
     if not str or str == "" then return str end
-    return minetest.colorize("red", minetest.strip_colors(str))
+    return core.colorize("red", core.strip_colors(str))
 end
 
 ---Registers an ACOVG command
@@ -21,16 +21,16 @@ function better_commands.register_command(name, def)
             success, message, count = false, better_commands.error(S("Missing context")), 0
         end
         if message then
-            if minetest.settings:get_bool("better_commands.send_command_feedback", true) then
-                minetest.chat_send_player(name, message)
+            if core.settings:get_bool("better_commands.send_command_feedback", true) then
+                core.chat_send_player(name, message)
                 if success then -- Only broadcast successful commands to others
-                    for _, player in ipairs(minetest.get_connected_players()) do
+                    for _, player in ipairs(core.get_connected_players()) do
                         local player_name = player:get_player_name()
                         if player_name ~= name then
-                            minetest.chat_send_player(player_name, minetest.colorize("#aaaaaa", string.format(
+                            core.chat_send_player(player_name, core.colorize("#aaaaaa", string.format(
                                 "[%s: %s]",
                                 context and context.origin or S("???"),
-                                minetest.strip_colors(message)
+                                core.strip_colors(message)
                             )))
                         end
                     end
@@ -51,21 +51,21 @@ function better_commands.register_command_alias(new, old)
 end
 
 -- Register commands last (so overriding works properly)
-minetest.register_on_mods_loaded(function()
+core.register_on_mods_loaded(function()
     for name, def in pairs(better_commands.commands) do
-        if minetest.registered_chatcommands[name] then
+        if core.registered_chatcommands[name] then
             if better_commands.settings.override then
-                minetest.log("action", "[Better Commands] Overriding "..name)
-                better_commands.old_commands[name] = minetest.registered_chatcommands[name]
-                minetest.unregister_chatcommand(name, def)
+                core.log("action", "[Better Commands] Overriding "..name)
+                better_commands.old_commands[name] = core.registered_chatcommands[name]
+                core.unregister_chatcommand(name)
             else
-                minetest.log("action", "[Better Commands] Not registering "..name.." as it already exists.")
+                core.log("action", "[Better Commands] Not registering "..name.." as it already exists.")
                 return
             end
         end
-        minetest.register_chatcommand(name, def)
+        core.register_chatcommand(name, def)
         -- Since this is in an on_mods_loaded function, mod_origin is "??" by default
         ---@diagnostic disable-next-line: inject-field
-        minetest.registered_chatcommands[name].mod_origin = "better_commands"
+        core.registered_chatcommands[name].mod_origin = "better_commands"
     end
 end)

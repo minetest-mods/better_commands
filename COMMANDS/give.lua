@@ -1,8 +1,8 @@
 --local bc = better_commands
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 ---Gets a printable name ("name * count") for an itemstack
----@param itemstack minetest.ItemStack
+---@param itemstack core.ItemStack
 ---@return string
 local function itemstack_name(itemstack)
 	return string.format("%s [%s]", itemstack:get_count(), itemstack:get_short_description())
@@ -27,13 +27,13 @@ local function handle_give_command(receiver, stack_data)
 	elseif itemstack:get_name() == "ignore" then
 		return false, better_commands.error(S("Giving 'ignore' is not allowed")), 0
 	end
-	local receiverref = minetest.get_player_by_name(receiver)
+	local receiverref = core.get_player_by_name(receiver)
 	if receiverref == nil then
 		return false, better_commands.error(S("No player was found")), 0
 	end
 	local leftover = receiverref:get_inventory():add_item("main", itemstack)
 	if not leftover:is_empty() then
-		minetest.add_item(receiverref:get_pos(), leftover)
+		core.add_item(receiverref:get_pos(), leftover)
 	end
 	-- The actual item stack string may be different from what the "giver"
 	-- entered (e.g. big numbers are always interpreted as 2^16-1).

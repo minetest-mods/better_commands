@@ -1,11 +1,5 @@
 {
-    "Lua.workspace.library": [
-        "C:/Users/Nolan/AppData/Roaming/Code/User/globalStorage/sumneko.lua/addonManager/addons/minetest/module/library"
-    ],
-    "Lua.diagnostics.disable": [
-        "cast-local-type",
-        "undefined-field"
-    ],
+    "editor.inlineSuggest.showToolbar": "always",
     "Lua.diagnostics.globals": [
         "mcl_formspec",
         "mcl_item_id",
@@ -28,12 +22,36 @@
         "core",
         "better_commands",
         "better_command_blocks",
-        "mcl_gamemode",
-        "mcl_experience",
-        "awards",
+        "nether",
+        "vector",
+        "pipeworks",
+        "mcl_burning",
+        "fire_plus",
         "mcl_weather",
+        "weather_mod",
+        "mcl_damage",
         "weather",
-        "weather_mod"
+        "awards",
+        "mcl_craftguide",
+        "mcl_particles",
+        "screwdriver",
+        "mcl_autogroup",
+        "farming",
+        "hopper",
+        "stamina",
+        "mcl_banners",
+        "mcl_hunger",
+        "mcl_experience",
+        "mcl_gamemode"
     ],
-    "Lua.workspace.checkThirdParty": false,
+    "Lua.diagnostics.disable": [
+        "undefined-field"
+    ],
+    "Lua.workspace.userThirdParty": [
+        "C:\\Portable\\LuaLSAddons"
+    ],
+    "Lua.workspace.library": [
+        "C:/Portable/LuaLSAddons/luanti-lls-definitions/library"
+    ],
+    "Lua.workspace.checkThirdParty": false
 }

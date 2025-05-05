@@ -1,5 +1,5 @@
 --local bc = better_commands--local bc = better_commands
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 better_commands.register_command("ability", {
     params = S("<player> <privilege> [<value>]"),
@@ -20,7 +20,7 @@ better_commands.register_command("ability", {
         local target = targets[1]
         if target.is_player and target:is_player() then
             local target_name = target:get_player_name()
-            local privs = minetest.get_player_privs(target_name)
+            local privs = core.get_player_privs(target_name)
             if not set then
                 if not priv then
                     local message = ""
@@ -40,14 +40,14 @@ better_commands.register_command("ability", {
                     end
                     return true, message, count
                 else
-                    if minetest.registered_privileges[priv] then
+                    if core.registered_privileges[priv] then
                         return true, S("@1 = @2", priv, tostring(privs[priv])), 1
                     else
                         return false, better_commands.error(S("Invalid privilege '@1'", priv)), 0
                     end
                 end
             else
-                if not minetest.registered_privileges[priv] then
+                if not core.registered_privileges[priv] then
                     return false, better_commands.error(S("Invalid privilege '@1'", priv)), 0
                 else
                     if set == "true" then
@@ -55,8 +55,8 @@ better_commands.register_command("ability", {
                     else
                         privs[priv] = nil
                     end
-                    minetest.set_player_privs(target_name, privs)
-                    minetest.chat_send_player(target_name, S(
+                    core.set_player_privs(target_name, privs)
+                    core.chat_send_player(target_name, S(
                         "@1 privilege @2 by @3",
                         priv,
                         set == "true" and "granted" or "revoked",
@@ -92,7 +92,7 @@ better_commands.register_command("op", {
         local last
         if #targets > 0 then
             local privs = {}
-            for priv in pairs(minetest.registered_privileges) do
+            for priv in pairs(core.registered_privileges) do
                 privs[priv] = true
             end
             for _, target in ipairs(targets) do
@@ -100,7 +100,7 @@ better_commands.register_command("op", {
                     count = count + 1
                     last = better_commands.get_entity_name(target)
                     -- not sure whether I need to copy it or not
-                    minetest.set_player_privs(target:get_player_name(), table.copy(privs))
+                    core.set_player_privs(target:get_player_name(), table.copy(privs))
                 end
             end
         end
@@ -130,7 +130,7 @@ better_commands.register_command("deop", {
         local count = 0
         local last
         if #targets > 0 then
-            local default_privs_string = minetest.settings:get("default_privs")
+            local default_privs_string = core.settings:get("default_privs")
             local default_privs = {}
             if not default_privs_string or default_privs_string == "" then
                 default_privs = {interact = true, shout = true}
@@ -145,7 +145,7 @@ better_commands.register_command("deop", {
                     count = count + 1
                     last = better_commands.get_entity_name(target)
                     -- not sure whether I need to copy it or not
-                    minetest.set_player_privs(target:get_player_name(), table.copy(default_privs))
+                    core.set_player_privs(target:get_player_name(), table.copy(default_privs))
                 end
             end
         end

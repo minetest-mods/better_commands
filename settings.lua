@@ -7,13 +7,13 @@ better_commands.settings = {}
 local function get_setting(setting, default, type)
     local long_setting = "better_commands_"..setting
     if not type or type == "string" then
-        better_commands.settings[setting] = minetest.settings:get(long_setting) or default
+        better_commands.settings[setting] = core.settings:get(long_setting) or default
     elseif type == "bool" then
-        better_commands.settings[setting] = minetest.settings:get_bool(long_setting, default)
+        better_commands.settings[setting] = core.settings:get_bool(long_setting, default)
     elseif type == "number" then
-        better_commands.settings[setting] = tonumber(minetest.settings:get(long_setting)) or default
+        better_commands.settings[setting] = tonumber(core.settings:get(long_setting)) or default
     elseif type == "comma_separated" then
-        local value = minetest.settings:get(long_setting)
+        local value = core.settings:get(long_setting)
         better_commands.settings[setting] = value and value:split(",") or default
     end
 end

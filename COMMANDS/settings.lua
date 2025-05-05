@@ -1,5 +1,5 @@
 --local bc = better_commands
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 better_commands.register_command("gamerule", {
     description = S("Sets or queries settings"),
@@ -14,8 +14,8 @@ better_commands.register_command("gamerule", {
             if setting:sub(1, 7) == "secure." then
                 return false, S("Failed. Cannot modify secure settings. Edit the settings file manually"), 0
             end
-            local new = not minetest.settings:get(setting)
-            minetest.settings:set(setting, value)
+            local new = not core.settings:get(setting)
+            core.settings:set(setting, value)
             better_commands.reload_settings()
             if new then
                 return true, S("Set @1 to @2 (new setting)", setting, value), 1
@@ -23,7 +23,7 @@ better_commands.register_command("gamerule", {
                 return true, S("Set @1 to @2", setting, value), 1
             end
         else
-            value = minetest.settings:get(setting)
+            value = core.settings:get(setting)
             if value then
                 return true, S("@1 = @2", setting, value), 1
             else

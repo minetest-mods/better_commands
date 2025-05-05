@@ -1,16 +1,16 @@
-local storage = minetest.get_mod_storage()
+local storage = core.get_mod_storage()
 
 function better_commands.load(key, default)
     local value = storage:get_string(key)
     if value and value ~= "" then
-        better_commands[key] = minetest.deserialize(value) or default
+        better_commands[key] = core.deserialize(value) or default
     else
         better_commands[key] = default
     end
 end
 
 function better_commands.save(key)
-    storage:set_string(key, minetest.serialize(better_commands[key]))
+    storage:set_string(key, core.serialize(better_commands[key]))
 end
 
 better_commands.load("teams", {teams = {}, players = {}})
@@ -23,7 +23,7 @@ better_commands.register_on_update(function ()
     better_commands.save("spawnpoints")
 end)
 
-minetest.register_on_shutdown(function()
+core.register_on_shutdown(function()
     better_commands.save("scoreboard")
     better_commands.save("teams")
     better_commands.save("spawnpoints")

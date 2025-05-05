@@ -1,4 +1,4 @@
----@alias contextTable {executor: minetest.ObjectRef, pos: vector.Vector, rot: vector.Vector, anchor: string, origin: string, [any]: any}
+---@alias contextTable {executor: core.ObjectRef, pos: vector.Vector, rot: vector.Vector, anchor: string, origin: string, [any]: any}
 ---@alias splitParam {[1]: integer, [2]: integer, [3]: string, type: string, any: string}
 ---@alias betterCommandFunc fun(name: string, param: string, context: contextTable): success: boolean, message: string?, count: number
 ---@alias betterCommandDef {description: string, param?: string, privs: table<string, boolean>, func: betterCommandFunc, real_func: betterCommandFunc?}
@@ -6,7 +6,7 @@
 --local bc = better_commands
 
 
-local modpath = minetest.get_modpath("better_commands")
+local modpath = core.get_modpath("better_commands")
 
 ---Runs a file
 ---@param file string
@@ -37,7 +37,7 @@ end
 
 better_commands.paused = false
 local timer = 0
-minetest.register_globalstep(function(dtime)
+core.register_globalstep(function(dtime)
     if better_commands.paused then return end
     timer = timer + dtime
     if timer > better_commands.settings.save_interval then
@@ -48,7 +48,7 @@ minetest.register_globalstep(function(dtime)
     end
 end)
 
-minetest.register_on_joinplayer(function(player)
+core.register_on_joinplayer(function(player)
     better_commands.sidebars[player:get_player_name()] = {}
 end)
 

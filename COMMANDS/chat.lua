@@ -1,5 +1,5 @@
 --local bc = better_commands
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 better_commands.register_command("say", {
     params = S("<message>"),
@@ -9,14 +9,14 @@ better_commands.register_command("say", {
         local split_param = better_commands.parse_params(param)
         if not split_param[1] then return false, nil, 0 end
         local message
-        if context.command_block or minetest.check_player_privs(context.origin, {server = true}) then
+        if context.command_block or core.check_player_privs(context.origin, {server = true}) then
             local err
             message, err = better_commands.expand_selectors(param, split_param, 1, context)
             if err then return false, better_commands.error(err), 0 end
         else
             message = param
         end
-        minetest.chat_send_all(string.format("[%s] %s", better_commands.get_entity_name(context.executor), message))
+        core.chat_send_all(string.format("[%s] %s", better_commands.get_entity_name(context.executor), message))
         return true, nil, 1
     end
 })
@@ -34,7 +34,7 @@ better_commands.register_command("msg", {
         if err or not targets then return false, better_commands.error(err), 0 end
         local target_start = S("@1 whispers to you: ", better_commands.get_entity_name(context.executor))
         local message
-        if context.command_block or minetest.check_player_privs(context.origin, {server = true}) then
+        if context.command_block or core.check_player_privs(context.origin, {server = true}) then
             local err
             message, err = better_commands.expand_selectors(param, split_param, 2, context)
             if err then return false, better_commands.error(err), 0 end
@@ -47,8 +47,8 @@ better_commands.register_command("msg", {
             if target.is_player and target:is_player() then
                 count = count + 1
                 local origin_start = S("You whisper to @1: ", better_commands.get_entity_name(target))
-                minetest.chat_send_player(name, origin_start..message)
-                minetest.chat_send_player(target:get_player_name(), target_start..message)
+                core.chat_send_player(name, origin_start..message)
+                core.chat_send_player(target:get_player_name(), target_start..message)
             end
         end
         return true, nil, count
@@ -66,14 +66,14 @@ better_commands.register_command("me", {
         local split_param = better_commands.parse_params(param)
         if not split_param[1] then return false, nil, 0 end
         local message
-        if context.command_block or minetest.check_player_privs(context.origin, {server = true}) then
+        if context.command_block or core.check_player_privs(context.origin, {server = true}) then
             local err
             message, err = better_commands.expand_selectors(param, split_param, 1, context)
             if err then return false, better_commands.error(err), 0 end
         else
             message = param
         end
-        minetest.chat_send_all(string.format("* %s %s", better_commands.get_entity_name(context.executor), message))
+        core.chat_send_all(string.format("* %s %s", better_commands.get_entity_name(context.executor), message))
         return true, nil, 1
     end
 })
@@ -95,9 +95,9 @@ better_commands.register_command("teammsg", {
         local team_color = better_commands.team_colors[better_commands.teams.teams[team].color or "white"]
         local display_name = better_commands.teams.teams[team].display_name or team
         if not team then return false, better_commands.error(S("You must be on a team to message your team")), 0 end
-        local start = S("[@1] <@2> ", minetest.colorize(team_color, display_name), better_commands.get_entity_name(context.executor))
+        local start = S("[@1] <@2> ", core.colorize(team_color, display_name), better_commands.get_entity_name(context.executor))
         local message
-        if context.command_block or minetest.check_player_privs(context.origin, {server = true}) then
+        if context.command_block or core.check_player_privs(context.origin, {server = true}) then
             local err
             message, err = better_commands.expand_selectors(param, split_param, 1, context)
             if err then return false, better_commands.error(err), 0 end
@@ -106,13 +106,13 @@ better_commands.register_command("teammsg", {
             message = param:sub(split_param[1][1], -1)
         end
         local count = 0
-        minetest.chat_send_player(name, "-> "..start..message)
+        core.chat_send_player(name, "-> "..start..message)
         for receiver, receiverteam in pairs(better_commands.teams.players) do
             if receiverteam == team then
                 count = count + 1
-                if minetest.get_player_by_name(receiver) then
+                if core.get_player_by_name(receiver) then
                     if receiver ~= name then
-                        minetest.chat_send_player(receiver, start..message)
+                        core.chat_send_player(receiver, start..message)
                     end
                 end
             end

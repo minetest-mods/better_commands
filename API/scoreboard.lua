@@ -1,5 +1,5 @@
 --local bc = better_commands
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 ---Gets matching names in a scoreboard
 ---@param selector splitParam
@@ -31,6 +31,7 @@ function better_commands.get_scoreboard_names(selector, context, objective, requ
         local targets, err = better_commands.parse_selector(selector, context)
         if err or not targets then return nil, err end
         for _, target in ipairs(targets) do
+---@diagnostic disable-next-line: param-type-mismatch
             if target.is_player and target:is_player() then
                 result[target:get_player_name()] = true
             end
@@ -105,9 +106,9 @@ function better_commands.format_score(objective, name)
         if format_data.type == "blank" then
             score = ""
         elseif format_data.type == "fixed" then
-            score = minetest.colorize("#ffffff", format_data.data)
+            score = core.colorize("#ffffff", format_data.data)
         else
-            score = minetest.colorize(format_data.data, tostring(score_data.score))
+            score = core.colorize(format_data.data, tostring(score_data.score))
         end
     else
         score = tostring(score_data.score)
@@ -121,7 +122,7 @@ function better_commands.update_nametags()
     if display then
         objective = display.objective
     end
-    for _, player in ipairs(minetest.get_connected_players()) do
+    for _, player in ipairs(core.get_connected_players()) do
         local nametag = better_commands.get_entity_name(player)
         if objective then
             local score = better_commands.format_score(objective, player:get_player_name())
@@ -136,7 +137,7 @@ end
 
 function better_commands.update_hud()
     local bg_width = 16
-    for _, player in ipairs(minetest.get_connected_players()) do
+    for _, player in ipairs(core.get_connected_players()) do
         local playername = player:get_player_name()
         local sidebar = better_commands.sidebars[playername]
         if not sidebar then
@@ -163,7 +164,7 @@ function better_commands.update_hud()
                 count = count + 1
                 local display_name = better_commands.format_name(name)
                 local score = better_commands.format_score(objective, name) or "???"
-                local width = #minetest.strip_colors(display_name) + #minetest.strip_colors(score)
+                local width = #core.strip_colors(display_name) + #core.strip_colors(score)
                 max_width = math.max(width + 2, max_width)
                 table.insert(sortable_scores, {name = display_name, score = score})
             end
@@ -201,7 +202,7 @@ function better_commands.update_hud()
             player:hud_change(sidebar.names, "offset", {x = center_x_offset*2+20, y = 0})
             player:hud_change(sidebar.scores, "text", score_text)
         else
-            minetest.log(dump(better_commands.scoreboard.objectivest))
+            --core.log(dump(better_commands.scoreboard.objectives))
             for name, id in pairs(sidebar) do
                 player:hud_remove(id)
                 sidebar[name] = nil

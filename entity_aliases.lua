@@ -1,4 +1,4 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 better_commands.entity_aliases = {
     -- Animalia
@@ -82,6 +82,17 @@ better_commands.entity_aliases = {
     ["livingnether:tardigrade"] = {tardigrade = true},
     ["livingnether:whip"] = {flesh_whip = true, whip = true},
 
+    -- Various MCL non-mobs
+    ["mcl_boats:boat"] = {boat = true},
+    ["mcl_boats:chest_boat"] = {chest_boat = true, boat_with_chest = true},
+    ["mcl_experience:orb"] = {experience_orb = true},
+    ["mcl_minecarts:minecart"] = {minecart = true},
+    ["mcl_minecarts:command_block_minecart"] = {command_block_minecart = true, minecart_with_command_block = true},
+    ["mcl_minecarts:chest_minecart"] = {chest_minecart = true, minecart_with_chest = true},
+    ["mcl_minecarts:furnace_minecart"] = {furnace_minecart = true, minecart_with_furnace = true},
+    ["mcl_minecarts:hopper_minecart"] = {hopper_minecart = true, minecart_with_hopper = true},
+    ["mcl_minecarts:tnt_minecart"] = {tnt_minecart = true, minecart_with_tnt = true},
+
     -- Mobs Redo mods:
     ["mobs_animal:bee"] = {bee = true},
     ["mobs_animal:cow"] = {cow = true},
@@ -145,13 +156,13 @@ better_commands.entity_aliases = {
     ["mobs_mc:chicken"] = {chicken = true},
     ["mobs_mc:cod"] = {cod = true},
     ["mobs_mc:cow"] = {cow = true},
-    ["mobs_mc:creeper"] = {creeper = true},
-    ["mobs_mc:creeper_charged"] = {creeper = true, charged_creeper = true},
+    ["mobs_mc:creeper"] = better_commands.mcla and {creeper = true},
+    ["mobs_mc:creeper_charged"] = better_commands.mcla and {charged_creeper = true, creeper_charged = true},
     ["mobs_mc:dog"] = {wolf = true},
     ["mobs_mc:dolphin"] = {dolphin = true},
     ["mobs_mc:donkey"] = {donkey = true},
-    ["mobs_mc:enderdragon"] = {ender_dragon = true},
-    ["mobs_mc:enderman"] = {enderman = true},
+    ["mobs_mc:enderdragon"] = {ender_dragon = true, enderdragon = true},
+    ["mobs_mc:enderman"] = better_commands.mcla and {enderman = true},
     ["mobs_mc:endermite"] = {endermite = true},
     ["mobs_mc:evoker"] = {evoker = true},
     ["mobs_mc:ghast"] = {ghast = true},
@@ -165,9 +176,9 @@ better_commands.entity_aliases = {
     ["mobs_mc:iron_golem"] = {iron_golem = true},
     ["mobs_mc:killer_bunny"] = {rabbit = true, killer_bunny = true},
     ["mobs_mc:llama"] = {llama = true},
-    ["mobs_mc:magma_cube_big"] = {magma_cube = true, big_magma_cube = true},
-    ["mobs_mc:magma_cube_small"] = {magma_cube = true, small_magma_cube = true},
-    ["mobs_mc:magma_cube_tiny"] = {magma_cube = true, tiny_magma_cube = true},
+    ["mobs_mc:magma_cube_big"] = {magma_cube = true, big_magma_cube = true, magma_cube_big = true},
+    ["mobs_mc:magma_cube_small"] = {magma_cube = true, small_magma_cube = true, magma_cube_small = true},
+    ["mobs_mc:magma_cube_tiny"] = {magma_cube = true, tiny_magma_cube = true, magma_cube_tiny = true},
     ["mobs_mc:mooshroom"] = {mooshroom = true},
     ["mobs_mc:mule"] = {mule = true},
     ["mobs_mc:ocelot"] = {ocelot = true},
@@ -178,29 +189,32 @@ better_commands.entity_aliases = {
     ["mobs_mc:pillager"] = {pillager = true},
     ["mobs_mc:polar_bear"] = {polar_bear = true},
     ["mobs_mc:rabbit"] = {rabbit = true},
+    ["mobs_mc:rover"] = better_commands.mcl2 and {rover = true, enderman = true},
     ["mobs_mc:salmon"] = {salmon = true},
     ["mobs_mc:sheep"] = {sheep = true},
     ["mobs_mc:shulker"] = {shulker = true},
     ["mobs_mc:silverfish"] = {silverfish = true},
     ["mobs_mc:skeleton"] = {skeleton = true},
     ["mobs_mc:skeleton_horse"] = {skeleton_horse = true},
-    ["mobs_mc:slime_big"] = {slime = true, big_slime = true},
-    ["mobs_mc:slime_small"] = {slime = true, small_slime = true},
-    ["mobs_mc:slime_tiny"] = {slime = true, tiny_slime = true},
+    ["mobs_mc:slime_big"] = {slime = true, big_slime = true, slime_big = true},
+    ["mobs_mc:slime_small"] = {slime = true, small_slime = true, slime_small = true},
+    ["mobs_mc:slime_tiny"] = {slime = true, tiny_slime = true, slime_tiny = true},
     ["mobs_mc:snowman"] = {snow_golem = true, snowman = true},
     ["mobs_mc:spider"] = {spider = true},
     ["mobs_mc:squid"] = {squid = true},
+    ["mobs_mc:stalker"] = better_commands.mcl2 and {stalker = true, creeper = true},
+    ["mobs_mc:stalker_overloaded"] = better_commands.mcl2 and {overloaded_stalker = true, stalker_overloaded = true, creeper = true, charged_creeper = true, creeper_charged = true},
     ["mobs_mc:stray"] = {stray = true},
     ["mobs_mc:strider"] = {strider = true},
     ["mobs_mc:sword_piglin"] = {zombie_piglin = true, zombified_piglin = true},
     ["mobs_mc:tropical_fish"] = {tropical_fish = true, clownfish = true},
     ["mobs_mc:vex"] = {vex = true},
     ["mobs_mc:villager"] = {villager = true},
-    ["mobs_mc:villager_zombie"] = {zombie_villager = true},
+    ["mobs_mc:villager_zombie"] = {zombie_villager = true, villager_zombie = true},
     ["mobs_mc:vindicator"] = {vindicator = true},
     ["mobs_mc:witch"] = {witch = true},
     ["mobs_mc:wither"] = {wither = true},
-    ["mobs_mc:witherskeleton"] = {wither_skeleton = true},
+    ["mobs_mc:witherskeleton"] = {wither_skeleton = true, witherskeleton = true},
     ["mobs_mc:wolf"] = {wolf = true},
     ["mobs_mc:zoglin"] = {zoglin = true},
     ["mobs_mc:zombie"] = {zombie = true},
@@ -286,10 +300,10 @@ better_commands.unique_entities = {}
     wolf = {"mobs_mc:wolf"}
 }
 ]]
-minetest.register_on_mods_loaded(function()
+core.register_on_mods_loaded(function()
     local exists
     for id, value in pairs(better_commands.entity_aliases) do
-        if minetest.registered_entities[id] then
+        if core.registered_entities[id] then
             for alias in pairs(value) do
                 if not better_commands.unique_entities[alias] then
                     better_commands.unique_entities[alias] = {}
@@ -310,8 +324,8 @@ end)
 
 better_commands.entity_names = {
     -- Built-in:
-    -- ["__builtin:item"] = S("Item"), -- Handled separately
-    -- ["__builtin:falling_node"] = S("Falling Node"), -- Handled separately
+    -- ["__builtin:item"] = S("Item"), -- Handled separately (item name)
+    -- ["__builtin:falling_node"] = S("Falling Node"), -- Handled separately (node name)
 
     -- Animalia
     ["animalia:angelfish"] = S("Angelfish"),
@@ -440,7 +454,10 @@ better_commands.entity_names = {
     ["mobs_turtles:turtle"] = S("Turtle"),
     ["mobs_turtles:seaturtle"] = S("Sea Turtle"),
 
-    -- MCLA/VL mobs all use luaentity.description
+    -- MCLA/VL mobs all use luaentity.description, but not non-mobs
+    ["mcl_boats:boat"] = S("Boat"),
+    ["mcl_experience:orb"] = S("Experience Orb"),
+
     ["nssm:ant_queen"] = S("Ant Queen"),
     ["nssm:ant_soldier"] = S("Ant Soldier"),
     ["nssm:ant_worker"] = S("Ant Worker"),

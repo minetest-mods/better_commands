@@ -1,4 +1,4 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 better_commands.register_command("clear", {
     params = S("[<targets>] [<items>] [<maxCount>]"),
@@ -60,7 +60,7 @@ better_commands.register_command("clear", {
                                 if all then
                                     match_count = match_count + stack:get_count()
                                 elseif group then
-                                    if minetest.get_item_group(stack:get_name(), filter) then
+                                    if core.get_item_group(stack:get_name(), filter) then
                                         match_count = match_count + stack:get_count()
                                     end
                                 elseif split_param[2].extra_data then
@@ -78,7 +78,7 @@ better_commands.register_command("clear", {
                                 if all then
                                     matches = true
                                 elseif group then
-                                    if minetest.get_item_group(stack:get_name(), filter) then
+                                    if core.get_item_group(stack:get_name(), filter) then
                                         matches = true
                                     end
                                 elseif split_param[2].extra_data then

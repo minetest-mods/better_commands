@@ -1,5 +1,5 @@
 --local bc = better_commands
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 better_commands.register_command("playsound", {
     params = S("<sound> <targets|pos> [<volume>] [<pitch>] [<maxDistance>]"),
@@ -49,7 +49,7 @@ better_commands.register_command("playsound", {
         end
         for _, target in ipairs(targets) do
             local key = target.is_player and "object" or "pos"
-            minetest.sound_play(
+            core.sound_play(
                 split_param[1][3], {
                     gain = volume,
                     pitch = pitch,

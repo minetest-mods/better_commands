@@ -1,5 +1,5 @@
 --local bc = better_commands
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 better_commands.register_command("setblock", {
     params = S("<pos> <block> [keep|replace]"),
@@ -21,14 +21,14 @@ better_commands.register_command("setblock", {
         local node, meta, err = better_commands.parse_node(split_param[4])
         if err or not node then return false, better_commands.error(err), 0 end
 
-        if keep == "keep" and minetest.get_node(pos).name ~= "air" then
+        if keep == "keep" and core.get_node(pos).name ~= "air" then
             return false, better_commands.error(S("Position is not empty")), 0
         end
 
-        minetest.set_node(pos, node)
+        core.set_node(pos, node)
 
         if meta and meta ~= {} then
-            local node_meta = minetest.get_meta(pos)
+            local node_meta = core.get_meta(pos)
             for key, value in pairs(meta) do
                 node_meta:set_string(key, value)
             end
@@ -51,11 +51,11 @@ better_commands.register_command("testforblock", {
         local node_param = split_param[4]
         local node, node_meta, err = better_commands.parse_node(split_param[4])
         if err or not node then return false, better_commands.error(err), 0 end
-        local found_node = minetest.get_node(pos)
+        local found_node = core.get_node(pos)
         if found_node.name == node.name then
             local matches = true
             if node_meta then
-                local meta = minetest.get_meta(pos)
+                local meta = core.get_meta(pos)
                 for key, value in pairs(node_meta) do
                     if meta:get_string(key) ~= value then
                 end

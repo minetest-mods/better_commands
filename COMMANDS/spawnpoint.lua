@@ -1,4 +1,4 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 better_commands.register_command("spawnpoint", {
     description = S("Sets players' spawnpoints"),
@@ -30,9 +30,9 @@ better_commands.register_command("spawnpoint", {
             if count < 1 then
                 return false, better_commands.error(S("No player was found.")), 0
             elseif count == 1 then
-                return true, S("Set spawn point to @1 for @2", minetest.pos_to_string(context.pos, 1), last), 1
+                return true, S("Set spawn point to @1 for @2", core.pos_to_string(context.pos, 1), last), 1
             else
-                return true, S("Set spawn point to @1 for @2 players", minetest.pos_to_string(context.pos, 1), count), count
+                return true, S("Set spawn point to @1 for @2 players", core.pos_to_string(context.pos, 1), count), count
             end
         end
     end

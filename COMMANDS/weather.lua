@@ -1,8 +1,8 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 local set_weather, get_weather, validate_weather
 
-if better_commands.mcl and minetest.settings:get_bool("mcl_doWeatherCycle", true) and mcl_weather then
+if better_commands.mcl and core.settings:get_bool("mcl_doWeatherCycle", true) and mcl_weather then
     ---@param w string
     ---@param end_time? integer
     ---@return boolean, string?
@@ -23,7 +23,7 @@ if better_commands.mcl and minetest.settings:get_bool("mcl_doWeatherCycle", true
             return
         end
     end
-elseif minetest.get_modpath("weather") and weather and weather_mod then
+elseif core.get_modpath("weather") and weather and weather_mod then
     ---@param w string
     ---@return boolean
     set_weather = function(w)
@@ -52,6 +52,7 @@ elseif minetest.get_modpath("weather") and weather and weather_mod then
         return w
     end
 else -- Don't bother registering the commands if there's no weather mod.
+    core.log("[Better Commands] No weather mod, not registering weather commands")
     return
 end
 
@@ -85,16 +86,16 @@ better_commands.register_command("weather", {
                 else
                     local duration, err = better_commands.parse_time_string(split_param[2][3], true)
                     if err or not duration then return false, better_commands.error(err), 0 end
-                    local tps = tonumber(minetest.settings:get("time_speed"))
+                    local tps = tonumber(core.settings:get("time_speed"))
                     -- Don't ask how the math works; I already forgot.
                     local duration_s = duration*24000/(tps/3.6)
-                    end_time = minetest.get_gametime() + duration_s
+                    end_time = core.get_gametime() + duration_s
                 end
             end
             set_weather(w, end_time)
-            return true, S("Set weather to @1", split_param[1][3])
+            return true, S("Set weather to @1", split_param[1][3]), 1
         else
-            return false, better_commands.error(S("Invalid weather: @1", split_param[1][3]))
+            return false, better_commands.error(S("Invalid weather: @1", split_param[1][3])), 0
         end
     end
 })

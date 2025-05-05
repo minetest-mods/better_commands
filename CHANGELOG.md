@@ -1,13 +1,20 @@
 # Changelog
 
 ## v3.0
+This is a small update, mostly for the bugfixes.
 ### New features
 * Added `/stop` command
 * Added `/weather` command
 * Added `/toggledownfall` command
+* Added `/ride` command
 * Added `@n` selector
 ### Bugfixes
 * Leaving out arguments no longer fails to show the `params` string.
+* Fixed `/old` and `/bc` crashing when used without arguments.
+* Fixed unnecessary logging
+* Fixed `/scoreboard objectives remove <objective>` causing a crash
+* Maybe fixed command registration issue? For some reason, I can't reproduce it anymore, so I probably just fixed it months ago and then completely forgot about it.
+* Fixed a few other things, some caused by MCL updates, others caused by me making mistakes.
 
 ## v2.0 (May 31, 2024)
 ### New features

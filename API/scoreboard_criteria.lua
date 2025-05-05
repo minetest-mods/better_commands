@@ -31,9 +31,9 @@ better_commands.valid_criteria = {
     ["awards.*"] = better_commands.awards and true
     --xp = better_commands.mcl and true,
     --level = better_commands.mcl and true,
-    --food = (better_commands.mcl or minetest.get_modpath("stamina") and true),
+    --food = (better_commands.mcl or core.get_modpath("stamina") and true),
     --air = true,
-    --armor = (better_commands.mcl or minetest.get_modpath("3d_armor") and true)
+    --armor = (better_commands.mcl or core.get_modpath("3d_armor") and true)
 }
 
 ---Validates a criterion
@@ -58,14 +58,14 @@ local function item_matches(item, criterion_item)
     item = better_commands.handle_alias(item)
     if not item then return end
     if criterion_item:sub(1, 6) == "group:" then
-        return minetest.get_item_group(item, criterion_item:sub(7, -1)) ~= 0
+        return core.get_item_group(item, criterion_item:sub(7, -1)) ~= 0
     else
         return better_commands.handle_alias(criterion_item) == item
     end
 end
 
 if better_commands.settings.scoreboard_picked_up then
-    minetest.register_on_item_pickup(function(itemstack, player)
+    core.register_on_item_pickup(function(itemstack, player)
         for _, objective in pairs(better_commands.scoreboard.objectives) do
             local score = objective.scores[player:get_player_name()]
             if not score then return end
@@ -79,7 +79,7 @@ if better_commands.settings.scoreboard_picked_up then
 end
 
 if better_commands.settings.scoreboard_mined then
-    minetest.register_on_dignode(function(pos, node, player)
+    core.register_on_dignode(function(pos, node, player)
         for _, objective in pairs(better_commands.scoreboard.objectives) do
             local score = objective.scores[player:get_player_name()]
             if not score then return end
@@ -100,7 +100,7 @@ if better_commands.settings.scoreboard_mined then
 end
 
 if better_commands.settings.scoreboard_placed then
-    minetest.register_on_placenode(function(pos, node, player)
+    core.register_on_placenode(function(pos, node, player)
         for _, objective in pairs(better_commands.scoreboard.objectives) do
             local score = objective.scores[player:get_player_name()]
             if not score then return end
@@ -114,7 +114,7 @@ if better_commands.settings.scoreboard_placed then
 end
 
 if better_commands.settings.scoreboard_crafted then
-    minetest.register_on_craft(function(itemstack, player)
+    core.register_on_craft(function(itemstack, player)
         for _, objective in pairs(better_commands.scoreboard.objectives) do
             local score = objective.scores[player:get_player_name()]
             if not score then return end
@@ -128,14 +128,14 @@ if better_commands.settings.scoreboard_crafted then
 end
 
 -- Tracks "health" objectives, also prevents damage if team PVP seting is on
-minetest.register_on_player_hpchange(function(player, hp_change, reason)
+core.register_on_player_hpchange(function(player, hp_change, reason)
     local player_name = player:get_player_name()
     if better_commands.settings.scoreboard_health then
         for _, def in pairs(better_commands.scoreboard.objectives) do
             if def.criterion == "health" then
                 if def.scores[player_name] then
                     -- update *after* hp changed
-                    minetest.after(0, function() def.scores[player_name].score = player:get_hp() end)
+                    core.after(0, function() def.scores[player_name].score = player:get_hp() end)
                 end
             end
         end
@@ -153,6 +153,7 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
             local attacker_team = better_commands.teams.players[attacker_name]
             if player_team and player_team == attacker_team then
                 if better_commands.teams.teams[player_team].pvp == false then
+---@diagnostic disable-next-line: redundant-return-value
                     return 0, true
                 end
             end
@@ -162,7 +163,7 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
 end)
 
 if better_commands.settings.scoreboard_death then
-    minetest.register_on_dieplayer(function(player, reason)
+    core.register_on_dieplayer(function(player, reason)
         local player_name = player:get_player_name()
         for _, def in pairs(better_commands.scoreboard.objectives) do
             if def.criterion == "deathCount" then

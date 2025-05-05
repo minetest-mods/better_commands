@@ -1,4 +1,4 @@
-local S = minetest.get_translator("better_commands")
+local S = core.get_translator("better_commands")
 
 better_commands.gamemode_aliases = {
     [0] = "survival",
@@ -45,13 +45,13 @@ better_commands.register_command("gamemode", {
                     if better_commands.mcl then
                         mcl_gamemode.set_gamemode(target, gamemode)
                     else
-                        local privs = minetest.get_player_privs(target:get_player_name())
+                        local privs = core.get_player_privs(target:get_player_name())
                         if gamemode == "creative" then
                             privs.creative = true
                         else
                             privs.creative = nil
                         end
-                        minetest.set_player_privs(target:get_player_name(), privs)
+                        core.set_player_privs(target:get_player_name(), privs)
                     end
                 end
             end

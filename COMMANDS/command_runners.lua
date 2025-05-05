@@ -1,5 +1,5 @@
 --local bc = better_commands
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 better_commands.register_command("bc", {
     params = S("<command>"),
@@ -7,11 +7,12 @@ better_commands.register_command("bc", {
     privs = {},
     func = function(name, param, context)
         local command, command_param = param:match("^%/?([%S]+)%s*(.-)$")
+        if not command then return false, better_commands.error(S("Missing command")), 0 end
         local def = better_commands.commands[command]
         if def then
             local privs = context.command_block
             local missing
-            if not privs then privs, missing = minetest.check_player_privs(name, def.privs) end
+            if not privs then privs, missing = core.check_player_privs(name, def.privs) end
             if privs then
                 return def.real_func(name, command_param, context)
             else
@@ -29,11 +30,12 @@ better_commands.register_command("old", {
     privs = {},
     func = function(name, param, context)
         local command, command_param = param:match("^%/?([%S]+)%s*(.-)$")
+        if not command then return false, better_commands.error(S("Missing command")), 0 end
         local def = better_commands.old_commands[command]
         if def then
             local privs = context.command_block
             local missing
-            if not privs then privs, missing = minetest.check_player_privs(name, def.privs) end
+            if not privs then privs, missing = core.check_player_privs(name, def.privs) end
             if privs then
                 return def.real_func(name, command_param, context)
             else

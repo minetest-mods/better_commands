@@ -1,4 +1,4 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 --local bc = better_commands
 
 better_commands.register_command("summon", {
@@ -15,7 +15,7 @@ better_commands.register_command("summon", {
         if split_param[2] then
             local pos, err = better_commands.parse_pos(split_param, 2, context)
             if err or not pos then return false, better_commands.error(err), 0 end
-            summoned = minetest.add_entity(pos, checked_entity, entity[4])
+            summoned = core.add_entity(pos, checked_entity, entity[4])
             if not summoned then return false, better_commands.error(S("Could not summon @1", entity[3])), 0 end
             if split_param[5] then
                 local victim_rot, err = better_commands.get_tp_rot(context, summoned, split_param, 5)
@@ -23,7 +23,7 @@ better_commands.register_command("summon", {
                 better_commands.set_entity_rotation(summoned, victim_rot)
             end
         else
-            summoned = minetest.add_entity(context.pos, checked_entity, entity[4])
+            summoned = core.add_entity(context.pos, checked_entity, entity[4])
             if not summoned then return false, better_commands.error(S("Could not summon @1", entity[3])), 0 end
         end
         return true, S("Summoned @1", better_commands.get_entity_name(summoned)), 1

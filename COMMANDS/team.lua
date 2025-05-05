@@ -1,5 +1,5 @@
 local bc = better_commands
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 better_commands.register_command("team", {
     params = S("add|empty|join|leave|list|modify|remove ..."),
@@ -114,7 +114,7 @@ better_commands.register_command("team", {
                     local color = team_data.color or "white"
                     color = better_commands.team_colors[color] or color
                     if comma then result = result..", " else comma = true end
-                    result = result..string.format("[%s]", minetest.colorize(color, team_data.display_name or team))
+                    result = result..string.format("[%s]", core.colorize(color, team_data.display_name or team))
                 end
                 if count > 0 then
                     return true, S("There are @1 team(s): @2", count, result), 1
@@ -131,7 +131,7 @@ better_commands.register_command("team", {
                         count = count + 1
                         local formatted_name = better_commands.format_name(name)
                         if comma then result = result..", " else comma = true end
-                        result = minetest.colorize("#00ff00", minetest.strip_colors(formatted_name)) -- not sure why ACOVG makes it green
+                        result = core.colorize("#00ff00", core.strip_colors(formatted_name)) -- not sure why ACOVG makes it green
                     end
                 end
                 if count > 0 then

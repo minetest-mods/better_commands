@@ -1,5 +1,5 @@
 --local bc = better_commands
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 better_commands.execute_subcommands = {
     ---Aligns relative to certain axes
@@ -279,7 +279,7 @@ better_commands.execute_subcommands = {
             return true
         end
         local def = better_commands.commands[command]
-        if def and command ~= "old" and (branch_data.command_block or minetest.check_player_privs(branch_data.origin, def.privs)) then
+        if def and command ~= "old" and (branch_data.command_block or core.check_player_privs(branch_data.origin, def.privs)) then
             return "done", def.real_func(branch_data.origin, command_param, table.copy(branch_data))
         else
             return false, better_commands.error(S("Invalid command or privs: @1", command))
@@ -321,7 +321,7 @@ better_commands.register_command("execute", {
             if status == "done" then
                 success_count = success_count + (message and 1 or 0) -- "message" is status when done
                 if command_output then
-                    minetest.chat_send_player(name, command_output)
+                    core.chat_send_player(name, command_output)
                 end
             end
             if branch >= #branches then

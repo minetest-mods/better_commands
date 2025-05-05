@@ -1,7 +1,7 @@
 --local bc = better_commands
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
-local playerlist = minetest.get_modpath("playerlist")
+local playerlist = core.get_modpath("playerlist")
 
 local scoreboard_operators = {
     ["+="] = true,
@@ -24,7 +24,7 @@ better_commands.register_command("scoreboard", {
         if not (split_param[1] and split_param[2]) then
             return false, better_commands.error(S("Missing arguments")), 0
         end
-        --minetest.log(dump(split_param))
+        --core.log(dump(split_param))
         if split_param[1][3] == "objectives" then
             local subcommand = split_param[2][3]
             if subcommand == "add" then
@@ -94,7 +94,7 @@ better_commands.register_command("scoreboard", {
                         if better_commands.team_colors[format] then
                             format = better_commands.team_colors[format]
                         else
-                            format = minetest.colorspec_to_colorstring(format)
+                            format = core.colorspec_to_colorstring(format)
                             if not value then
                                 return false, better_commands.error(S("Invalid color")), 0
                             end
@@ -114,9 +114,9 @@ better_commands.register_command("scoreboard", {
                     return false, better_commands.error(S("Unknown scoreboard objective '@1'", objective)), 0
                 end
                 better_commands.scoreboard.objectives[objective] = nil
-                for display, data in pairs(better_commands.scoreboard.objectives.displays) do
+                for display, data in pairs(better_commands.scoreboard.displays) do
                     if data.objective == objective then
-                        better_commands.scoreboard.objectives.displays[display] = nil
+                        better_commands.scoreboard.displays[display] = nil
                     end
                 end
                 return true, S("Removed objective @1", objective), 1
@@ -262,7 +262,7 @@ better_commands.register_command("scoreboard", {
                         if better_commands.team_colors[format] then
                             format = better_commands.team_colors[format]
                         else
-                            format = minetest.colorspec_to_colorstring(format)
+                            format = core.colorspec_to_colorstring(format)
                             if not value then
                                 return false, better_commands.error(S("Invalid color")), 0
                             end
@@ -432,14 +432,14 @@ better_commands.register_command("scoreboard", {
                             op_string, preposition, swap = "Multiplied", "by", true
                         elseif operator == "/=" then
                             if source_scores[source].score == 0 then
-                                minetest.chat_send_player(name, S("Skipping attempt to divide by zero"))
+                                core.chat_send_player(name, S("Skipping attempt to divide by zero"))
                             else
                                 target_scores[target].score = math.floor(target_scores[target].score / source_scores[source].score)
                                 op_string, preposition, swap = "Divided", "by", true
                             end
                         elseif operator == "%=" then
                             if source_scores[source].score == 0 then
-                                minetest.chat_send_player(name, S("Skipping attempt to divide by zero"))
+                                core.chat_send_player(name, S("Skipping attempt to divide by zero"))
                             else
                                 target_scores[target].score = math.floor(target_scores[target].score % source_scores[source].score)
                                 op_string, preposition, swap = "Modulo-ed (?)", "and", true
@@ -494,6 +494,7 @@ better_commands.register_command("scoreboard", {
                 if not min then return false, better_commands.error(S("Must be a number")), 0 end
                 local max = split_param[6] and split_param[6][3]
                 if not max then return false, better_commands.error(S("Missing max")), 0 end
+---@diagnostic disable-next-line: cast-local-type
                 max = tonumber(max)
                 if not max then return false, better_commands.error(S("Must be a number")), 0 end
                 local names, err = better_commands.get_scoreboard_names(selector, context)
@@ -553,12 +554,16 @@ better_commands.register_command("scoreboard", {
                 end
                 local min = split_param[5] and split_param[5][3]
                 if not min then return false, better_commands.error(S("Missing min")), 0 end
+---@diagnostic disable-next-line: cast-local-type
                 if min == "*" then min = -99999999999999 end -- the minimum value before losing precision
+---@diagnostic disable-next-line: cast-local-type
                 min = tonumber(min)
                 if not min then return false, better_commands.error(S("Must be a number")), 0 end
                 local max = split_param[6] and split_param[6][3]
                 if not max then return false, better_commands.error(S("Missing max")), 0 end
+---@diagnostic disable-next-line: cast-local-type
                 if max == "*" then max = 100000000000000 end -- the maximum value before losing precision
+---@diagnostic disable-next-line: cast-local-type
                 max = tonumber(max)
                 if not max then return false, better_commands.error(S("Must be a number")), 0 end
                 local names, err = better_commands.get_scoreboard_names(selector, context, objective, true)
@@ -616,6 +621,7 @@ better_commands.register_command("trigger", {
         else
             local value = split_param[3] and split_param[3][3]
             if not value then return false, better_commands.error(S("Missing value")), 0 end
+---@diagnostic disable-next-line: cast-local-type
             value = tonumber(value)
             if not value then return false, better_commands.error(S("Value must be a number")), 0 end
             if subcommand == "add" then

@@ -20,18 +20,18 @@ function better_commands.format_name(name, player_only, objective)
         local name_format = (team_data.name_format or "%s")
         display_name = name_format:gsub("%%s", display_name)
         local color = better_commands.team_colors[team_data.color or "white"]
-        return minetest.colorize(color, display_name)
+        return core.colorize(color, display_name)
     end
 end
 
 function better_commands.format_team_name(name)
     local team_data = better_commands.teams.teams[name]
     if not team_data then
-        minetest.log("error", "Team "..name.." does not exist.")
+        core.log("error", "Team "..name.." does not exist.")
         return name
     end
     local color = better_commands.team_colors[team_data.color or "white"]
-    local result = minetest.colorize(color, team_data.display_name or name)
+    local result = core.colorize(color, team_data.display_name or name)
     return result
 end
 
@@ -54,10 +54,10 @@ better_commands.team_colors = {
     black = "#000000"
 }
 
-local old = minetest.format_chat_message
+local old = core.format_chat_message
 
 ---@diagnostic disable-next-line: duplicate-set-field
-minetest.format_chat_message = function(name, message)
+core.format_chat_message = function(name, message)
     name = better_commands.format_name(name)
     local result = old(name, message)
     return result

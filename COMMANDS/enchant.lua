@@ -1,4 +1,4 @@
-local S = minetest.get_translator("better_commands")
+local S = core.get_translator("better_commands")
 
 better_commands.register_command("enchant", {
     params = S("<selector> <enchantment> [<level>]"),
@@ -20,10 +20,8 @@ better_commands.register_command("enchant", {
         local count = 0
         local total_count = 0
         local last
-        minetest.log("?")
         for _, target in ipairs(targets) do
             if target.is_player and target:is_player() then
-                minetest.log("???")
                 total_count = total_count + 1
                 local itemstack = target:get_wielded_item()
                 local can_enchant, errorstring, extra_info = mcl_enchanting.can_enchant(itemstack, enchantment, level)
@@ -53,7 +51,6 @@ better_commands.register_command("enchant", {
                 end
             end
         end
-        minetest.log("??")
         if count < 1 then
             if total_count < 1 then
                 return false, better_commands.error(S("No player was found")), 0
@@ -95,7 +92,7 @@ better_commands.register_command("forceenchant", {
                 elseif errorstring == "item missing" then
                     err = S("@1 is not holding any item", better_commands.get_entity_name(target))
                 elseif errorstring == "item not supported" and not mcl_enchanting.is_enchantable(itemstack:get_name()) then
-                    err = S("@1 cannot support that enchantment")
+                    err = S("@1 cannot support that enchantment", itemstack:get_short_description())
                 elseif errorstring == "level invalid" then
                     err = S("Invalid integer '@1'", level_str)
                 else

@@ -1,5 +1,5 @@
 --local bc = better_commands
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 -- some duplicate code
 better_commands.register_command("teleport", {
@@ -94,9 +94,9 @@ better_commands.register_command("teleport", {
                 if count < 1 then
                     return false, better_commands.error(S("No entities found")), 0
                 elseif count == 1 then
-                    return true, S("Teleported @1 to @2", last, minetest.pos_to_string(target_pos, 1)), 1
+                    return true, S("Teleported @1 to @2", last, core.pos_to_string(target_pos, 1)), 1
                 else
-                    return true, S("Teleported @1 entities to @2", count, minetest.pos_to_string(target_pos, 1)), count
+                    return true, S("Teleported @1 entities to @2", count, core.pos_to_string(target_pos, 1)), count
                 end
             end
         elseif split_param[1].type == "number" or split_param[1].type == "relative" or split_param[1].type == "look_relative" then
@@ -117,7 +117,7 @@ better_commands.register_command("teleport", {
             local victim_rot, err = better_commands.get_tp_rot(context, context.executor, split_param, 4)
             if err or not victim_rot then return false, better_commands.error(err), 0 end
             better_commands.set_entity_rotation(context.executor, victim_rot)
-            return true, S("Teleported @1 to @2", better_commands.get_entity_name(context.executor), minetest.pos_to_string(target_pos, 1)), 1
+            return true, S("Teleported @1 to @2", better_commands.get_entity_name(context.executor), core.pos_to_string(target_pos, 1)), 1
         end
         return false, nil, 0
     end

@@ -3,9 +3,9 @@ A place for me to write out my future plans. I decide what to do next [randomly]
 
 ## Short-term goals
 Things that *must* be done before the next release
-- [ ] `/give <player> <item_without_metadata> <count>` only gives 1 item.
-  - Items with metadata work fine.
+- [ ] Fix `/damage` in MCLA
 - [ ] Test potentially broken summon/tp rotation
+- [ ] Test VL because they probably broke everything
 
 
 
