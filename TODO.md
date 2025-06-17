@@ -3,9 +3,14 @@ A place for me to write out my future plans. I decide what to do next [randomly]
 
 ## Short-term goals
 Things that *must* be done before the next release
-- [ ] Fix `/damage` in MCLA
-- [ ] Test potentially broken summon/tp rotation
-- [ ] Test VL because they probably broke everything
+- [x] Fix `/damage` in MCLA
+- [x] Fix weather in MCLA
+- [x] Test potentially broken summon/tp rotation
+  - [x] Vertical rotation is backwards for non-players
+- [x] Test VL because they probably broke everything
+- [x] Something is making it ignore the first character ("eaths", "ummon")
+- [x] Slashes in command blocks du be da brokage
+- [x] Fix `/clear <player> <item>` without `maxCount`
 
 
 

@@ -92,9 +92,9 @@ better_commands.register_command("remove", {
         if count < 1 then
             return false, better_commands.error(S("No entity was found")), 0
         elseif count == 1 then
-            return true, S("Killed @1", last), count
+            return true, S("Removed @1", last), count
         else
-            return true, S("Killed @1 entities", count), count
+            return true, S("Removed @1 entities", count), count
         end
     end
 })
@@ -111,7 +111,17 @@ better_commands.register_command("damage", {
         amount = math.floor(amount)
         if amount < 1 then return false, better_commands.error(S("<amount> must not be negative")), 0 end
         local damage_type = split_param[3] and split_param[3][3] or "set_hp"
-        local cause = (split_param[4] and split_param[4][3] == "by") and split_param[5]
+        local cause
+        if split_param[4] then
+            if split_param[4][3] ~= "by" then
+                return false, better_commands.error(S("Expected 'by <cause>', got '@1'", split_param[4][3])), 0
+            end
+            if split_param[5] then
+                cause = split_param[5]
+            else
+                return false, better_commands.error(S("Missing cause")), 0
+            end
+        end
         local damage_source
         if cause then
             local results, err = better_commands.parse_selector(cause, context, true)
@@ -119,15 +129,8 @@ better_commands.register_command("damage", {
             damage_source = results[1]
         end
         local reason = {
-            type = damage_type,
             object = damage_source,
         }
-        if better_commands.mcl2 and damage_type then
-            if mcl_damage.types[damage_type] then
-                reason._mcl_reason = table.copy(reason)
-                reason.type = nil
-            end
-        end
         local targets, err = better_commands.parse_selector(selector, context)
         if err or not targets then return false, better_commands.error(err), 0 end
         local count = 0

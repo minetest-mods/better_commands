@@ -92,7 +92,9 @@ local sidebar_template = {
 }
 
 local function sort_scores(a, b)
-    return (a.score == b.score) and (a.name < b.name) or (tonumber(a.score) > tonumber(b.score))
+    local a_score, b_score, a_name, b_name = core.strip_colors(a.score), core.strip_colors(b.score),
+        core.strip_colors(a.name), core.strip_colors(b.name)
+    return (a_score == b_score) and (a_name < b_name) or (tonumber(a_score) > tonumber(b_score))
 end
 
 function better_commands.format_score(objective, name)
@@ -161,7 +163,6 @@ function better_commands.update_hud()
             local count = 0
             local sortable_scores = {}
             for name in pairs(scores) do
-                count = count + 1
                 local display_name = better_commands.format_name(name)
                 local score = better_commands.format_score(objective, name) or "???"
                 local width = #core.strip_colors(display_name) + #core.strip_colors(score)
@@ -174,8 +175,11 @@ function better_commands.update_hud()
                 table.sort(sortable_scores, function(...) return not sort_scores(...) end)
             end
             for _, data in ipairs(sortable_scores) do
-                name_text = name_text..data.name.."\n"
-                score_text = score_text..data.score.."\n"
+                if core.strip_colors(data.name):sub(1,1) ~= "#" then
+                    count = count + 1
+                    name_text = name_text..data.name.."\n"
+                    score_text = score_text..data.score.."\n"
+                end
             end
             if not title then
                 if sidebar.title then

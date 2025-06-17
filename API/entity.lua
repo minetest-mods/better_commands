@@ -65,7 +65,8 @@ function better_commands.set_entity_rotation(obj, rotation)
         obj:set_look_vertical(rotation.x)
         obj:set_look_horizontal(rotation.y)
     elseif obj.set_rotation then
-        obj:set_rotation(rotation)
+        -- I have absolutely no idea why the x-axis needs to be flipped.
+        obj:set_rotation({x=-rotation.x, y=rotation.y, z=rotation.z})
     end
 end
 

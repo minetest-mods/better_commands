@@ -1,6 +1,8 @@
 better_commands = {commands = {}, old_commands = {}, players = {}}
 
 better_commands.mcl = core.get_modpath("mcl_core")
+better_commands.mcl2 = core.get_game_info().id == "mineclone2"
+better_commands.mcla = core.get_game_info().id == "mineclonia"
 better_commands.awards = core.get_modpath("awards")
 
 local modpath = core.get_modpath("better_commands")

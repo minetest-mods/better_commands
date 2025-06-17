@@ -55,3 +55,19 @@ end)
 for _, file in ipairs(api_files) do
     better_commands.run_file(file, "API")
 end
+
+---Runs a Better Command (useful for debugging and stuff)
+---@param input string
+---@param player string?
+function better_commands.run(input, executor_name)
+    local command, param = input:match("%/?(%S+)%s+(.*)$")
+    local context
+    if executor_name then
+        context = {executor = executor_name}
+    else
+        context = {executor = {x=0,y=0,z=0}, command_block = true, pos = {x=0,y=0,z=0}, dir = {x=0,y=0,z=0}}
+    end
+    if better_commands.commands[command] then
+        better_commands.commands[command].func(executor_name or "", param, context)
+    end
+end

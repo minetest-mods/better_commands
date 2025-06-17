@@ -17,6 +17,7 @@ if better_commands.mcl and core.settings:get_bool("mcl_doWeatherCycle", true) an
     ---@param w string
     ---@return string?
     validate_weather = function (w)
+        if w == "clear" then return "none" end
         if mcl_weather.reg_weathers and mcl_weather.reg_weathers[w] then
             return w
         else

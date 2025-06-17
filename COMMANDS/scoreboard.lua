@@ -327,8 +327,9 @@ better_commands.register_command("scoreboard", {
                 if err or not names then return false, better_commands.error(err), 0 end
                 local name = names[1]
                 if name then
-                    local score = better_commands.scoreboard.objectives[objective].scores[name]
+                    local score = better_commands.scoreboard.objectives[objective].scores[name].score
                     local display_name = better_commands.scoreboard.objectives[objective].display_name or objective
+                    core.log(dump({name, score, display_name}))
                     return true, S("@1 has @2 [@3]", better_commands.format_name(name), score, display_name), 1
                 else
                     return false, better_commands.error(S("@1 does not have a score for @2", better_commands.format(name), objective)), 1
@@ -382,24 +383,24 @@ better_commands.register_command("scoreboard", {
                     return true, S("@1 has @2 score(s): @3", better_commands.format_name(name), result_count, result_string), 1
                 end
             elseif subcommand == "operation" then
-                local source_selector = split_param[3]
-                if not source_selector then return false, better_commands.error(S("Missing source selector")), 0 end
-                local source_objective = split_param[4] and split_param[4][3]
-                if not source_objective then return false, better_commands.error(S("Missing source objective")), 0 end
-                if not better_commands.scoreboard.objectives[source_objective] then
-                    return false, better_commands.error(S("Invalid source objective")), 0
+                local target_selector = split_param[3]
+                if not target_selector then return false, better_commands.error(S("Missing target selector")), 0 end
+                local target_objective = split_param[4] and split_param[4][3]
+                if not target_objective then return false, better_commands.error(S("Missing target objective")), 0 end
+                if not better_commands.scoreboard.objectives[target_objective] then
+                    return false, better_commands.error(S("Invalid target objective")), 0
                 end
                 local operator = split_param[5] and split_param[5][3]
                 if not operator then return false, better_commands.error(S("Missing operator")), 0 end
                 if not scoreboard_operators[operator] then
                     return false, better_commands.error(S("Invalid operator: @1", operator)), 0
                 end
-                local target_selector = split_param[6]
-                if not target_selector then return false, better_commands.error(S("Missing target selector")), 0 end
-                local target_objective = split_param[7] and split_param[7][3]
-                if not target_objective then return false, better_commands.error(S("Missing target objective")), 0 end
-                if not better_commands.scoreboard.objectives[target_objective] then
-                    return false, better_commands.error(S("Invalid target objective")), 0
+                local source_selector = split_param[6]
+                if not source_selector then return false, better_commands.error(S("Missing source selector")), 0 end
+                local source_objective = split_param[7] and split_param[7][3]
+                if not source_objective then return false, better_commands.error(S("Missing source objective")), 0 end
+                if not better_commands.scoreboard.objectives[source_objective] then
+                    return false, better_commands.error(S("Invalid source objective")), 0
                 end
                 local sources, err = better_commands.get_scoreboard_names(source_selector, context)
                 if err or not sources then return false, better_commands.error(err), 0 end
@@ -408,6 +409,7 @@ better_commands.register_command("scoreboard", {
                 local target_scores = better_commands.scoreboard.objectives[target_objective].scores
                 if err or not targets then return false, better_commands.error(err), 0 end
                 local change_count, score_count = 0, 0
+                -- It does seem weird having a variable called "preposition" but it makes perfect sense
                 local last_source, last_target, op_string, preposition
                 local swap = false
                 for target in pairs(targets) do
@@ -423,44 +425,48 @@ better_commands.register_command("scoreboard", {
                         end
                         if operator == "+=" then
                             target_scores[target].score = math.floor(target_scores[target].score + source_scores[source].score)
-                            op_string, preposition = "Added", "to"
+                            op_string, preposition, swap = "Added", "to", true
                         elseif operator == "-=" then
                             target_scores[target].score = math.floor(target_scores[target].score - source_scores[source].score)
-                            op_string, preposition = "Subtracted", "from"
+                            op_string, preposition, swap = "Subtracted", "from", true
                         elseif operator == "*=" then
                             target_scores[target].score = math.floor(target_scores[target].score * source_scores[source].score)
-                            op_string, preposition, swap = "Multiplied", "by", true
+                            op_string, preposition = "Multiplied", "by"
                         elseif operator == "/=" then
                             if source_scores[source].score == 0 then
                                 core.chat_send_player(name, S("Skipping attempt to divide by zero"))
                             else
                                 target_scores[target].score = math.floor(target_scores[target].score / source_scores[source].score)
-                                op_string, preposition, swap = "Divided", "by", true
+                                op_string, preposition = "Divided", "by"
                             end
                         elseif operator == "%=" then
                             if source_scores[source].score == 0 then
                                 core.chat_send_player(name, S("Skipping attempt to divide by zero"))
                             else
                                 target_scores[target].score = math.floor(target_scores[target].score % source_scores[source].score)
-                                op_string, preposition, swap = "Modulo-ed (?)", "and", true
+                                op_string, preposition = "Modulo-ed (?)", "and"
                             end
                         elseif operator == "=" then
                             target_scores[target].score = source_scores[source].score
-                            op_string, preposition, swap = "Set", "to", true
+                            op_string, preposition = "Set", "to"
                         elseif operator == "<" then
                             if source_scores[source].score < target_scores[target].score then
                                 target_scores[target].score = source_scores[source].score
-                                op_string, preposition, swap = "Set", "to", true
+                                op_string, preposition = "Set", "to"
+                            else
+                                op_string, preposition = "Did not set", "to" -- IDK
                             end
                         elseif operator == ">" then
                             if source_scores[source].score > target_scores[target].score then
                                 target_scores[target].score = source_scores[source].score
-                                op_string, preposition, swap = "Set", "to", true
+                                op_string, preposition = "Set", "to"
+                            else
+                                op_string, preposition = "Did not set", "to" -- IDK
                             end
                         else --if operator == "><" then
                             source_scores[source].score, target_scores[target].score
                             = target_scores[target].score, source_scores[source].score
-                            op_string, preposition, swap = "Set", "to", true
+                            op_string, preposition = "Swapped", "with"
                         end
                     end
                 end
@@ -468,13 +474,13 @@ better_commands.register_command("scoreboard", {
                     return false, better_commands.error(S("No entity was found")), 0
                 elseif change_count == 1 then
                     return true, S(
-                        "@1 [@2] score of @3 @4 [@5] score of @6", -- a bit unnecessary, perhaps.
+                        "@1 [@2] score of @3 @4 [@5] score of @6", -- seems a bit excessive.
                         op_string,
-                        swap and better_commands.scoreboard.objectives[target_objective].display_name or better_commands.scoreboard.objectives[source_objective].display_name,
-                        swap and better_commands.format_name(last_target) or better_commands.format_name(last_source),
-                        preposition,
                         swap and better_commands.scoreboard.objectives[source_objective].display_name or better_commands.scoreboard.objectives[target_objective].display_name,
-                        swap and better_commands.format_name(last_source) or better_commands.format_name(last_target)
+                        swap and better_commands.format_name(last_source) or better_commands.format_name(last_target),
+                        preposition,
+                        swap and better_commands.scoreboard.objectives[target_objective].display_name or better_commands.scoreboard.objectives[source_objective].display_name,
+                        swap and better_commands.format_name(last_target) or better_commands.format_name(last_source)
                     ), 1
                 else
                     return true, S("Changed @1 scores (@2 total operations)", score_count, change_count), score_count
@@ -558,11 +564,11 @@ better_commands.register_command("scoreboard", {
                 if min == "*" then min = -99999999999999 end -- the minimum value before losing precision
 ---@diagnostic disable-next-line: cast-local-type
                 min = tonumber(min)
-                if not min then return false, better_commands.error(S("Must be a number")), 0 end
+                if not min then return false, better_commands.error(S("Must be a number (or '*')")), 0 end
                 local max = split_param[6] and split_param[6][3]
                 if not max then return false, better_commands.error(S("Missing max")), 0 end
 ---@diagnostic disable-next-line: cast-local-type
-                if max == "*" then max = 100000000000000 end -- the maximum value before losing precision
+                if max == "*" then max = 100000000000000 end -- the maximum value in Lua before losing precision
 ---@diagnostic disable-next-line: cast-local-type
                 max = tonumber(max)
                 if not max then return false, better_commands.error(S("Must be a number")), 0 end

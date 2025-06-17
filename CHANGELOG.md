@@ -1,7 +1,7 @@
 # Changelog
 
 ## v3.0
-This is a small update, mostly for the bugfixes.
+This is a small update, mostly composed of bugfixes. Lots of bugfixes. It's been over a year since I last updated this, and now I'm finally back.
 ### New features
 * Added `/stop` command
 * Added `/weather` command
@@ -14,7 +14,8 @@ This is a small update, mostly for the bugfixes.
 * Fixed unnecessary logging
 * Fixed `/scoreboard objectives remove <objective>` causing a crash
 * Maybe fixed command registration issue? For some reason, I can't reproduce it anymore, so I probably just fixed it months ago and then completely forgot about it.
-* Fixed a few other things, some caused by MCL updates, others caused by me making mistakes.
+* Fixed wrong argument order for `/scoreboard players operation ...`
+* Fixed a LOT of random things.
 
 ## v2.0 (May 31, 2024)
 ### New features

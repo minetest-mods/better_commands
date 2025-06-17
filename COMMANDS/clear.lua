@@ -14,14 +14,8 @@ better_commands.register_command("clear", {
             targets, err = better_commands.parse_selector(selector, context)
             if err or not targets then return false, better_commands.error(err), 0 end
         end
-        local filter, group
+        local filter, group, remove_max
         if split_param[2] then
-            if split_param[2][5] then
-                split_param[3] = split_param[2][5]
-            end
-            split_param[2][5] = nil
-            split_param[2][6] = nil
-
             if split_param[2][3] == "*" then
                 filter = "*"
             elseif split_param[2][3]:sub(1,6) == "group:" then
@@ -31,10 +25,19 @@ better_commands.register_command("clear", {
                 filter, err = better_commands.parse_item(split_param[2], true)
                 if err or not filter then return false, better_commands.error(err), 0 end
             end
-        end
-        local remove_max = tonumber(split_param[3] and split_param[3][3])
-        if split_param[3] and not remove_max then
-            return false, better_commands.error(S("maxCount must be a number")), 0
+            local remove_max_str
+            if split_param[2].type == "item" then
+                local count_index = split_param[2].extra_data and 5 or 4
+                remove_max_str = split_param[2][count_index]
+            elseif split_param[2].type == "string" then
+                remove_max_str = split_param[3] and split_param[3][3]
+            end
+            if remove_max_str and remove_max_str ~= "" then
+                remove_max = tonumber(remove_max_str)
+                if not remove_max then
+                    return false, better_commands.error(S("maxCount must be a number")), 0
+                end
+            end
         end
         if remove_max then
             remove_max = math.floor(remove_max)
@@ -60,7 +63,7 @@ better_commands.register_command("clear", {
                                 if all then
                                     match_count = match_count + stack:get_count()
                                 elseif group then
-                                    if core.get_item_group(stack:get_name(), filter) then
+                                    if core.get_item_group(stack:get_name(), filter) ~= 0 then
                                         match_count = match_count + stack:get_count()
                                     end
                                 elseif split_param[2].extra_data then
@@ -78,7 +81,7 @@ better_commands.register_command("clear", {
                                 if all then
                                     matches = true
                                 elseif group then
-                                    if core.get_item_group(stack:get_name(), filter) then
+                                    if core.get_item_group(stack:get_name(), filter) ~= 0 then
                                         matches = true
                                     end
                                 elseif split_param[2].extra_data then
@@ -131,7 +134,7 @@ better_commands.register_command("clear", {
             if all and remove_max == -1 then
                 return true, S("Removed all items from player @1", last), 1
             elseif match_total < 1 then
-                return false, better_commands.error(S("No items were found on player @1", last)), 0
+                return false, better_commands.error(S("No items were found on player @1", better_commands.get_entity_name(targets[1]))), 0
             elseif remove_max == 0 then
                 return true, S("Found @1 matching items(s) on player @2", match_total, last), match_total
             else

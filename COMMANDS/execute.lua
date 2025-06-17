@@ -4,32 +4,32 @@ local S = core.get_translator(core.get_current_modname())
 better_commands.execute_subcommands = {
     ---Aligns relative to certain axes
     ---@param branches contextTable[]
-    ---@param index integer
+    ---@param branch_index integer
     ---@return boolean
     ---@return string?
     ---@nodiscard
-    align = function(branches, index)
-        local branch_data = branches[index]
-        local param = branches.param[branch_data.i+1]
+    align = function(branches, branch_index)
+        local branch_data = branches[branch_index]
+        local param = branches.param[branch_data.current_param+1]
         if not param then return false, better_commands.error(S("Missing argument for subcommand @1", "align")) end
         local axes = {param[3]:match("^([xyz])([xyz]?)([xyz]?)$")}
         if not axes[1] then return false, better_commands.error(S("Invalid swizzle, expected combination of 'x', 'y', and 'z'")) end
         for _ ,axis in pairs(axes) do
             branch_data.pos[axis] = math.floor(branch_data.pos[axis])
         end
-        branch_data.i = branch_data.i + 2
+        branch_data.current_param = branch_data.current_param + 2
         return true
     end,
     --[[
     ---Sets anchor to feet or eyes
     ---@param branches contextTable[]
-    ---@param index integer
+    ---@param branch_index integer
     ---@return boolean
     ---@return string?
     ---@nodiscard
     anchored = function(branches, index)
         local branch_data = branches[index]
-        local param = branches.param[branch_data.i+1]
+        local param = branches.param[branch_data.current_param+1]
         if not param then return false, better_commands.error(S("Missing argument for subcommand @1", "anchored")) end
         local anchor = tostring(param[3]):lower()
         if anchor == "feet" or anchor == "eyes" then
@@ -37,18 +37,18 @@ better_commands.execute_subcommands = {
         else
             return false, better_commands.error(S("Invalid entity anchor position @1", anchor))
         end
-        branch_data.i = branch_data.i + 2
+        branch_data.current_param = branch_data.current_param + 2
         return true
     end, --]]
     ---Changes executor
     ---@param branches contextTable[]
-    ---@param index integer
+    ---@param branch_index integer
     ---@return boolean|string
     ---@return string?
     ---@nodiscard
-    as = function(branches, index)
-        local branch_data = branches[index]
-        local param = branches.param[branch_data.i+1]
+    as = function(branches, branch_index)
+        local branch_data = branches[branch_index]
+        local param = branches.param[branch_data.current_param+1]
         if not param then return false, better_commands.error(S("Missing argument for subcommand @1", "as")) end
         if param.type ~= "selector" then
             return false, better_commands.error(S("Invalid target: @1", table.concat(param, "", 3)))
@@ -59,13 +59,13 @@ better_commands.execute_subcommands = {
             for _, target in ipairs(targets) do
                 local new_branch = table.copy(branch_data)
                 new_branch.executor = target
-                new_branch.i = new_branch.i + 2
+                new_branch.current_param = new_branch.current_param + 2
                 table.insert(branches, new_branch)
             end
             return "branched"
         elseif #targets == 1 then
             branch_data.executor = targets[1]
-            branch_data.i = branch_data.i + 2
+            branch_data.current_param = branch_data.current_param + 2
             return true
         else
             return "notarget"
@@ -73,13 +73,13 @@ better_commands.execute_subcommands = {
     end,
     ---Changes position
     ---@param branches contextTable[]
-    ---@param index integer
+    ---@param branch_index integer
     ---@return boolean|string
     ---@return string?
     ---@nodiscard
-    at = function(branches, index)
-        local branch_data = branches[index]
-        local param = branches.param[branch_data.i+1]
+    at = function(branches, branch_index)
+        local branch_data = branches[branch_index]
+        local param = branches.param[branch_data.current_param+1]
         if not param then return false, better_commands.error(S("Missing argument for subcommand @1", "at")) end
         if param.type ~= "selector" then
             return false, better_commands.error(S("Invalid target: @1", table.concat(param, "", 3)))
@@ -91,14 +91,14 @@ better_commands.execute_subcommands = {
                 local new_branch = table.copy(branch_data)
                 new_branch.pos = target.get_pos and target:get_pos() or target
                 branch_data.rot = better_commands.get_entity_rotation(target) or branch_data.rot
-                new_branch.i = new_branch.i + 2
+                new_branch.current_param = new_branch.current_param + 2
                 table.insert(branches, new_branch)
             end
             return "branched"
         elseif #targets == 1 then
             branch_data.pos = targets[1].get_pos and targets[1]:get_pos() or targets[1]
             branch_data.rot = better_commands.get_entity_rotation(targets[1]) or branch_data.rot
-            branch_data.i = branch_data.i + 2
+            branch_data.current_param = branch_data.current_param + 2
             return true
         else
             return "notarget"
@@ -106,14 +106,14 @@ better_commands.execute_subcommands = {
     end,
     ---Changes rotation
     ---@param branches contextTable[]
-    ---@param index integer
+    ---@param branch_index integer
     ---@return boolean|string
     ---@return string?
     ---@nodiscard
-    facing = function(branches, index)
-        local branch_data = branches[index]
+    facing = function(branches, branch_index)
+        local branch_data = branches[branch_index]
         local split_param = branches.param
-        local i = branch_data.i
+        local i = branch_data.current_param
         if split_param[i+1] then
             if split_param[i+1][3] == "entity" and split_param[i+2] then
                 local targets, err = better_commands.parse_selector(split_param[i+2], branch_data)
@@ -124,14 +124,14 @@ better_commands.execute_subcommands = {
                         local new_branch = table.copy(branch_data)
 ---@diagnostic disable-next-line: param-type-mismatch
                         new_branch.rot = better_commands.point_at_pos(branch_data.executor, target_pos)
-                        new_branch.i = branch_data.i + 3
+                        new_branch.current_param = branch_data.current_param + 3
                     end
                     return "branched"
                 elseif #targets == 1 then
                     local target_pos = targets[1].get_pos and targets[1]:get_pos() or targets[1]
 ---@diagnostic disable-next-line: param-type-mismatch
                     branch_data.rot = better_commands.point_at_pos(branch_data.executor, target_pos)
-                    branch_data.i = branch_data.i + 3
+                    branch_data.current_param = branch_data.current_param + 3
                     return true
                 else
                     return "notarget"
@@ -143,7 +143,7 @@ better_commands.execute_subcommands = {
                 end
 ---@diagnostic disable-next-line: param-type-mismatch
                 branch_data.rot = better_commands.point_at_pos(branch_data.executor, target_pos)
-                branch_data.i = branch_data.i + 4
+                branch_data.current_param = branch_data.current_param + 4
                 return true
             end
         end
@@ -151,16 +151,16 @@ better_commands.execute_subcommands = {
     end,
     ---Changes position
     ---@param branches contextTable[]
-    ---@param index integer
+    ---@param branch_index integer
     ---@return boolean|string
     ---@return string?
     ---@nodiscard
-    positioned = function(branches, index)
-        local branch_data = branches[index]
-        local param = branches.param[branch_data.i+1]
+    positioned = function(branches, branch_index)
+        local branch_data = branches[branch_index]
+        local param = branches.param[branch_data.current_param+1]
         if not param then return false, better_commands.error(S("Missing argument for subcommand @1", "positioned")) end
         if param[3] == "as" then
-            local selector = branches.param[branch_data.i+2]
+            local selector = branches.param[branch_data.current_param+2]
             if not selector or selector.type ~= "selector" then
                 return false, better_commands.error(S("Invalid argument for @1", "positioned"))
             end
@@ -170,38 +170,38 @@ better_commands.execute_subcommands = {
                 for _, target in ipairs(targets) do
                     local new_branch = table.copy(branch_data)
                     branch_data.pos = target.get_pos and target:get_pos() or target
-                    new_branch.i = new_branch.i + 3
+                    new_branch.current_param = new_branch.current_param + 3
                     table.insert(branches, new_branch)
                 end
                 return "branched"
             elseif #targets == 1 then
                 branch_data.pos = targets[1].get_pos and targets[1]:get_pos() or targets[1]
-                branch_data.i = branch_data.i + 3
+                branch_data.current_param = branch_data.current_param + 3
                 return true
             else
                 return "notarget"
             end
         else
-            local pos, err = better_commands.parse_pos(branches.param, branch_data.i+1, branch_data)
+            local pos, err = better_commands.parse_pos(branches.param, branch_data.current_param+1, branch_data)
             if err then return false, err end
             branch_data.pos = pos
             --branch_data.anchor = "feet"
-            branch_data.i = branch_data.i + 4
+            branch_data.current_param = branch_data.current_param + 4
             return true
         end
     end,
     ---Changes rotation
     ---@param branches contextTable[]
-    ---@param index integer
+    ---@param branch_index integer
     ---@return boolean|string
     ---@return string?
     ---@nodiscard
-    rotated = function(branches, index)
-        local branch_data = branches[index]
-        local param = branches.param[branch_data.i+1]
+    rotated = function(branches, branch_index)
+        local branch_data = branches[branch_index]
+        local param = branches.param[branch_data.current_param+1]
         if not param then return false, better_commands.error(S("Missing argument for subcommand @1", "rotated")) end
         if param[3] == "as" then
-            local selector = branches.param[branch_data.i+2]
+            local selector = branches.param[branch_data.current_param+2]
             if not selector or selector.type ~= "selector" then
                 return false, better_commands.error(S("Invalid argument for rotated"))
             end
@@ -211,49 +211,49 @@ better_commands.execute_subcommands = {
                 for _, target in ipairs(targets) do
                     local new_branch = table.copy(branch_data)
                     branch_data.rot = better_commands.get_entity_rotation(target) or branch_data.rot
-                    new_branch.i = new_branch.i + 3
+                    new_branch.current_param = new_branch.current_param + 3
                     table.insert(branches, new_branch)
                 end
                 return "branched"
             elseif #targets == 1 then
                 branch_data.rot = better_commands.get_entity_rotation(targets[1]) or branch_data.rot
-                branch_data.i = branch_data.i + 3
+                branch_data.current_param = branch_data.current_param + 3
                 return true
             else
                 return "notarget"
             end
         else
-            if not (branches.param[branch_data.i+1] and branches.param[branch_data.i+2]) then
+            if not (branches.param[branch_data.current_param+1] and branches.param[branch_data.current_param+2]) then
                 return false, better_commands.error(S("Missing argument(s)) for rotated"))
             end
             local victim_rot = branch_data.rot
-            if branches.param[branch_data.i+1].type == "number" then
-                victim_rot.y = math.rad(tonumber(branches.param[branch_data.i+1][3]) or 0)
-            elseif branches.param[branch_data.i+1].type == "relative" then
-                victim_rot.y = victim_rot.y+math.rad(tonumber(branches.param[branch_data.i+1][3]:sub(2,-1)) or 0)
+            if branches.param[branch_data.current_param+1].type == "number" then
+                victim_rot.y = math.rad(tonumber(branches.param[branch_data.current_param+1][3]) or 0)
+            elseif branches.param[branch_data.current_param+1].type == "relative" then
+                victim_rot.y = victim_rot.y+math.rad(tonumber(branches.param[branch_data.current_param+1][3]:sub(2,-1)) or 0)
             else
                 return false, better_commands.error(S("Invalid argument for rotated"))
             end
-            if branches.param[branch_data.i+2].type == "number" then
-                victim_rot.x = math.rad(tonumber(branches.param[branch_data.i+2][3]) or 0)
-            elseif branches.param[branch_data.i+2].type == "relative" then
-                victim_rot.x = victim_rot.x+math.rad(tonumber(branches.param[branch_data.i+2][3]:sub(2,-1)) or 0)
+            if branches.param[branch_data.current_param+2].type == "number" then
+                victim_rot.x = math.rad(tonumber(branches.param[branch_data.current_param+2][3]) or 0)
+            elseif branches.param[branch_data.current_param+2].type == "relative" then
+                victim_rot.x = victim_rot.x+math.rad(tonumber(branches.param[branch_data.current_param+2][3]:sub(2,-1)) or 0)
             else
                 return false, better_commands.error(S("Invalid argument for rotated"))
             end
             branch_data.rot = victim_rot
-            branch_data.i = branch_data.i + 3
+            branch_data.current_param = branch_data.current_param + 3
             return true
         end
     end,
     ---Runs a command
     ---@param branches contextTable[]
-    ---@param index integer
+    ---@param branch_index integer
     ---@return boolean|string
     ---@return string?
     ---@nodiscard
-    run = function(branches, index)
-        local branch_data = branches[index]
+    run = function(branches, branch_index)
+        local branch_data = branches[branch_index]
         if not (
             branch_data.executor
             and branch_data.executor.get_pos
@@ -261,21 +261,23 @@ better_commands.execute_subcommands = {
         ) then
             return "notarget"
         end
-        if not branches.param[branch_data.i+1] then return false, better_commands.error(S("Missing command")) end
+        if not branches.param[branch_data.current_param+1] then return false, better_commands.error(S("Missing command")) end
         local command, command_param
         command, command_param = branch_data.original_command:match(
             "%/?([%S]+)%s*(.-)$",
-            branches.param[branch_data.i+1][1]
+            branches.param[branch_data.current_param+1][1]
         )
         while command == "bc" do
-            branch_data.i = branch_data.i + 1
+            -- skip any "bc" commands since only Better Commands are supported anyway
+            branch_data.current_param = branch_data.current_param + 1
             command, command_param = branch_data.original_command:match(
                 "%/?([%S]+)%s*(.-)$",
-                branches.param[branch_data.i+1][1]
+                branches.param[branch_data.current_param+1][1]
             )
         end
         if command == "execute" then
-            branch_data.i = branch_data.i + 2
+            -- Just ignore the command completely
+            branch_data.current_param = branch_data.current_param + 2
             return true
         end
         local def = better_commands.commands[command]
@@ -299,13 +301,13 @@ better_commands.register_command("execute", {
         local branch = 1
         local branches = {param = split_param}
         branches[1] = table.copy(context)
-        branches[1].i = 1
+        branches[1].current_param = 1
         branches[1].original_command = param
         local success_count = 0
         while true do -- for each branch:
             local status, message, command_output, count
             while true do -- for each subcommand:
-                local cmd_index = branches[branch].i
+                local cmd_index = branches[branch].current_param
                 if cmd_index > #split_param then break end
                 local subcmd = split_param[cmd_index][3]
                 if better_commands.execute_subcommands[subcmd] then

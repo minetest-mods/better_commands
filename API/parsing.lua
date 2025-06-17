@@ -5,16 +5,17 @@ local S = core.get_translator(core.get_current_modname())
 ---@param str string
 ---@return splitParam[] split_param
 function better_commands.parse_params(str)
-    str = " "..str -- Don't ask
+    str = " "..str -- Adds a space to the beginning so I don't have to check for the beginning separately
     local i = 1
     local tmp
     local found = {}
     -- selectors, @?[data]
     repeat
-        -- p, a, r, s, e, and n are obviously the selectors but I just like the fact that they include the word "parse" (it was even better before I added @n)
-        tmp = {str:find("(@[parsen])%s*(%[.-%])", i)}
+        -- Obviously the selectors but I just like the fact that they include the word "parse" (it was even better before @n was added)
+        tmp = {str:find("%s(@[nparse])%s*(%[.-%])", i)}
         if tmp[1] then
             i = tmp[2] + 1
+            tmp[2] = tmp[2] - 1 -- Account for the extra space at the beginning
             tmp.type = "selector"
             tmp.extra_data = true
             table.insert(found, table.copy(tmp))
@@ -27,7 +28,6 @@ function better_commands.parse_params(str)
         -- modname:id[data] count wear (everything but id and data optional)
         tmp = {str:find("%s([_%w]*:?[_%w]+)%s*(%[.-%])%s*(%d*)%s*(%d*)", i)}
         if tmp[1] then
-            tmp[1] = tmp[1] + 1 -- ignore the space
             local overlap
             for _, thing in pairs(found) do
                 if tmp[1] >= thing[1] and tmp[1] <= thing[2]
@@ -38,6 +38,7 @@ function better_commands.parse_params(str)
                 end
             end
             i = tmp[2] + 1
+            tmp[2] = tmp[2] - 1 -- Account for the extra space at the beginning
             if not overlap then
                 if better_commands.handle_alias(tmp[3]) then
                     tmp.type = "item"
@@ -58,7 +59,6 @@ function better_commands.parse_params(str)
         -- modname:id count wear (everything but id optional)
         tmp = {str:find("%s([_%w]*:?[_%w]+)%s*(%d*)%s*(%d*)", i)}
         if tmp[1] then
-            tmp[1] = tmp[1] + 1 -- ignore the space
             local overlap
             for _, thing in pairs(found) do
                 if tmp[1] >= thing[1] and tmp[1] <= thing[2]
@@ -69,6 +69,7 @@ function better_commands.parse_params(str)
                 end
             end
             i = tmp[2] + 1
+            tmp[2] = tmp[2] - 1 -- Account for the extra space at the beginning
             if not overlap then
                 if better_commands.handle_alias(tmp[3]) then
                     tmp.type = "item"
@@ -84,9 +85,10 @@ function better_commands.parse_params(str)
     -- everything else
     i = 1
     repeat
-        tmp = {str:find("(%S+)", i)}
+        tmp = {str:find("%s(%S+)", i)}
         if tmp[1] then
             i = tmp[2] + 1
+            tmp[2] = tmp[2] - 1 -- Account for the extra space at the beginning
             local overlap
             for _, thing in pairs(found) do
                 if tmp[1] >= thing[1] and tmp[1] <= thing[2]
@@ -503,7 +505,11 @@ function better_commands.parse_item(item_data, ignore_count)
     if item_data.type == "item" and not item_data.extra_data then
         local stack = ItemStack(item_data[3])
         if not ignore_count then
-            stack:set_count(tonumber(item_data[4]) or 1)
+            local count = tonumber(item_data[4]) or 1
+            if count > 65535 then
+                return nil, S("Maximum count is 65535, got @1", count)
+            end
+            stack:set_count(count)
         end
         stack:set_wear(tonumber(item_data[5]) or 0)
         return stack
@@ -527,7 +533,11 @@ function better_commands.parse_item(item_data, ignore_count)
             end
         end
         if not ignore_count then
-            stack:set_count(tonumber(item_data[5]) or 1)
+            local count = tonumber(item_data[5]) or 1
+            if count > 65535 then
+                return nil, S("Maximum count is 65535, got @1", count)
+            end
+            stack:set_count(count)
         end
         stack:set_wear(tonumber(item_data[6]) or stack:get_wear())
         return stack

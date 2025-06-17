@@ -85,7 +85,7 @@ better_commands.entity_aliases = {
     -- Various MCL non-mobs
     ["mcl_boats:boat"] = {boat = true},
     ["mcl_boats:chest_boat"] = {chest_boat = true, boat_with_chest = true},
-    ["mcl_experience:orb"] = {experience_orb = true},
+    ["mcl_experience:orb"] = {experience_orb = true, xp_orb = true},
     ["mcl_minecarts:minecart"] = {minecart = true},
     ["mcl_minecarts:command_block_minecart"] = {command_block_minecart = true, minecart_with_command_block = true},
     ["mcl_minecarts:chest_minecart"] = {chest_minecart = true, minecart_with_chest = true},
@@ -303,7 +303,7 @@ better_commands.unique_entities = {}
 core.register_on_mods_loaded(function()
     local exists
     for id, value in pairs(better_commands.entity_aliases) do
-        if core.registered_entities[id] then
+        if core.registered_entities[id] and value then
             for alias in pairs(value) do
                 if not better_commands.unique_entities[alias] then
                     better_commands.unique_entities[alias] = {}
