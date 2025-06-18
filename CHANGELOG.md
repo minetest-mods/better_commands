@@ -1,5 +1,8 @@
 # Changelog
 
+## v3.1
+Fixes a crash caused by nodes being dug by non-players.
+
 ## v3.0
 This is a small update, mostly composed of bugfixes. Lots of bugfixes. It's been over a year since I last updated this, and now I'm finally back.
 ### New features

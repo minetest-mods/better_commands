@@ -80,6 +80,7 @@ end
 
 if better_commands.settings.scoreboard_mined then
     core.register_on_dignode(function(pos, node, player)
+        if not player then return end
         for _, objective in pairs(better_commands.scoreboard.objectives) do
             local score = objective.scores[player:get_player_name()]
             if not score then return end

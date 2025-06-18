@@ -59,7 +59,7 @@ better_commands.register_command("ride", {
             local target, err = better_commands.parse_selector(target_selector, context, true)
             if err or not target then return false, better_commands.error(err), 0 end
             if not target[1].is_player then
-                return false, better_commands.error(S("Command blocks cannot be ridden")), 0
+                return false, better_commands.error(S("Command blocks cannot be ridden. This should be obvious.")), 0
             end
             local vehicle = target[1]:get_attach()
             if not vehicle then return false, better_commands.error(S("@1 is not riding any vehicle", better_commands.get_entity_name(target[1]))), 0 end
