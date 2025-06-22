@@ -58,7 +58,7 @@ end
 
 ---Runs a Better Command (useful for debugging and stuff)
 ---@param input string
----@param player string?
+---@param executor_name string?
 function better_commands.run(input, executor_name)
     local command, param = input:match("%/?(%S+)%s+(.*)$")
     local context

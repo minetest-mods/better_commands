@@ -1,5 +1,10 @@
 # Changelog
 
+## v3.2
+* Disabled unnecessary logging that was accidentally left in
+* Updated license year and translation template.
+* The repo is in the Minetest Mods organization now, which is pretty neat.
+
 ## v3.1
 Fixes a crash caused by nodes being dug by non-players.
 

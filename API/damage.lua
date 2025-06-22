@@ -6,7 +6,7 @@
 ---@param reason table?
 ---@param damage_immortal? boolean
 function better_commands.deal_damage(target, damage, reason, damage_immortal)
-	core.log(dump({damage=damage,reason=reason}))
+	--core.log(dump({damage=damage,reason=reason}))
 
 	local luaentity = target:get_luaentity()
 

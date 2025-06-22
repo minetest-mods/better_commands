@@ -329,7 +329,6 @@ better_commands.register_command("scoreboard", {
                 if name then
                     local score = better_commands.scoreboard.objectives[objective].scores[name].score
                     local display_name = better_commands.scoreboard.objectives[objective].display_name or objective
-                    core.log(dump({name, score, display_name}))
                     return true, S("@1 has @2 [@3]", better_commands.format_name(name), score, display_name), 1
                 else
                     return false, better_commands.error(S("@1 does not have a score for @2", better_commands.format(name), objective)), 1
