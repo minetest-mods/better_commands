@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.3 (December 31, 2025)
+* Fixed an issue causing the mod to stop registering commands when encountering an existing command with the same name
+* Would have taken literally three seconds if Lua had a continue statement.
+
 ## v3.2
 * Disabled unnecessary logging that was accidentally left in
 * Updated license year and translation template.

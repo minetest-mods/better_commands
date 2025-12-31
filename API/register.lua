@@ -53,6 +53,7 @@ end
 -- Register commands last (so overriding works properly)
 core.register_on_mods_loaded(function()
     for name, def in pairs(better_commands.commands) do
+        local why_doesnt_lua_have_a_continue_statement = false
         if core.registered_chatcommands[name] then
             if better_commands.settings.override then
                 core.log("action", "[Better Commands] Overriding "..name)
@@ -60,12 +61,14 @@ core.register_on_mods_loaded(function()
                 core.unregister_chatcommand(name)
             else
                 core.log("action", "[Better Commands] Not registering "..name.." as it already exists.")
-                return
+                why_doesnt_lua_have_a_continue_statement = true
             end
         end
-        core.register_chatcommand(name, def)
-        -- Since this is in an on_mods_loaded function, mod_origin is "??" by default
-        ---@diagnostic disable-next-line: inject-field
-        core.registered_chatcommands[name].mod_origin = "better_commands"
+        if not why_doesnt_lua_have_a_continue_statement then
+            core.register_chatcommand(name, def)
+            -- Since this is in an on_mods_loaded function, mod_origin is "??" by default
+            ---@diagnostic disable-next-line: inject-field
+            core.registered_chatcommands[name].mod_origin = "better_commands"
+        end
     end
 end)
