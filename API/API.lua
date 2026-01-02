@@ -60,7 +60,7 @@ end
 ---@param input string
 ---@param executor_name string?
 function better_commands.run(input, executor_name)
-    local command, param = input:match("%/?(%S+)%s+(.*)$")
+    local command, param = input:match("%/?(%S+)%s*(.*)$")
     local context
     if executor_name then
         context = {executor = executor_name}
