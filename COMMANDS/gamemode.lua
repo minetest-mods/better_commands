@@ -12,7 +12,7 @@ better_commands.gamemode_aliases = {
 better_commands.register_command("gamemode", {
     description = S("Sets a player's gamemode"),
     params = S("<gamemode> [<targets>]"),
-    privs = {server = true},
+    privs = { server = true },
     func = function(name, param, context)
         local split_param, err = better_commands.parse_params(param)
         if err then return false, better_commands.error(err), 0 end
@@ -26,10 +26,11 @@ better_commands.register_command("gamemode", {
         elseif gamemode ~= "creative" and gamemode ~= "survival" then
             return false, better_commands.error(S("Invalid gamemode @1", gamemode)), 0
         end
-        local targets = {context.executor}
+        local targets = { context.executor }
         local self = true
         if split_param[2] then
             local err
+            ---@diagnostic disable-next-line: cast-local-type
             targets, err = better_commands.parse_selector(split_param[2], context)
             if err or not targets then return false, better_commands.error(err), 0 end
             self = false
@@ -60,11 +61,11 @@ better_commands.register_command("gamemode", {
             return false, better_commands.error(S("No player was found")), 0
         elseif count == 1 then
             if self then
-                return true, S("Set own gamemode to @1", gamemode)
+                return true, S("Set own gamemode to @1", gamemode), 1
             end
             return true, S("Set gamemode of @1 to @2", last, gamemode), 1
         else
-            return true, S("Set gamemode of @1 players to @2", count, gamemode), count
+            return true, S("Set gamemode of @1 players to @2", tostring(count), gamemode), count
         end
     end
 })

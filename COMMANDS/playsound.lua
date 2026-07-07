@@ -4,7 +4,7 @@ local S = core.get_translator(core.get_current_modname())
 better_commands.register_command("playsound", {
     params = S("<sound> <targets|pos> [<volume>] [<pitch>] [<maxDistance>]"),
     description = S("Plays a sound"),
-    privs = {server = true},
+    privs = { server = true },
     func = function(name, param, context)
         local split_param = better_commands.parse_params(param)
         if not (split_param[1] and split_param[2]) then
@@ -17,32 +17,36 @@ better_commands.register_command("playsound", {
             next = 3
         else
             local pos, err = better_commands.parse_pos(split_param, 2, context)
-            if err or not pos then return false, better_commands.error(err), 0
+            if err or not pos then
+                return false, better_commands.error(err), 0
             end
-            targets = {pos}
+            targets = { pos }
             next = 5
         end
-        local volume, pitch, distance = 1, 1, 32
+        local volume, pitch, distance = 1, 1, 32 ---@type number
         if split_param[next] then
----@diagnostic disable-next-line: cast-local-type
+            ---@diagnostic disable-next-line cast-local-type
             volume = split_param[next][3]
             if volume and not tonumber(volume) then
                 return false, better_commands.error(S("Must be a number, not @1", volume)), 0
             end
+            ---@diagnostic disable-next-line cast-local-type
             volume = tonumber(volume)
-            if split_param[next+1] then
----@diagnostic disable-next-line: cast-local-type
-                pitch = split_param[next+1][3]
+            if split_param[next + 1] then
+                ---@diagnostic disable-next-line cast-local-type
+                pitch = split_param[next + 1][3]
                 if pitch and not tonumber(pitch) then
                     return false, better_commands.error(S("Must be a number, not @1", pitch)), 0
                 end
+                ---@diagnostic disable-next-line cast-local-type
                 pitch = tonumber(pitch)
-                if split_param[next+2] then
----@diagnostic disable-next-line: cast-local-type
-                    distance = split_param[next+2][3]
+                if split_param[next + 2] then
+                    ---@diagnostic disable-next-line cast-local-type
+                    distance = split_param[next + 2][3]
                     if distance and not tonumber(distance) then
                         return false, better_commands.error(S("Must be a number, not @1", distance)), 0
                     end
+                    ---@diagnostic disable-next-line cast-local-type
                     distance = tonumber(distance)
                 end
             end
@@ -53,6 +57,7 @@ better_commands.register_command("playsound", {
                 split_param[1][3], {
                     gain = volume,
                     pitch = pitch,
+                    ---@diagnostic disable-next-line: assign-type-mismatch
                     [key] = target,
                     max_hear_distance = distance
                 }

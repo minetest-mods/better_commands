@@ -27,17 +27,17 @@ function better_commands.get_scoreboard_names(selector, context, objective, requ
                 end
             end
         end
-    elseif selector.type == "selector" and selector[3]:sub(1,1) == "@" then
+    elseif selector.type == "selector" and selector[3]:sub(1, 1) == "@" then
         local targets, err = better_commands.parse_selector(selector, context)
         if err or not targets then return nil, err end
         for _, target in ipairs(targets) do
----@diagnostic disable-next-line: param-type-mismatch
+            ---
             if target.is_player and target:is_player() then
                 result[target:get_player_name()] = true
             end
         end
     else
-        result = {[selector[3]] = true}
+        result = { [selector[3]] = true }
     end
     local result_count = better_commands.count_table(result)
     if result_count < 1 then
@@ -47,8 +47,8 @@ function better_commands.get_scoreboard_names(selector, context, objective, requ
         if result_count > 1 then
             return nil, S("Multiple targets found")
         else
-            result = {next(result)}
-            return {result[1]}
+            result = { next(result) }
+            return { result[1] }
         end
     else
         return result
@@ -58,34 +58,34 @@ end
 local sidebar_template = {
     bg = {
         hud_elem_type = "image",
-        position = {x = 1, y = 0.5},
-        alignment = {x = 0, y = 1},
-        offset = {x = -70, y = 0},
+        position = { x = 1, y = 0.5 },
+        alignment = { x = 0, y = 1 },
+        offset = { x = -70, y = 0 },
         text = "better_commands_scoreboard_bg.png",
-        scale = {x = 10, y = 10},
+        scale = { x = 10, y = 10 },
         z_index = -1
     },
     title = {
         hud_elem_type = "text",
         text = "Title",
-        position = {x = 1, y = 0.5},
-        alignment = {x = 0, y = -1},
-        offset = {x = -70, y = 10},
+        position = { x = 1, y = 0.5 },
+        alignment = { x = 0, y = -1 },
+        offset = { x = -70, y = 10 },
         number = 0xffffff,
     },
     names = {
         hud_elem_type = "text",
-        position = {x = 1, y = 0.5},
-        alignment = {x = 1, y = 1},
-        offset = {x = -120, y = 0},
+        position = { x = 1, y = 0.5 },
+        alignment = { x = 1, y = 1 },
+        offset = { x = -120, y = 0 },
         text = "Score\nScore2",
         number = 0xffffff,
     },
     scores = {
         hud_elem_type = "text",
-        position = {x = 1, y = 0.5},
-        alignment = {x = -1, y = 1},
-        offset = {x = -20, y = 0},
+        position = { x = 1, y = 0.5 },
+        alignment = { x = -1, y = 1 },
+        offset = { x = -20, y = 0 },
         text = "5\n20",
         number = 0xffffff,
     }
@@ -133,7 +133,8 @@ function better_commands.update_nametags()
                 nametag = string.format("%s\n%s %s", nametag, score, display_name)
             end
         end
-        player:set_nametag_attributes({text = nametag})
+        ---@diagnostic disable-next-line: missing-fields
+        player:set_nametag_attributes({ text = nametag })
     end
 end
 
@@ -150,7 +151,8 @@ function better_commands.update_hud()
         local team_color, display, objective
         if team then
             team_color = better_commands.teams.teams[team].color
-            display = better_commands.scoreboard.displays.colors[team_color] or better_commands.scoreboard.displays.sidebar
+            display = better_commands.scoreboard.displays.colors[team_color] or
+                better_commands.scoreboard.displays.sidebar
         else
             display = better_commands.scoreboard.displays.sidebar
         end
@@ -167,7 +169,7 @@ function better_commands.update_hud()
                 local score = better_commands.format_score(objective, name) or "???"
                 local width = #core.strip_colors(display_name) + #core.strip_colors(score)
                 max_width = math.max(width + 2, max_width)
-                table.insert(sortable_scores, {name = display_name, score = score})
+                table.insert(sortable_scores, { name = display_name, score = score })
             end
             if not display.ascending then
                 table.sort(sortable_scores, sort_scores)
@@ -175,10 +177,10 @@ function better_commands.update_hud()
                 table.sort(sortable_scores, function(...) return not sort_scores(...) end)
             end
             for _, data in ipairs(sortable_scores) do
-                if core.strip_colors(data.name):sub(1,1) ~= "#" then
+                if core.strip_colors(data.name):sub(1, 1) ~= "#" then
                     count = count + 1
-                    name_text = name_text..data.name.."\n"
-                    score_text = score_text..data.score.."\n"
+                    name_text = name_text .. data.name .. "\n"
+                    score_text = score_text .. data.score .. "\n"
                 end
             end
             if not title then
@@ -195,15 +197,15 @@ function better_commands.update_hud()
                     sidebar[name] = player:hud_add(def)
                 end
             end
-            local pixel_width = max_width*13
-            local pixel_height = (count+2)*21
-            local center_x_offset = -(pixel_width/2 + 10)
+            local pixel_width = max_width * 13
+            local pixel_height = (count + 2) * 21
+            local center_x_offset = -(pixel_width / 2 + 10)
             player:hud_change(sidebar.title, "text", title)
-            player:hud_change(sidebar.title, "offset", {x = center_x_offset, y = -10})
-            player:hud_change(sidebar.bg, "scale", {x = pixel_width/bg_width, y = pixel_height/bg_width})
-            player:hud_change(sidebar.bg, "offset", {x = center_x_offset, y = -30})
+            player:hud_change(sidebar.title, "offset", { x = center_x_offset, y = -10 })
+            player:hud_change(sidebar.bg, "scale", { x = pixel_width / bg_width, y = pixel_height / bg_width })
+            player:hud_change(sidebar.bg, "offset", { x = center_x_offset, y = -30 })
             player:hud_change(sidebar.names, "text", name_text)
-            player:hud_change(sidebar.names, "offset", {x = center_x_offset*2+20, y = 0})
+            player:hud_change(sidebar.names, "offset", { x = center_x_offset * 2 + 20, y = 0 })
             player:hud_change(sidebar.scores, "text", score_text)
         else
             --core.log(dump(better_commands.scoreboard.objectives))

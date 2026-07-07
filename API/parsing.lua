@@ -5,14 +5,14 @@ local S = core.get_translator(core.get_current_modname())
 ---@param str string
 ---@return splitParam[] split_param
 function better_commands.parse_params(str)
-    str = " "..str -- Adds a space to the beginning so I don't have to check for the beginning separately
+    str = " " .. str -- Adds a space to the beginning so I don't have to check for the beginning separately
     local i = 1
     local tmp
     local found = {}
     -- selectors, @?[data]
     repeat
         -- Obviously the selectors but I just like the fact that they include the word "parse" (it was even better before @n was added)
-        tmp = {str:find("%s(@[nparse])%s*(%[.-%])", i)}
+        tmp = { str:find("%s(@[nparse])%s*(%[.-%])", i) }
         if tmp[1] then
             i = tmp[2] + 1
             tmp[2] = tmp[2] - 1 -- Account for the extra space at the beginning
@@ -26,13 +26,13 @@ function better_commands.parse_params(str)
     i = 1
     repeat
         -- modname:id[data] count wear (everything but id and data optional)
-        tmp = {str:find("%s([_%w]*:?[_%w]+)%s*(%[.-%])%s*(%d*)%s*(%d*)", i)}
+        tmp = { str:find("%s([_%w]*:?[_%w]+)%s*(%[.-%])%s*(%d*)%s*(%d*)", i) }
         if tmp[1] then
             local overlap
             for _, thing in pairs(found) do
                 if tmp[1] >= thing[1] and tmp[1] <= thing[2]
-                or tmp[2] >= thing[1] and tmp[2] <= thing[2]
-                or tmp[1] <= thing[1] and tmp[2] >= thing[2] then
+                    or tmp[2] >= thing[1] and tmp[2] <= thing[2]
+                    or tmp[1] <= thing[1] and tmp[2] >= thing[2] then
                     overlap = true
                     break
                 end
@@ -57,13 +57,13 @@ function better_commands.parse_params(str)
     i = 1
     repeat
         -- modname:id count wear (everything but id optional)
-        tmp = {str:find("%s([_%w]*:?[_%w]+)%s*(%d*)%s*(%d*)", i)}
+        tmp = { str:find("%s([_%w]*:?[_%w]+)%s*(%d*)%s*(%d*)", i) }
         if tmp[1] then
             local overlap
             for _, thing in pairs(found) do
                 if tmp[1] >= thing[1] and tmp[1] <= thing[2]
-                or tmp[2] >= thing[1] and tmp[2] <= thing[2]
-                or tmp[1] <= thing[1] and tmp[2] >= thing[2] then
+                    or tmp[2] >= thing[1] and tmp[2] <= thing[2]
+                    or tmp[1] <= thing[1] and tmp[2] >= thing[2] then
                     overlap = true
                     break
                 end
@@ -85,15 +85,15 @@ function better_commands.parse_params(str)
     -- everything else
     i = 1
     repeat
-        tmp = {str:find("%s(%S+)", i)}
+        tmp = { str:find("%s(%S+)", i) }
         if tmp[1] then
             i = tmp[2] + 1
             tmp[2] = tmp[2] - 1 -- Account for the extra space at the beginning
             local overlap
             for _, thing in pairs(found) do
                 if tmp[1] >= thing[1] and tmp[1] <= thing[2]
-                or tmp[2] >= thing[1] and tmp[2] <= thing[2]
-                or tmp[1] <= thing[1] and tmp[2] >= thing[2] then
+                    or tmp[2] >= thing[1] and tmp[2] <= thing[2]
+                    or tmp[1] <= thing[1] and tmp[2] >= thing[2] then
                     overlap = true
                     break
                 end
@@ -122,11 +122,12 @@ function better_commands.parse_params(str)
     until not tmp[1]
 
     -- sort
-    table.sort(found, function(a,b)
+    table.sort(found, function(a, b)
         return a[1] < b[1]
     end)
     return found
 end
+
 ---Returns true if num is in the range string, false if not, nil on failure
 ---@param num number
 ---@param range string
@@ -176,19 +177,19 @@ end
 ---@param selector_data splitParam
 ---@param context contextTable
 ---@param require_one? boolean
----@return (core.ObjectRef|vector.Vector)[]? results
+---@return executorType[]? results
 ---@return string? err
 ---@nodiscard
 function better_commands.parse_selector(selector_data, context, require_one)
     local caller = context.executor
     local pos = table.copy(context.pos)
     local result = {}
-    if selector_data[3]:sub(1,1) ~= "@" then
+    if selector_data[3]:sub(1, 1) ~= "@" then
         local player = core.get_player_by_name(selector_data[3])
         if not player then
             return nil, S("No player was found")
         else
-            return {player}
+            return { player }
         end
     end
 
@@ -198,35 +199,36 @@ function better_commands.parse_selector(selector_data, context, require_one)
     if selector_data[4] then
         -- basically matching "(thing)=(thing)[,%]]"
         for key, value in selector_data[4]:gmatch("([%w_]+)%s*=%s*([^,%]]+)%s*[,%]]") do
-            table.insert(arg_table, {key:trim(), value:trim()})
+            table.insert(arg_table, { key:trim(), value:trim() })
         end
     end
 
     local objects = {}
     local selector = selector_data[3]
     if selector == "@s" then
-        return {caller}
-    end
-    -- Always include players
-    for _, player in pairs(core.get_connected_players()) do
-        if player:get_pos() then
-            table.insert(objects, player)
-        end
-    end
-    if selector == "@e" or selector == "@n" then
-        for _, luaentity in pairs(core.luaentities) do
-            if luaentity.object:get_pos() then
-                table.insert(objects, luaentity.object)
+        objects = { caller }
+    else
+        -- Always include players
+        for _, player in pairs(core.get_connected_players()) do
+            if player:get_pos() then
+                table.insert(objects, player)
             end
         end
-    end
-    -- Make type selector work for @r
-    if selector == "@r" or selector == "@p" then
-        for _, arg in ipairs(arg_table) do
-            if arg[1] == "type" and arg[2]:lower() ~= "player" then
-                for _, luaentity in pairs(core.luaentities) do
-                    if luaentity.object:get_pos() then
-                        table.insert(objects, luaentity.object)
+        if selector == "@e" or selector == "@n" then
+            for _, luaentity in pairs(core.luaentities) do
+                if luaentity.object:get_pos() then
+                    table.insert(objects, luaentity.object)
+                end
+            end
+        end
+        -- Make type selector work for @r
+        if selector == "@r" or selector == "@p" then
+            for _, arg in ipairs(arg_table) do
+                if arg[1] == "type" and arg[2]:lower() ~= "player" then
+                    for _, luaentity in pairs(core.luaentities) do
+                        if luaentity.object:get_pos() then
+                            table.insert(objects, luaentity.object)
+                        end
                     end
                 end
             end
@@ -245,7 +247,7 @@ function better_commands.parse_selector(selector_data, context, require_one)
     if selector == "@p" or selector == "@n" or selector == "@r" then limit = 1 end
 
     if arg_table then
-        -- Look for pos first
+        -- Look for pos first (no idea why I thought this was important but I see no reason to change it)
         local checked = {}
         for _, arg in ipairs(arg_table) do
             local key, value = unpack(arg)
@@ -255,8 +257,8 @@ function better_commands.parse_selector(selector_data, context, require_one)
                 if checked[key] then
                     return nil, S("Duplicate option '@1'", key)
                 end
-                if value:sub(1,1) == "!" then
-                    value = value:sub(2,-1)
+                if value:sub(1, 1) == "!" then
+                    value = value:sub(2, -1)
                     if value == "" then value = 0 end
                 end
                 checked[key] = true
@@ -269,7 +271,7 @@ function better_commands.parse_selector(selector_data, context, require_one)
                 sort = value
             elseif key == "limit" or key == "c" then
                 if checked.limit then
-                    return nil, S("Only 1 of keys c and limit can exist")
+                    return nil, S("Only 1 of keys c/limit can exist")
                 end
                 checked.limit = true
                 value = tonumber(value)
@@ -285,126 +287,131 @@ function better_commands.parse_selector(selector_data, context, require_one)
 
         for _, obj in pairs(objects) do
             checked = {}
-            if obj.is_player then -- checks if it is a valid entity
-                local matches = true
-                for _, arg in pairs(arg_table) do
-                    local key, value = unpack(arg)
-                    if better_commands.supported_keys[key] == true then
-                        if checked[key] then
+            -- if obj.is_player then -- checks if it is a valid entity
+            local matches = true
+            for _, arg in pairs(arg_table) do
+                local key, value = unpack(arg)
+                if better_commands.supported_keys[key] == true then
+                    if checked[key] then
+                        return nil, S("Duplicate option '@1'", key)
+                    end
+                    checked[key] = true
+                end
+                if key == "distance" then
+                    local obj_pos = obj.is_player and obj:get_pos() or obj
+                    local distance = vector.distance(obj_pos, pos)
+                    if not better_commands.parse_range(distance, value) then
+                        matches = false
+                    end
+                elseif key == "type" then
+                    value = value:lower()
+                    local type_table = {}
+                    if not obj.is_player then
+                        type_table.command_block = true
+                    elseif obj:is_player() then
+                        type_table.player = true
+                    else
+                        local obj_type = obj:get_luaentity().name
+                        local aliases = better_commands.entity_aliases[obj_type]
+                        type_table = aliases and table.copy(aliases) or {}
+                        type_table[obj_type] = true
+                    end
+
+                    if value:sub(1, 1) == "!" then
+                        if type_table[value:sub(2, -1)] then
+                            matches = false
+                        end
+                    else
+                        if checked.type then
                             return nil, S("Duplicate option '@1'", key)
                         end
-                        checked[key] = true
+                        checked.type = true
+                        if not type_table[value] then
+                            matches = false
+                        end
                     end
-                    if key == "distance" then
-                        local distance = vector.distance(obj:get_pos(), pos)
-                        if not better_commands.parse_range(distance, value) then
+                elseif key == "name" then
+                    local obj_name = better_commands.get_entity_name(obj, true, true)
+                    if value:sub(1, 1) == "!" then
+                        if obj_name == value:sub(2, -1) then
                             matches = false
                         end
-                    elseif key == "type" then
-                        value = value:lower()
-                        local type_table = {}
-                        if obj:is_player() then
-                            type_table.player = true
-                        else
-                            local obj_type = obj:get_luaentity().name
-                            local aliases = better_commands.entity_aliases[obj_type]
-                            type_table = aliases and table.copy(aliases) or {}
-                            type_table[obj_type] = true
+                    else
+                        if checked.name then
+                            return nil, S("Duplicate option '@1'", key)
                         end
-
-                        if value:sub(1,1) == "!" then
-                            if type_table[value:sub(2, -1)] then
-                                matches = false
-                            end
-                        else
-                            if checked.type then
-                                return nil, S("Duplicate option '@1'", key)
-                            end
-                            checked.type = true
-                            if not type_table[value] then
-                                matches = false
-                            end
-                        end
-                    elseif key == "name" then
-                        local obj_name = better_commands.get_entity_name(obj, true, true)
-                        if value:sub(1,1) == "!" then
-                            if obj_name == value:sub(2, -1) then
-                                matches = false
-                            end
-                        else
-                            if checked.name then
-                                return nil, S("Duplicate option '@1'", key)
-                            end
-                            checked.name = true
-                            if obj_name ~= value then
-                                matches = false
-                            end
-                        end
-                    elseif key == "r" then
-                        value = tonumber(value)
-                        if not value then return nil, S("Expected number for option '@1'", key) end
-                        matches = vector.distance(obj:get_pos(), pos) <= value
-                    elseif key == "rm" then
-                        value = tonumber(value)
-                        if not value then return nil, S("Expected number for option '@1'", key) end
-                        matches = vector.distance(obj:get_pos(), pos) >= value
-                    elseif key == "level" then
-                        if not (obj.is_player and obj:is_player()) then
+                        checked.name = true
+                        if obj_name ~= value then
                             matches = false
-                        else
-                            mcl_experience.update(obj)
-                            local level = mcl_experience.get_level(obj)
-                            if not better_commands.parse_range(level, value) then
-                                matches = false
-                            end
                         end
-                    elseif key == "l" then
-                        value = tonumber(value)
-                        if not value then return nil, S("Expected number for option '@1'", key) end
-                        if not (obj.is_player and obj:is_player()) then
+                    end
+                elseif key == "r" then
+                    value = tonumber(value)
+                    if not value then return nil, S("Expected number for option '@1'", key) end
+                    local obj_pos = obj.get_player and obj:get_pos() or obj
+                    matches = vector.distance(obj_pos, pos) <= value
+                elseif key == "rm" then
+                    value = tonumber(value)
+                    if not value then return nil, S("Expected number for option '@1'", key) end
+                    local obj_pos = obj.get_player and obj:get_pos() or obj
+                    matches = vector.distance(obj_pos, pos) >= value
+                elseif key == "level" then
+                    if not (obj.is_player and obj:is_player()) then
+                        matches = false
+                    else
+                        mcl_experience.update(obj)
+                        local level = mcl_experience.get_level(obj)
+                        if not better_commands.parse_range(level, value) then
                             matches = false
-                        else
-                            mcl_experience.update(obj)
-                            local level = mcl_experience.get_level(obj)
-                            matches = level <= value
                         end
-                    elseif key == "lm" then
-                        value = tonumber(value)
-                        if not value then return nil, S("Expected number for option '@1'", key) end
-                        if not (obj.is_player and obj:is_player()) then
-                            matches = false
-                        else
-                            mcl_experience.update(obj)
-                            local level = mcl_experience.get_level(obj)
-                            matches = level >= value
-                        end
-                    elseif key == "gamemode" or key == "m" then
-                        if checked.gamemode then
-                            return nil, S("Only 1 of keys m and gamemode can exist")
-                        end
-                        checked.gamemode = true
-                        if not (obj.is_player and obj:is_player()) then
-                            matches = false
-                        else
-                            local gamemode = better_commands.gamemode_aliases[value] or value
-                            if better_commands.mcl then
-                                if table.indexof(mcl_gamemode.gamemodes, gamemode) == -1 then
-                                    return nil, S("Unknown game mode: @1", gamemode)
-                                end
-                            elseif gamemode ~= "creative" and gamemode ~= "survival" then
+                    end
+                elseif key == "l" then
+                    value = tonumber(value)
+                    if not value then return nil, S("Expected number for option '@1'", key) end
+                    if not (obj.is_player and obj:is_player()) then
+                        matches = false
+                    else
+                        mcl_experience.update(obj)
+                        local level = mcl_experience.get_level(obj)
+                        matches = level <= value
+                    end
+                elseif key == "lm" then
+                    value = tonumber(value)
+                    if not value then return nil, S("Expected number for option '@1'", key) end
+                    if not (obj.is_player and obj:is_player()) then
+                        matches = false
+                    else
+                        mcl_experience.update(obj)
+                        local level = mcl_experience.get_level(obj)
+                        matches = level >= value
+                    end
+                elseif key == "gamemode" or key == "m" then
+                    if checked.gamemode then
+                        return nil, S("Only 1 of keys gamemode/m can exist")
+                    end
+                    checked.gamemode = true
+                    if not (obj.is_player and obj:is_player()) then
+                        matches = false
+                    else
+                        local gamemode = better_commands.gamemode_aliases[value] or value
+                        if better_commands.mcl then
+                            if table.indexof(mcl_gamemode.gamemodes, gamemode) == -1 then
                                 return nil, S("Unknown game mode: @1", gamemode)
                             end
-                            matches = better_commands.get_gamemode(obj) == gamemode
+                        elseif gamemode ~= "creative" and gamemode ~= "survival" then
+                            return nil, S("Unknown game mode: @1", gamemode)
                         end
-                    end
-                    if not matches then
-                        break
+                        matches = better_commands.get_gamemode(obj) == gamemode
                     end
                 end
-                if matches then
-                    table.insert(result, obj)
+                if not matches then
+                    break
                 end
             end
+            if matches then
+                table.insert(result, obj)
+            end
+            -- end
         end
     else
         result = objects
@@ -413,9 +420,19 @@ function better_commands.parse_selector(selector_data, context, require_one)
     if sort == "random" then
         table.shuffle(result)
     elseif sort == "nearest" or (sort == "furthest" and limit < 0) then
-        table.sort(result, function(a,b) return vector.distance(a:get_pos(), pos) < vector.distance(b:get_pos(), pos) end)
+        table.sort(result,
+            function(a, b)
+                local a_pos = a.is_player and a:get_pos() or a
+                local b_pos = b.is_player and b:get_pos() or b
+                return vector.distance(a_pos, pos) < vector.distance(b_pos, pos)
+            end)
     elseif sort == "furthest" or (sort == "nearest" and limit < 0) then
-        table.sort(result, function(a,b) return vector.distance(a:get_pos(), pos) > vector.distance(b:get_pos(), pos) end)
+        table.sort(result,
+            function(a, b)
+                local a_pos = a.is_player and a:get_pos() or a
+                local b_pos = b.is_player and b:get_pos() or b
+                return vector.distance(a_pos, pos) > vector.distance(b_pos, pos)
+            end)
     end
     -- Limit
     if limit then
@@ -443,11 +460,11 @@ end
 ---@param data splitParam[]
 ---@param start integer
 ---@param context contextTable
----@return vector.Vector? result
+---@return ivector? result
 ---@return string? err
 ---@nodiscard
 function better_commands.parse_pos(data, start, context)
-    local axes = {"x","y","z"}
+    local axes = { "x", "y", "z" }
     local result = table.copy(context.pos)
     local look
     for i = 0, 2 do
@@ -459,19 +476,19 @@ function better_commands.parse_pos(data, start, context)
             if look then
                 return nil, S("Cannot mix local and global coordinates")
             end
-            result[axes[i+1]] = tonumber(coordinate)
+            result[axes[i + 1]] = tonumber(coordinate)
             look = false
         elseif _type == "relative" then
             if look then
                 return nil, S("Cannot mix local and global coordinates")
             end
-            result[axes[i+1]] = result[axes[i+1]] + (tonumber(coordinate:sub(2,-1)) or 0)
+            result[axes[i + 1]] = result[axes[i + 1]] + (tonumber(coordinate:sub(2, -1)) or 0)
             look = false
         elseif _type == "look_relative" then
             if look == false then
                 return nil, S("Cannot mix local and global coordinates")
             end
-            result[axes[i+1]] = tonumber(coordinate:sub(2,-1)) or 0
+            result[axes[i + 1]] = tonumber(coordinate:sub(2, -1)) or 0
             look = true
         else
             return nil, S("Invalid coordinate '@1'", coordinate)
@@ -482,11 +499,11 @@ function better_commands.parse_pos(data, start, context)
         -- All I know is when moving in the Y direction,
         -- X/Z are backwards, and when moving in the Z direction,
         -- Y is backwards... so I fixed it (probably badly)
-        local result_x = vector.rotate(vector.new(result.x,0,0), context.rot)
-        local result_y = vector.rotate(vector.new(0,result.y,0), context.rot)
+        local result_x = vector.rotate(vector.new(result.x, 0, 0), context.rot)
+        local result_y = vector.rotate(vector.new(0, result.y, 0), context.rot)
         result_y.z = -result_y.z
         result_y.x = -result_y.x
-        local result_z = vector.rotate(vector.new(0,0,result.z), context.rot)
+        local result_z = vector.rotate(vector.new(0, 0, result.z), context.rot)
         result_z.y = -result_z.y
         result = vector.add(vector.add(vector.add(context.pos, result_x), result_y), result_z)
     end
@@ -507,7 +524,7 @@ function better_commands.parse_item(item_data, ignore_count)
         if not ignore_count then
             local count = tonumber(item_data[4]) or 1
             if count > 65535 then
-                return nil, S("Maximum count is 65535, got @1", count)
+                return nil, S("Maximum count is 65535, got @1", tostring(count))
             end
             stack:set_count(count)
         end
@@ -535,7 +552,7 @@ function better_commands.parse_item(item_data, ignore_count)
         if not ignore_count then
             local count = tonumber(item_data[5]) or 1
             if count > 65535 then
-                return nil, S("Maximum count is 65535, got @1", count)
+                return nil, S("Maximum count is 65535, got @1", tostring(count))
             end
             stack:set_count(count)
         end
@@ -547,7 +564,7 @@ end
 
 ---Parses node data, returns node and metadata table
 ---@param item_data splitParam
----@return core.Node? node
+---@return core.Node.get? node
 ---@return table? metadata
 ---@return string? err
 ---@nodiscard
@@ -563,10 +580,10 @@ function better_commands.parse_node(item_data)
         return nil, nil, S("'@1' is not a node", itemstring)
     end
     if item_data.type == "item" and not item_data.extra_data then
-        return {name = itemstring}
+        return { name = itemstring }
     elseif item_data.type == "item" then
         local meta_table = {}
-        local node_table = {name = itemstring}
+        local node_table = { name = itemstring }
         if item_data[4] then
             -- basically matching "(thing)=(thing)[,%]]"
             for key, value in item_data[4]:gmatch("([%w_]+)%s*=%s*([^,%]]+)%s*[,%]]") do
@@ -598,7 +615,7 @@ function better_commands.parse_time_string(time, absolute)
         if not hours then
             return nil, S("Invalid amount")
         end
-        amount = (tonumber(hours) + tonumber(minutes)/60) * 1000
+        amount = (tonumber(hours) + tonumber(minutes) / 60) * 1000
         unit = "t"
     else
         if unit == "" then unit = "t" end
@@ -616,11 +633,11 @@ function better_commands.parse_time_string(time, absolute)
     end
 
     if not absolute then
-        result = (core.get_timeofday() + (amount/24000)) % 1
+        result = (core.get_timeofday() + (amount / 24000)) % 1
     elseif better_commands.settings.acovg_time then
-        result = ((amount + 6000)/24000) % 1
+        result = ((amount + 6000) / 24000) % 1
     else
-        result = (amount/24000) % 1
+        result = (amount / 24000) % 1
     end
 
     return result
@@ -636,15 +653,15 @@ end
 ---@nodiscard
 function better_commands.expand_selectors(str, split_param, index, context)
     local message = ""
-    for i=index,#split_param do
+    for i = index, #split_param do
         local data = split_param[i]
         local next_part = ""
         if data.type ~= "selector" then
-            if split_param[i+1] then
----@diagnostic disable-next-line: param-type-mismatch
-                next_part = str:sub(split_param[i][1], split_param[i+1][1]-1)
+            if split_param[i + 1] then
+                ---
+                next_part = str:sub(split_param[i][1], split_param[i + 1][1] - 1)
             else
----@diagnostic disable-next-line: param-type-mismatch
+                ---
                 next_part = str:sub(split_param[i][1], -1)
             end
         else
@@ -653,27 +670,27 @@ function better_commands.expand_selectors(str, split_param, index, context)
                 return nil, err
             end
             for j, obj in ipairs(targets) do
-                if j > 1 then next_part = next_part.." " end
+                if j > 1 then next_part = next_part .. " " end
                 if not obj.is_player then -- this should only happen with @s
-                    next_part = next_part..S("Command Block")
+                    next_part = next_part .. S("Command Block")
                     break
                 end
-                next_part = next_part..better_commands.get_entity_name(obj)
+                next_part = next_part .. better_commands.get_entity_name(obj)
                 if #targets == 1 then
                     break
                 elseif j < #targets then
-                    next_part = next_part..","
+                    next_part = next_part .. ","
                 end
             end
-            if split_param[i+1] then
-                if split_param[i][2]+1 < split_param[i+1][1] then
-                    next_part = next_part..str:sub(split_param[i][2]+1, split_param[i+1][1]-1)
+            if split_param[i + 1] then
+                if split_param[i][2] + 1 < split_param[i + 1][1] then
+                    next_part = next_part .. str:sub(split_param[i][2] + 1, split_param[i + 1][1] - 1)
                 end
             elseif split_param[i][2] < #str then
-                next_part = next_part..str:sub(split_param[i][2]+1, -1)
+                next_part = next_part .. str:sub(split_param[i][2] + 1, -1)
             end
         end
-        message = message..next_part
+        message = message .. next_part
     end
     return message
 end

@@ -4,7 +4,7 @@ local S = core.get_translator(core.get_current_modname())
 better_commands.register_command("kill", {
     params = S("[<targets>]"),
     description = S("Kills entities (or self if <targets> left out)"),
-    privs = {server = true},
+    privs = { server = true },
     func = function(name, param, context)
         if param == "" then param = "@s" end
         local split_param = better_commands.parse_params(param)
@@ -17,13 +17,13 @@ better_commands.register_command("kill", {
                 if better_commands.settings.kill_creative_players or not (target:is_player() and core.is_creative_enabled(target:get_player_name())) then
                     last = better_commands.get_entity_name(target)
                     better_commands.deal_damage(
-                        ---@diagnostic disable-next-line: param-type-mismatch
+                    ---
                         target,
                         math.max(target:get_hp(), 1000000000000), -- 1 trillion damage to make sure they die :D
                         {
                             type = "set_hp",
                             bypasses_totem = true,
-                            flags = {bypasses_totem = true},
+                            flags = { bypasses_totem = true },
                             better_commands = "kill"
                         },
                         true
@@ -37,7 +37,7 @@ better_commands.register_command("kill", {
         elseif count == 1 then
             return true, S("Killed @1", last), count
         else
-            return true, S("Killed @1 entities", count), count
+            return true, S("Killed @1 entities", tostring(count)), count
         end
     end
 })
@@ -45,7 +45,7 @@ better_commands.register_command("kill", {
 better_commands.register_command("killme", {
     params = S(""),
     description = S("Kills self"),
-    privs = {server = true},
+    privs = { server = true },
     func = function(name, param, context)
         if param ~= "" then return false, better_commands.error(S("Unexpected argument(s) '@1'", param)), 0 end
         return better_commands.commands.kill.real_func(name, "", context)
@@ -55,8 +55,8 @@ better_commands.register_command("killme", {
 better_commands.register_command("remove", {
     params = S("[<target>]"),
     description = S("Removes entities (or self if <entity> left out)"),
-    privs = {server = true},
-    func = function (name, param, context)
+    privs = { server = true },
+    func = function(name, param, context)
         if param == "" then param = "@s" end
         local split_param = better_commands.parse_params(param)
         local targets, err = better_commands.parse_selector(split_param[1], context)
@@ -69,13 +69,13 @@ better_commands.register_command("remove", {
                     if better_commands.settings.kill_creative_players or not (core.is_creative_enabled(target:get_player_name())) then
                         last = better_commands.get_entity_name(target)
                         better_commands.deal_damage(
-                            ---@diagnostic disable-next-line: param-type-mismatch
+                        ---
                             target,
                             math.max(target:get_hp(), 1000000000000), -- 1 trillion damage to make sure they die :D
                             {
                                 type = "set_hp",
                                 bypasses_totem = true,
-                                flags = {bypasses_totem = true},
+                                flags = { bypasses_totem = true },
                                 better_commands = "kill"
                             },
                             true
@@ -94,7 +94,7 @@ better_commands.register_command("remove", {
         elseif count == 1 then
             return true, S("Removed @1", last), count
         else
-            return true, S("Removed @1 entities", count), count
+            return true, S("Removed @1 entities", tostring(count)), count
         end
     end
 })
@@ -102,8 +102,8 @@ better_commands.register_command("remove", {
 better_commands.register_command("damage", {
     params = S("<targets> <amount> [type] [by <cause>]"),
     description = S("Damages entities."),
-    privs = {server = true},
-    func = function (name, param, context)
+    privs = { server = true },
+    func = function(name, param, context)
         local split_param = better_commands.parse_params(param)
         local selector = split_param[1]
         local amount = split_param[2] and tonumber(split_param[2][3])
@@ -139,16 +139,16 @@ better_commands.register_command("damage", {
             if target.is_player then
                 count = count + 1
                 last = better_commands.get_entity_name(target)
----@diagnostic disable-next-line: param-type-mismatch
+                ---
                 better_commands.deal_damage(target, amount, reason, true)
             end
         end
-		if count < 1 then
-			return false, better_commands.error(S("No entity was found")), 0
-		elseif count == 1 then
-			return true, S("Applied @1 damage to @2", amount, last), 1
-		else
-			return true, S("Applied @1 damage to @2 entities", amount, count), count
-		end
+        if count < 1 then
+            return false, better_commands.error(S("No entity was found")), 0
+        elseif count == 1 then
+            return true, S("Applied @1 damage to @2", tostring(amount), last), 1
+        else
+            return true, S("Applied @1 damage to @2 entities", tostring(amount), count), count
+        end
     end
 })

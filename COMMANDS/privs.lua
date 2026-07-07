@@ -3,8 +3,9 @@ local S = core.get_translator(core.get_current_modname())
 
 better_commands.register_command("ability", {
     params = S("<player> <privilege> [<value>]"),
-    description = S("Sets <privilege> of <player> to <value> (true/false). If <value> is not supplied, returns the existing value of <privilege>"),
-    privs = {privs = true},
+    description = S(
+        "Sets <privilege> of <player> to <value> (true/false). If <value> is not supplied, returns the existing value of <privilege>"),
+    privs = { privs = true },
     func = function(name, param, context)
         local split_param = better_commands.parse_params(param)
         if not split_param[1] then
@@ -35,8 +36,8 @@ better_commands.register_command("ability", {
                     end
                     table.sort(sortable_privs)
                     for _, player_priv in ipairs(sortable_privs) do
-                        if not first then message = message..", " else first = false end
-                        message = message..player_priv
+                        if not first then message = message .. ", " else first = false end
+                        message = message .. player_priv
                     end
                     return true, message, count
                 else
@@ -78,13 +79,14 @@ better_commands.register_command("ability", {
 better_commands.register_command("op", {
     params = "[<targets>]",
     description = "Grants all privileges to the player(s)",
-    privs = {privs = true},
-    func = function (name, param, context)
+    privs = { privs = true },
+    func = function(name, param, context)
         local split_param = better_commands.parse_params(param)
         local selector = split_param[1]
-        local targets = {context.executor}
+        local targets = { context.executor }
         if selector then
             local err
+            ---@diagnostic disable-next-line cast-local-type
             targets, err = better_commands.parse_selector(selector, context)
             if err or not targets then return false, better_commands.error(err), 0 end
         end
@@ -109,7 +111,7 @@ better_commands.register_command("op", {
         elseif count == 1 then
             return true, S("Granted all privileges to @1", last), 1
         else
-            return true, S("Granted all privileges to @1 players", count), count
+            return true, S("Granted all privileges to @1 players", tostring(count)), count
         end
     end
 })
@@ -117,13 +119,14 @@ better_commands.register_command("op", {
 better_commands.register_command("deop", {
     params = "[<targets>]",
     description = "Grants all privileges to the player(s)",
-    privs = {privs = true},
-    func = function (name, param, context)
+    privs = { privs = true },
+    func = function(name, param, context)
         local split_param = better_commands.parse_params(param)
         local selector = split_param[1]
-        local targets = {context.executor}
+        local targets = { context.executor }
         if selector then
             local err
+            ---@diagnostic disable-next-line cast-local-type
             targets, err = better_commands.parse_selector(selector, context)
             if err or not targets then return false, better_commands.error(err), 0 end
         end
@@ -133,7 +136,7 @@ better_commands.register_command("deop", {
             local default_privs_string = core.settings:get("default_privs")
             local default_privs = {}
             if not default_privs_string or default_privs_string == "" then
-                default_privs = {interact = true, shout = true}
+                default_privs = { interact = true, shout = true }
             else
                 local split_privs = string.split(default_privs_string, "%W", false, -1, true)
                 for _, priv in ipairs(split_privs) do
@@ -154,7 +157,7 @@ better_commands.register_command("deop", {
         elseif count == 1 then
             return true, S("Revoked all privileges from to @1", last), 1
         else
-            return true, S("Revoked all privileges from @1 players", count), count
+            return true, S("Revoked all privileges from @1 players", tostring(count)), count
         end
     end
 })

@@ -27,7 +27,7 @@ end
 function better_commands.format_team_name(name)
     local team_data = better_commands.teams.teams[name]
     if not team_data then
-        core.log("error", "Team "..name.." does not exist.")
+        core.log("error", "Team " .. name .. " does not exist.")
         return name
     end
     local color = better_commands.team_colors[team_data.color or "white"]

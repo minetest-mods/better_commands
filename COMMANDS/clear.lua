@@ -9,7 +9,7 @@ better_commands.register_command("clear", {
         local selector = split_param[1]
         local targets, err
         if not selector then
-            targets = {context.executor}
+            targets = { context.executor }
         else
             targets, err = better_commands.parse_selector(selector, context)
             if err or not targets then return false, better_commands.error(err), 0 end
@@ -18,7 +18,7 @@ better_commands.register_command("clear", {
         if split_param[2] then
             if split_param[2][3] == "*" then
                 filter = "*"
-            elseif split_param[2][3]:sub(1,6) == "group:" then
+            elseif split_param[2][3]:sub(1, 6) == "group:" then
                 group = true
                 filter = split_param[2][3]:sub(7, -1)
             else
@@ -52,7 +52,8 @@ better_commands.register_command("clear", {
             if target.is_player and target:is_player() then
                 count = count + 1
                 local match_count = 0
-                local inv = target:get_inventory()
+                ---@diagnostic disable-next-line cast-local-type
+                local inv = target:get_inventory() ---@type core.InvRef
                 for _, list in ipairs(better_commands.settings.clear_lists) do
                     local inv_list = inv:get_list(list)
                     if inv_list then
@@ -63,14 +64,15 @@ better_commands.register_command("clear", {
                                 if all then
                                     match_count = match_count + stack:get_count()
                                 elseif group then
+                                    ---@cast filter string
                                     if core.get_item_group(stack:get_name(), filter) ~= 0 then
                                         match_count = match_count + stack:get_count()
                                     end
                                 elseif split_param[2].extra_data then
+                                    ---@cast filter core.ItemStack
                                     if stack:peek_item(1):equals(filter) then
                                         match_count = match_count + stack:get_count()
                                     end
-    ---@diagnostic disable-next-line: param-type-mismatch
                                 elseif stack:get_name() == filter:get_name() then
                                     match_count = match_count + stack:get_count()
                                 end
@@ -81,14 +83,16 @@ better_commands.register_command("clear", {
                                 if all then
                                     matches = true
                                 elseif group then
+                                    ---@cast filter string
                                     if core.get_item_group(stack:get_name(), filter) ~= 0 then
                                         matches = true
                                     end
                                 elseif split_param[2].extra_data then
+                                    ---@cast filter core.ItemStack
                                     if stack:peek_item(1):equals(filter) then
                                         matches = true
                                     end
-    ---@diagnostic disable-next-line: param-type-mismatch
+                                    ---
                                 elseif stack:get_name() == filter:get_name() then
                                     matches = true
                                 end
@@ -134,21 +138,24 @@ better_commands.register_command("clear", {
             if all and remove_max == -1 then
                 return true, S("Removed all items from player @1", last), 1
             elseif match_total < 1 then
-                return false, better_commands.error(S("No items were found on player @1", better_commands.get_entity_name(targets[1]))), 0
+                return false,
+                    better_commands.error(S("No items were found on player @1",
+                        better_commands.get_entity_name(targets[1]))), 0
             elseif remove_max == 0 then
-                return true, S("Found @1 matching items(s) on player @2", match_total, last), match_total
+                return true, S("Found @1 matching items(s) on player @2", tostring(match_total), last), match_total
             else
-                return true, S("Removed @1 item(s) from player @2", match_total, last), 1
+                return true, S("Removed @1 item(s) from player @2", tostring(match_total), last), 1
             end
         else
             if all and remove_max == -1 then
-                return true, S("Removed all items from @1 players", count), count
+                return true, S("Removed all items from @1 players", tostring(count)), count
             elseif match_total < 1 then
-                return false, better_commands.error(S("No items were found on @1 players", count)), 0
+                return false, better_commands.error(S("No items were found on @1 players", tostring(count))), 0
             elseif remove_max == 0 then
-                return true, S("Found @1 matching items(s) on @2 players", match_total, count), match_total
+                return true, S("Found @1 matching items(s) on @2 players", tostring(match_total), tostring(count)),
+                    match_total
             else
-                return true, S("Removed @1 items from @2 players", match_total, count), count
+                return true, S("Removed @1 items from @2 players", tostring(match_total), count), count
             end
         end
     end

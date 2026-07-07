@@ -1,7 +1,9 @@
----@alias contextTable {executor: core.ObjectRef, pos: vector.Vector, rot: vector.Vector, anchor: string, origin: string, [any]: any}
+---@alias contextTable {executor: executorType, pos: ivector, rot: vector, anchor: string, origin: string, [any]: any}
 ---@alias splitParam {[1]: integer, [2]: integer, [3]: string, type: string, any: string}
 ---@alias betterCommandFunc fun(name: string, param: string, context: contextTable): success: boolean, message: string?, count: number
 ---@alias betterCommandDef {description: string, param?: string, privs: table<string, boolean>, func: betterCommandFunc, real_func: betterCommandFunc?}
+-- If executor is a command block, it's the position instead of an ObjectRef
+---@alias executorType core.ObjectRef|ivector
 
 --local bc = better_commands
 
@@ -12,7 +14,7 @@ local modpath = core.get_modpath("better_commands")
 ---@param file string
 ---@param subfolder string?
 function better_commands.run_file(file, subfolder)
-    dofile(string.format("%s%s%s.lua", modpath, subfolder and "/"..subfolder.."/" or "", file))
+    dofile(string.format("%s%s%s.lua", modpath, subfolder and "/" .. subfolder .. "/" or "", file))
 end
 
 local api_files = {
@@ -63,9 +65,9 @@ function better_commands.run(input, executor_name)
     local command, param = input:match("%/?(%S+)%s*(.*)$")
     local context
     if executor_name then
-        context = {executor = executor_name}
+        context = { executor = executor_name }
     else
-        context = {executor = {x=0,y=0,z=0}, command_block = true, pos = {x=0,y=0,z=0}, dir = {x=0,y=0,z=0}}
+        context = { executor = { x = 0, y = 0, z = 0 }, command_block = true, pos = { x = 0, y = 0, z = 0 }, dir = { x = 0, y = 0, z = 0 } }
     end
     if better_commands.commands[command] then
         better_commands.commands[command].func(executor_name or "", param, context)

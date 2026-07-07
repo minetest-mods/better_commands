@@ -1,14 +1,14 @@
 local item_pattern = "[_%w]*:?[_%w]+"
 
 better_commands.criteria_patterns = {
-    "^killed_by%..+$",                                          -- killed_by.<entity name>
-    "^teamkill%..+$",                                           -- teamkill.<team name>
-    "^killedByTeam%..+$",                                       -- killedByTeam.<team name>
-    "^picked_up%."..item_pattern.."$",                          -- picked_up.<itemstring>
-    "^mined%."..item_pattern.."$",                              -- mined.<itemstring>
-    "^dug%."..item_pattern.."$",                                -- dug.<itemstring>
-    "^placed%."..item_pattern.."$",                             -- placed.<itemstring>
-    "^crafted%."..item_pattern.."$",                            -- crafted.<itemstring>
+    "^killed_by%..+$",                 -- killed_by.<entity name>
+    "^teamkill%..+$",                  -- teamkill.<team name>
+    "^killedByTeam%..+$",              -- killedByTeam.<team name>
+    "^picked_up%." .. item_pattern .. "$", -- picked_up.<itemstring>
+    "^mined%." .. item_pattern .. "$", -- mined.<itemstring>
+    "^dug%." .. item_pattern .. "$",   -- dug.<itemstring>
+    "^placed%." .. item_pattern .. "$", -- placed.<itemstring>
+    "^crafted%." .. item_pattern .. "$", -- crafted.<itemstring>
     --"^distanceTo%.%-?%d*%.?%d+,%-?%d*%.?%d+,%-?%d*%.?%d+$"    -- distanceTo.<x>,<y>,<z>
 }
 
@@ -154,14 +154,13 @@ core.register_on_player_hpchange(function(player, hp_change, reason)
             local attacker_team = better_commands.teams.players[attacker_name]
             if player_team and player_team == attacker_team then
                 if better_commands.teams.teams[player_team].pvp == false then
----@diagnostic disable-next-line: redundant-return-value
                     return 0, true
                 end
             end
         end
     end
     return hp_change
-end)
+end, true)
 
 if better_commands.settings.scoreboard_death then
     core.register_on_dieplayer(function(player, reason)
@@ -185,11 +184,11 @@ if better_commands.settings.scoreboard_death then
             local player_team = better_commands.teams.players[player_name]
             local killer_team = better_commands.teams.players[killer_name]
             for _, def in pairs(better_commands.scoreboard.objectives) do
-                if def.criterion == "playerKillCount" or (player_team and def.criterion == "teamkill."..player_team) then
+                if def.criterion == "playerKillCount" or (player_team and def.criterion == "teamkill." .. player_team) then
                     if def.scores[killer_name] then
                         def.scores[killer_name].score = def.scores[killer_name].score + 1
                     end
-                elseif killer_team and def.criterion == "killedByTeam."..killer_team then
+                elseif killer_team and def.criterion == "killedByTeam." .. killer_team then
                     if def.scores[player_name] then
                         def.scores[player_name].score = def.scores[player_name].score + 1
                     end
@@ -204,7 +203,7 @@ if better_commands.settings.scoreboard_death then
             for _, def in pairs(better_commands.scoreboard.objectives) do
                 local killed_by = def.criterion:match("^killed_by%.(.*)$")
                 if killed_by and (killer_type == killed_by or
-                (better_commands.entity_aliases[killer_type] and better_commands.entity_aliases[killer_type][killed_by])) then
+                        (better_commands.entity_aliases[killer_type] and better_commands.entity_aliases[killer_type][killed_by])) then
                     if def.scores[player_name] then
                         def.scores[player_name].score = def.scores[player_name].score + 1
                     end
@@ -217,7 +216,7 @@ end
 if better_commands.awards then
     awards.register_on_unlock(function(name, def)
         for _, objective in pairs(better_commands.scoreboard.objectives) do
-            if objective.criterion == "awards.*" or objective.criterion == "awards."..def.name then
+            if objective.criterion == "awards.*" or objective.criterion == "awards." .. def.name then
                 if objective.scores[name] then
                     objective.scores[name].score = objective.scores[name].score + 1
                 end

@@ -16,7 +16,7 @@ function better_commands.register_command(name, def)
         context = better_commands.complete_context(name, context)
         local success, message, count
         if context then
-            success, message, count  = def.real_func(name,param,context)
+            success, message, count = def.real_func(name, param, context)
         else
             success, message, count = false, better_commands.error(S("Missing context")), 0
         end
@@ -56,11 +56,11 @@ core.register_on_mods_loaded(function()
         local why_doesnt_lua_have_a_continue_statement = false
         if core.registered_chatcommands[name] then
             if better_commands.settings.override then
-                core.log("action", "[Better Commands] Overriding "..name)
+                core.log("action", "[Better Commands] Overriding " .. name)
                 better_commands.old_commands[name] = core.registered_chatcommands[name]
                 core.unregister_chatcommand(name)
             else
-                core.log("action", "[Better Commands] Not registering "..name.." as it already exists.")
+                core.log("action", "[Better Commands] Not registering " .. name .. " as it already exists.")
                 why_doesnt_lua_have_a_continue_statement = true
             end
         end

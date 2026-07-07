@@ -2,9 +2,9 @@ local S = core.get_translator(core.get_current_modname())
 
 better_commands.register_command("spawnpoint", {
     description = S("Sets players' spawnpoints"),
-    privs = {server = true},
+    privs = { server = true },
     params = S("[<targets>]"),
-    func = function (name, param, context)
+    func = function(name, param, context)
         local split_param, err = better_commands.parse_params(param)
         if err then return false, better_commands.error(err), 0 end
         local selector = split_param[1]
@@ -40,9 +40,9 @@ better_commands.register_command("spawnpoint", {
 
 better_commands.register_command("clearspawnpoint", {
     description = S("Clear players' spawnpoints"),
-    privs = {server = true},
+    privs = { server = true },
     params = S("[<targets>]"),
-    func = function (name, param, context)
+    func = function(name, param, context)
         local split_param, err = better_commands.parse_params(param)
         if err then return false, better_commands.error(err), 0 end
         local selector = split_param[1]
@@ -70,7 +70,7 @@ better_commands.register_command("clearspawnpoint", {
             elseif count == 1 then
                 return true, S("Cleared spawn point for @1", last), 1
             else
-                return true, S("Set spawn point for @1 players", count), count
+                return true, S("Set spawn point for @1 players", tostring(count)), count
             end
         end
     end

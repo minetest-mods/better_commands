@@ -31,16 +31,19 @@ better_commands.register_command("enchant", {
                     elseif errorstring == "item missing" then
                         err = S("@1 is not holding any item", better_commands.get_entity_name(target))
                     elseif errorstring == "item not supported" then
-                        err = S("@1 cannot support that enchantment", itemstack:get_short_description())
+                        err = S("@1 cannot support that enchantment",
+                            itemstack:get_short_description() or itemstack:get_name())
                     elseif errorstring == "level invalid" then
                         err = S("Invalid integer '@1'", level_str)
                     elseif errorstring == "level too high" then
-                        err = S("@1 is higher than the maximum level of @2 supported by that enchantment", level_str, extra_info)
+                        err = S("@1 is higher than the maximum level of @2 supported by that enchantment", level_str,
+                            extra_info)
                     elseif errorstring == "level too small" then
-                        err = S("@1 is lower than the minimum level of @2 supported by that enchantment", level_str, extra_info)
+                        err = S("@1 is lower than the minimum level of @2 supported by that enchantment", level_str,
+                            extra_info)
                     elseif errorstring == "incompatible" then
                         err = S("@1 can't be combined with @2.",
-                                    mcl_enchanting.get_enchantment_description(enchantment, level), extra_info)
+                            mcl_enchanting.get_enchantment_description(enchantment, level), extra_info)
                     else
                         err = S("Failed to enchant item.")
                     end
@@ -58,16 +61,19 @@ better_commands.register_command("enchant", {
                 return false, better_commands.error(err), 0
             end
         elseif count == 1 then
-            return true, S("Applied enchantment @1 to @2's item", mcl_enchanting.get_enchantment_description(enchantment, level), last), 1
+            return true,
+                S("Applied enchantment @1 to @2's item", mcl_enchanting.get_enchantment_description(enchantment, level),
+                    last), 1
         else
-            return true, S("Enchanted items of @1 players.", count), count
+            return true, S("Enchanted items of @1 players.", tostring(count)), count
         end
     end
 })
 
 better_commands.register_command("forceenchant", {
     params = S("<selector> <enchantment> [<level>]"),
-    description = S("Adds an enchantment to a player's selected item, regardless of whether it would normally be possible"),
+    description = S(
+        "Adds an enchantment to a player's selected item, regardless of whether it would normally be possible"),
     privs = { give = true },
     func = function(name, param, context)
         local split_param, err = better_commands.parse_params(param)
@@ -92,7 +98,8 @@ better_commands.register_command("forceenchant", {
                 elseif errorstring == "item missing" then
                     err = S("@1 is not holding any item", better_commands.get_entity_name(target))
                 elseif errorstring == "item not supported" and not mcl_enchanting.is_enchantable(itemstack:get_name()) then
-                    err = S("@1 cannot support that enchantment", itemstack:get_short_description())
+                    err = S("@1 cannot support that enchantment",
+                        itemstack:get_short_description() or itemstack:get_name())
                 elseif errorstring == "level invalid" then
                     err = S("Invalid integer '@1'", level_str)
                 else
@@ -109,9 +116,11 @@ better_commands.register_command("forceenchant", {
                 return false, better_commands.error(err), 0
             end
         elseif count == 1 then
-            return true, S("Applied enchantment @1 to @2's item", mcl_enchanting.get_enchantment_description(enchantment, level), last), 1
+            return true,
+                S("Applied enchantment @1 to @2's item", mcl_enchanting.get_enchantment_description(enchantment, level),
+                    last), 1
         else
-            return true, S("Enchanted items of @1 players.", count), count
+            return true, S("Enchanted items of @1 players.", tostring(count)), count
         end
     end
 })

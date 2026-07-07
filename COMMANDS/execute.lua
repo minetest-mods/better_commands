@@ -10,11 +10,14 @@ better_commands.execute_subcommands = {
     ---@nodiscard
     align = function(branches, branch_index)
         local branch_data = branches[branch_index]
-        local param = branches.param[branch_data.current_param+1]
+        local param = branches.param[branch_data.current_param + 1]
         if not param then return false, better_commands.error(S("Missing argument for subcommand @1", "align")) end
-        local axes = {param[3]:match("^([xyz])([xyz]?)([xyz]?)$")}
-        if not axes[1] then return false, better_commands.error(S("Invalid swizzle, expected combination of 'x', 'y', and 'z'")) end
-        for _ ,axis in pairs(axes) do
+        local axes = { param[3]:match("^([xyz])([xyz]?)([xyz]?)$") }
+        if not axes[1] then
+            return false,
+                better_commands.error(S("Invalid swizzle, expected combination of 'x', 'y', and 'z'"))
+        end
+        for _, axis in pairs(axes) do
             branch_data.pos[axis] = math.floor(branch_data.pos[axis])
         end
         branch_data.current_param = branch_data.current_param + 2
@@ -48,7 +51,7 @@ better_commands.execute_subcommands = {
     ---@nodiscard
     as = function(branches, branch_index)
         local branch_data = branches[branch_index]
-        local param = branches.param[branch_data.current_param+1]
+        local param = branches.param[branch_data.current_param + 1]
         if not param then return false, better_commands.error(S("Missing argument for subcommand @1", "as")) end
         if param.type ~= "selector" then
             return false, better_commands.error(S("Invalid target: @1", table.concat(param, "", 3)))
@@ -79,7 +82,7 @@ better_commands.execute_subcommands = {
     ---@nodiscard
     at = function(branches, branch_index)
         local branch_data = branches[branch_index]
-        local param = branches.param[branch_data.current_param+1]
+        local param = branches.param[branch_data.current_param + 1]
         if not param then return false, better_commands.error(S("Missing argument for subcommand @1", "at")) end
         if param.type ~= "selector" then
             return false, better_commands.error(S("Invalid target: @1", table.concat(param, "", 3)))
@@ -114,22 +117,22 @@ better_commands.execute_subcommands = {
         local branch_data = branches[branch_index]
         local split_param = branches.param
         local i = branch_data.current_param
-        if split_param[i+1] then
-            if split_param[i+1][3] == "entity" and split_param[i+2] then
-                local targets, err = better_commands.parse_selector(split_param[i+2], branch_data)
+        if split_param[i + 1] then
+            if split_param[i + 1][3] == "entity" and split_param[i + 2] then
+                local targets, err = better_commands.parse_selector(split_param[i + 2], branch_data)
                 if err or not targets then return false, err end
                 if #targets > 1 then
                     for _, target in ipairs(targets) do
                         local target_pos = target.get_pos and target:get_pos() or target
                         local new_branch = table.copy(branch_data)
----@diagnostic disable-next-line: param-type-mismatch
+                        ---
                         new_branch.rot = better_commands.point_at_pos(branch_data.executor, target_pos)
                         new_branch.current_param = branch_data.current_param + 3
                     end
                     return "branched"
                 elseif #targets == 1 then
                     local target_pos = targets[1].get_pos and targets[1]:get_pos() or targets[1]
----@diagnostic disable-next-line: param-type-mismatch
+                    ---
                     branch_data.rot = better_commands.point_at_pos(branch_data.executor, target_pos)
                     branch_data.current_param = branch_data.current_param + 3
                     return true
@@ -137,11 +140,11 @@ better_commands.execute_subcommands = {
                     return "notarget"
                 end
             else
-                local target_pos, err = better_commands.parse_pos(split_param, i+1, branch_data)
+                local target_pos, err = better_commands.parse_pos(split_param, i + 1, branch_data)
                 if err then
                     return false, err
                 end
----@diagnostic disable-next-line: param-type-mismatch
+                ---
                 branch_data.rot = better_commands.point_at_pos(branch_data.executor, target_pos)
                 branch_data.current_param = branch_data.current_param + 4
                 return true
@@ -157,10 +160,10 @@ better_commands.execute_subcommands = {
     ---@nodiscard
     positioned = function(branches, branch_index)
         local branch_data = branches[branch_index]
-        local param = branches.param[branch_data.current_param+1]
+        local param = branches.param[branch_data.current_param + 1]
         if not param then return false, better_commands.error(S("Missing argument for subcommand @1", "positioned")) end
         if param[3] == "as" then
-            local selector = branches.param[branch_data.current_param+2]
+            local selector = branches.param[branch_data.current_param + 2]
             if not selector or selector.type ~= "selector" then
                 return false, better_commands.error(S("Invalid argument for @1", "positioned"))
             end
@@ -182,7 +185,7 @@ better_commands.execute_subcommands = {
                 return "notarget"
             end
         else
-            local pos, err = better_commands.parse_pos(branches.param, branch_data.current_param+1, branch_data)
+            local pos, err = better_commands.parse_pos(branches.param, branch_data.current_param + 1, branch_data)
             if err then return false, err end
             branch_data.pos = pos
             --branch_data.anchor = "feet"
@@ -198,10 +201,10 @@ better_commands.execute_subcommands = {
     ---@nodiscard
     rotated = function(branches, branch_index)
         local branch_data = branches[branch_index]
-        local param = branches.param[branch_data.current_param+1]
+        local param = branches.param[branch_data.current_param + 1]
         if not param then return false, better_commands.error(S("Missing argument for subcommand @1", "rotated")) end
         if param[3] == "as" then
-            local selector = branches.param[branch_data.current_param+2]
+            local selector = branches.param[branch_data.current_param + 2]
             if not selector or selector.type ~= "selector" then
                 return false, better_commands.error(S("Invalid argument for rotated"))
             end
@@ -223,21 +226,23 @@ better_commands.execute_subcommands = {
                 return "notarget"
             end
         else
-            if not (branches.param[branch_data.current_param+1] and branches.param[branch_data.current_param+2]) then
+            if not (branches.param[branch_data.current_param + 1] and branches.param[branch_data.current_param + 2]) then
                 return false, better_commands.error(S("Missing argument(s)) for rotated"))
             end
             local victim_rot = branch_data.rot
-            if branches.param[branch_data.current_param+1].type == "number" then
-                victim_rot.y = math.rad(tonumber(branches.param[branch_data.current_param+1][3]) or 0)
-            elseif branches.param[branch_data.current_param+1].type == "relative" then
-                victim_rot.y = victim_rot.y+math.rad(tonumber(branches.param[branch_data.current_param+1][3]:sub(2,-1)) or 0)
+            if branches.param[branch_data.current_param + 1].type == "number" then
+                victim_rot.y = math.rad(tonumber(branches.param[branch_data.current_param + 1][3]) or 0)
+            elseif branches.param[branch_data.current_param + 1].type == "relative" then
+                victim_rot.y = victim_rot.y +
+                    math.rad(tonumber(branches.param[branch_data.current_param + 1][3]:sub(2, -1)) or 0)
             else
                 return false, better_commands.error(S("Invalid argument for rotated"))
             end
-            if branches.param[branch_data.current_param+2].type == "number" then
-                victim_rot.x = math.rad(tonumber(branches.param[branch_data.current_param+2][3]) or 0)
-            elseif branches.param[branch_data.current_param+2].type == "relative" then
-                victim_rot.x = victim_rot.x+math.rad(tonumber(branches.param[branch_data.current_param+2][3]:sub(2,-1)) or 0)
+            if branches.param[branch_data.current_param + 2].type == "number" then
+                victim_rot.x = math.rad(tonumber(branches.param[branch_data.current_param + 2][3]) or 0)
+            elseif branches.param[branch_data.current_param + 2].type == "relative" then
+                victim_rot.x = victim_rot.x +
+                    math.rad(tonumber(branches.param[branch_data.current_param + 2][3]:sub(2, -1)) or 0)
             else
                 return false, better_commands.error(S("Invalid argument for rotated"))
             end
@@ -255,24 +260,27 @@ better_commands.execute_subcommands = {
     run = function(branches, branch_index)
         local branch_data = branches[branch_index]
         if not (
-            branch_data.executor
-            and branch_data.executor.get_pos
-            and branch_data.pos and type(branch_data.pos) == "table"
-        ) then
+                branch_data.executor
+                and branch_data.executor.get_pos
+                and branch_data.pos and type(branch_data.pos) == "table"
+            ) then
             return "notarget"
         end
-        if not branches.param[branch_data.current_param+1] then return false, better_commands.error(S("Missing command")) end
+        if not branches.param[branch_data.current_param + 1] then
+            return false,
+                better_commands.error(S("Missing command"))
+        end
         local command, command_param
         command, command_param = branch_data.original_command:match(
             "%/?([%S]+)%s*(.-)$",
-            branches.param[branch_data.current_param+1][1]
+            branches.param[branch_data.current_param + 1][1]
         )
         while command == "bc" do
             -- skip any "bc" commands since only Better Commands are supported anyway
             branch_data.current_param = branch_data.current_param + 1
             command, command_param = branch_data.original_command:match(
                 "%/?([%S]+)%s*(.-)$",
-                branches.param[branch_data.current_param+1][1]
+                branches.param[branch_data.current_param + 1][1]
             )
         end
         if command == "execute" then
@@ -294,17 +302,17 @@ better_commands.register_command("execute", {
     --params = S("<align|anchored|as|at|facing|positioned|rotated|run> ..."),
     description = S("Run any Better Command (not other commands) after changing the context"),
     -- Requires more privileges since it can literally run any command
-    privs = {server = true, ban = true, privs = true},
+    privs = { server = true, ban = true, privs = true },
     func = function(name, param, context)
         local split_param = better_commands.parse_params(param)
         if not split_param[1] then return false, nil, 0 end
         local branch = 1
-        local branches = {param = split_param}
+        local branches = { param = split_param }
         branches[1] = table.copy(context)
         branches[1].current_param = 1
         branches[1].original_command = param
         local success_count = 0
-        while true do -- for each branch:
+        while true do     -- for each branch:
             local status, message, command_output, count
             while true do -- for each subcommand:
                 local cmd_index = branches[branch].current_param
@@ -332,6 +340,6 @@ better_commands.register_command("execute", {
                 branch = branch + 1
             end
         end
-        return true, S("Successfully executed @1 times", success_count), success_count
+        return true, S("Successfully executed @1 times", tostring(success_count)), success_count
     end
 })

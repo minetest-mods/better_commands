@@ -4,7 +4,7 @@ local S = core.get_translator(core.get_current_modname())
 better_commands.register_command("gamerule", {
     description = S("Sets or queries settings"),
     params = S("<setting> [<value>]"),
-    privs = {server = true},
+    privs = { server = true },
     func = function(name, param, context)
         local split_param = better_commands.parse_params(param)
         if not split_param[1] then return false, nil, 0 end
@@ -23,6 +23,7 @@ better_commands.register_command("gamerule", {
                 return true, S("Set @1 to @2", setting, value), 1
             end
         else
+            ---@diagnostic disable-next-line: cast-local-type
             value = core.settings:get(setting)
             if value then
                 return true, S("@1 = @2", setting, value), 1
