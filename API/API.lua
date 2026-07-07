@@ -58,6 +58,8 @@ for _, file in ipairs(api_files) do
     better_commands.run_file(file, "API")
 end
 
+better_commands.chatcmdbuilder = require("chatcmdbuilder")
+
 ---Runs a Better Command (useful for debugging and stuff)
 ---@param input string
 ---@param executor_name string?

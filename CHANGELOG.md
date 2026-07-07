@@ -1,7 +1,8 @@
 # Changelog
 
-## v3.4 (currently unreleased since the change is so tiny)
+## v4.0 (WIP)
 * Fixed an issue where the command `better_commands.run` would fail to run commands without parameters (`/clear`, etc)
+* Fixed numerous random issues that I honestly don't remember
 
 ## v3.3 (December 31, 2025)
 * Fixed an issue causing the mod to stop registering commands when encountering an existing command with the same name

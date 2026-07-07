@@ -2,7 +2,7 @@
 A place for me to write out my future plans. I decide what to do next [randomly](https://wheelofnames.com/24r-ygp) (yes, this is genuinely how I do it).
 
 ## Short-term goals
-Things that *must* be done before the next release
+Things that *will* be done before the next release
 - [x] Fix `/damage` in MCLA
 - [x] Fix weather in MCLA
 - [x] Test potentially broken summon/tp rotation
@@ -11,7 +11,10 @@ Things that *must* be done before the next release
 - [x] Something is making it ignore the first character ("eaths", "ummon")
 - [x] Slashes in command blocks du be da brokage
 - [x] Fix `/clear <player> <item>` without `maxCount`
-
+- [ ] Test everything because things have probably broken since I last checked
+- [ ] `execute store`
+- [ ] `execute if score|block|entity`
+- [ ] Completely redo how parsing works
 
 
 ## Long-term goals
@@ -44,6 +47,7 @@ Things that I hope to do *eventually*.
     - [ ] `entity`
     - [ ] `loaded`
     - [ ] `score`
+    - [ ] `items`
   - [ ] `store`
     - [ ] `block`/`node`
     - [ ] `bossbar`
